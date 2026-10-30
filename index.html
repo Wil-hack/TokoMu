@@ -1,168 +1,386 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serabimu — Toko Pilihan</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Styling Tambahan Khusus Komentar & Admin Panel */
-    .comments-section {
-      margin-top: 20px;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
-    }
-    .auth-box {
-      margin-bottom: 15px;
-    }
-    .btn-google {
-      background: #4285f4;
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .btn-google:hover { background: #357ae8; }
-    .comment-form textarea, .fake-form input, .fake-form textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      margin-bottom: 8px;
-    }
-    .btn-submit {
-      background: #111;
-      color: #fff;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .comment-item {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 15px;
-      align-items: flex-start;
-    }
-    .comment-avatar-img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .comment-avatar-initial {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #333;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    .comment-body {
-      background: #f9f9f9;
-      padding: 10px 14px;
-      border-radius: 8px;
-      flex: 1;
-    }
-    .comment-header {
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-    .comment-time {
-      font-weight: normal;
-      font-size: 11px;
-      color: #777;
-      margin-left: 6px;
-    }
-    .comment-text {
-      font-size: 13px;
-      color: #333;
-    }
-    .admin-panel {
-      margin-top: 30px;
-      background: #f4f4f4;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 13px;
-    }
-    .fake-form {
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serabimu — Toko Pilihan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ================= VARIABEL TEMA ================= */
+  :root{
+    --font-title:'Playfair Display',serif;
+    --font-body:'Inter',sans-serif;
+    --radius:20px;
+    --transition:.35s;
+  }
+  
+  /* Tema 1: Noir Émeraude (Default) */
+  body[data-theme="noir"]{
+    --bg:#0a0a0b; --bg-2:#0f0f12; --card:#141418; --card-2:#1a1a20;
+    --accent:#1a6b4f; --accent-soft:#7fc9a8; --text:#f0f5f2; --muted:#8a9a92;
+    --border:rgba(127,201,168,.15); --glow:rgba(26,107,79,.2);
+  }
+  /* Tema 2: Midnight Sapphire */
+  body[data-theme="sapphire"]{
+    --bg:#0a1120; --bg-2:#0d1526; --card:#111a2e; --card-2:#15203a;
+    --accent:#a8b8d8; --accent-soft:#e6ebf5; --text:#f5f8ff; --muted:#7f8aa8;
+    --border:rgba(192,200,214,.15); --glow:rgba(168,184,216,.15);
+  }
+  /* Tema 3: Rose Antique */
+  body[data-theme="rose"]{
+    --bg:#1a0d10; --bg-2:#211216; --card:#281418; --card-2:#2f181d;
+    --accent:#c98b7a; --accent-soft:#e8b8a8; --text:#f5e6e0; --muted:#a88a82;
+    --border:rgba(201,139,122,.2); --glow:rgba(201,139,122,.16);
+  }
+  /* Tema 4: Onyx & Copper */
+  body[data-theme="copper"]{
+    --bg:#0c0c0e; --bg-2:#111114; --card:#16161a; --card-2:#1c1c22;
+    --accent:#b87333; --accent-soft:#e8a860; --text:#f0e6dc; --muted:#9a8a7a;
+    --border:rgba(184,115,51,.2); --glow:rgba(184,115,51,.16);
+  }
+  /* Tema 5: Ivory Luxe (Terang) */
+  body[data-theme="ivory"]{
+    --bg:#faf6ef; --bg-2:#f0e8db; --card:#ffffff; --card-2:#fdfbf7;
+    --accent:#b8912f; --accent-soft:#8a6d1f; --text:#2e2418; --muted:#8a7a62;
+    --border:rgba(184,145,47,.25); --glow:rgba(184,145,47,.1);
+  }
+  /* Tema 6: Royal Purple */
+  body[data-theme="purple"]{
+    --bg:#0e0714; --bg-2:#140a1c; --card:#1a0d24; --card-2:#21102d;
+    --accent:#a34fde; --accent-soft:#e2b8ff; --text:#f7ebff; --muted:#a38db8;
+    --border:rgba(226,184,255,.15); --glow:rgba(163,79,222,.2);
+  }
+
+  /* ================= DASAR ================= */
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:var(--font-body); line-height:1.65;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    transition:background var(--transition), color var(--transition);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse 60% 40% at 50% -10%, var(--glow), transparent 70%);
+    transition:background var(--transition);
+  }
+
+  /* ================= HEADER ================= */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    transition:background var(--transition), border-color var(--transition);
+  }
+  .brand{
+    font-family:var(--font-title); font-size:26px; font-weight:700; letter-spacing:1px;
+    background:linear-gradient(100deg,var(--accent-soft),var(--accent));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    transition:background var(--transition);
+  }
+  .brand span{
+    display:block; font-family:var(--font-body); font-size:9.5px; font-weight:400;
+    letter-spacing:5px; color:var(--muted); -webkit-text-fill-color:var(--muted);
+    margin-top:3px; text-transform:uppercase;
+  }
+  nav{display:flex; gap:26px; align-items:center;}
+  nav a{
+    color:var(--muted); text-decoration:none; font-size:12.5px;
+    letter-spacing:1.5px; text-transform:uppercase; transition:color .35s;
+  }
+  nav a:hover{color:var(--accent-soft);}
+
+  /* Menu Tema */
+  .theme-dropdown{ position:relative; }
+  .theme-btn{
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    width:36px; height:36px; border-radius:50%; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:.3s;
+  }
+  .theme-btn svg{ width:18px; height:18px; }
+  .theme-btn:hover, .theme-dropdown.open .theme-btn{ 
+    border-color:var(--accent-soft); color:var(--accent-soft); background:var(--bg-2);
+  }
+  .theme-menu{
+    position:absolute; top:48px; right:0;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:4px;
+    opacity:0; visibility:hidden; transform:translateY(-10px);
+    transition:.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow:0 15px 40px -10px rgba(0,0,0,.6); z-index:200;
+  }
+  .theme-dropdown.open .theme-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .theme-menu button{
+    display:flex; align-items:center; gap:12px;
+    background:transparent; border:none; color:var(--text);
+    padding:10px 14px; border-radius:10px; cursor:pointer;
+    font-family:var(--font-body); font-size:13px; text-align:left; transition:.25s; white-space:nowrap;
+  }
+  .theme-menu button:hover, .theme-menu button.active{ background:var(--bg-2); color:var(--accent-soft); }
+  
+  .swatch{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(255,255,255,.2); }
+  .swatch[data-c="noir"]{ background:linear-gradient(135deg,#0a0a0b 50%,#1a6b4f 50%); }
+  .swatch[data-c="sapphire"]{ background:linear-gradient(135deg,#0a1120 50%,#a8b8d8 50%); }
+  .swatch[data-c="rose"]{ background:linear-gradient(135deg,#1a0d10 50%,#c98b7a 50%); }
+  .swatch[data-c="copper"]{ background:linear-gradient(135deg,#0c0c0e 50%,#b87333 50%); }
+  .swatch[data-c="ivory"]{ background:linear-gradient(135deg,#faf6ef 50%,#b8912f 50%); }
+  .swatch[data-c="purple"]{ background:linear-gradient(135deg,#0e0714 50%,#a34fde 50%); }
+
+  /* ================= HERO ================= */
+  .hero{text-align:center;padding:70px 24px 50px;}
+  .hero .eyebrow{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:20px;font-weight:500;}
+  .hero h1{
+    font-family:var(--font-title);font-size:clamp(40px,6vw,65px);
+    font-weight:700;line-height:1.1;
+    background:linear-gradient(180deg,var(--text) 0%,var(--accent-soft) 130%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;
+  }
+  .hero p{color:var(--muted);max-width:480px;margin:0 auto;font-weight:300;font-size:15px;}
+
+  /* ================= KATALOG PRODUK ================= */
+  .catalog-wrap{max-width:960px;margin:0 auto;padding:20px 24px 60px;}
+  .section-title{text-align:center;margin-bottom:35px;}
+  .section-title h2{font-family:var(--font-title);font-size:28px;font-weight:600;color:var(--text);}
+  .section-title p{color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:5px;}
+
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px;}
+  .product-card{
+    background:linear-gradient(165deg,var(--card) 0%,var(--card-2) 100%);
+    border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;
+    transition:transform .4s, border-color var(--transition), box-shadow .4s;
+    display:flex; flex-direction:column;
+  }
+  .product-card:hover{transform:translateY(-4px);border-color:var(--accent-soft);box-shadow:0 20px 40px -20px rgba(0,0,0,.5);}
+  .product-img{width:100%;height:220px;object-fit:cover;border-bottom:1px solid var(--border);}
+  .product-body{padding:20px;display:flex;flex-direction:column;flex:1;}
+  .product-title{font-family:var(--font-title);font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .product-desc{font-size:13px;color:var(--muted);font-weight:300;margin-bottom:15px;flex:1;}
+  .product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+  .product-price{font-weight:600;font-size:15px;color:var(--accent-soft);}
+  .btn-buy{
+    background:linear-gradient(100deg,var(--accent),var(--accent-soft));
+    color:var(--bg);text-decoration:none;padding:8px 16px;border-radius:999px;
+    font-size:11.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:.3s;
+  }
+  .btn-buy:hover{filter:brightness(1.1);transform:scale(1.03);}
+
+  /* ================= FEED & KOMENTAR ================= */
+  .feed-wrap{max-width:680px;margin:0 auto;padding:0 24px 60px;}
+  .feed{display:flex;flex-direction:column;gap:30px;}
+  .post{
+    background:linear-gradient(165deg,var(--card) 0%,var(--card-2) 100%);
+    border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;
+    transition:transform .4s, border-color var(--transition), box-shadow .4s;
+  }
+  .post:hover{transform:translateY(-4px);border-color:var(--accent-soft);box-shadow:0 20px 40px -20px rgba(0,0,0,.5);}
+  
+  .post-head{display:flex;align-items:center;gap:14px;padding:22px 26px 16px;}
+  .avatar{
+    width:46px;height:46px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent-soft),var(--accent));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-title);font-weight:700;color:var(--bg);font-size:19px;
+  }
+  .post-head .name{font-weight:600;font-size:15px;color:var(--text);}
+  .post-head .time{font-size:12px;color:var(--muted);}
+  .post .caption{padding:0 26px 20px;font-size:14.8px;font-weight:300;color:var(--text);opacity:.92;}
+  .post .photo{width:100%;display:block;max-height:540px;object-fit:cover;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+
+  .comments{padding:20px 26px 24px;background:color-mix(in srgb, var(--bg) 60%, transparent);}
+  .comments .c-head{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:18px;font-weight:500;}
+  
+  .comment{display:flex;gap:12px;margin-bottom:15px;}
+  .comment .avatar{width:36px;height:36px;font-size:14px;}
+  .comment .avatar-img {width:36px; height:36px; border-radius:50%; object-fit:cover;}
+  .comment .bubble{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:11px 16px;flex:1;}
+  .comment .cname{font-size:12.8px;font-weight:600;color:var(--accent-soft);}
+  .comment .ctext{font-size:13.8px;font-weight:300;color:var(--text);opacity:.88;margin-top:3px;}
+
+  .auth-box{ margin-bottom: 15px; }
+  .btn-google{
+    background: #fff; color: #333; border: 1px solid var(--border);
+    border-radius: 999px; padding: 10px 20px; font-family: var(--font-body);
+    font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex;
+    align-items: center; gap: 8px; transition: .3s;
+  }
+  .btn-google:hover{ background: var(--bg-2); border-color: var(--accent-soft); color: var(--accent-soft); }
+
+  .comment-form{display:flex;gap:10px;margin-top:14px;}
+  .comment-form input{
+    flex:1;background:var(--bg-2);border:1px solid var(--border);
+    border-radius:999px;padding:12px 20px;color:var(--text);
+    font-family:var(--font-body);font-size:13.5px;outline:none;transition:.35s;
+  }
+  .comment-form input:focus{border-color:var(--accent-soft);box-shadow:0 0 0 3px var(--glow);}
+  .comment-form button{
+    background:linear-gradient(100deg,var(--accent),var(--accent-soft));
+    color:var(--bg);border:none;border-radius:999px;padding:0 26px;
+    font-family:var(--font-body);font-weight:600;font-size:12.5px;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.35s;
+  }
+  .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
+
+  .admin-panel{
+    margin-top: 25px; background: var(--card); border: 1px dashed var(--accent);
+    border-radius: 12px; padding: 15px; font-size: 13px;
+  }
+  .admin-panel summary{ cursor: pointer; color: var(--accent-soft); font-weight: 600; }
+  .fake-form{ margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .fake-form input, .fake-form textarea{
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; color: var(--text); font-family: var(--font-body); font-size: 13px; outline: none;
+  }
+  .fake-form button{
+    background: var(--accent); color: var(--bg); border: none; border-radius: 8px;
+    padding: 8px; font-weight: 600; cursor: pointer; transition: .3s;
+  }
+  .fake-form button:hover{ filter: brightness(1.1); }
+
+  footer{text-align:center;padding:60px 24px 50px;border-top:1px solid var(--border);margin-top:20px;}
+  footer .brand{font-size:20px;margin-bottom:10px;}
+  footer p{color:var(--muted);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;}
+
+  @media(max-width:640px){
+    header{padding:16px 20px;}
+    nav{gap:16px;}
+    .brand{font-size:22px;}
+    .hero{padding:50px 20px 30px;}
+  }
+</style>
 </head>
-<body>
+<body data-theme="noir">
 
 <header>
-  <div>Serabimu<span>Toko Pilihan</span></div>
+  <div class="brand">Serabimu<span>Toko Pilihan</span></div>
   <nav>
+    <a href="#katalog">Katalog</a>
     <a href="#feed">Feed</a>
     <a href="#kontak">Kontak</a>
+    
+    <!-- MENU TEMA -->
+    <div class="theme-dropdown" id="themeDropdown">
+      <button class="theme-btn" id="themeBtn" title="Ganti Tema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
+          <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line>
+          <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+      </button>
+      <div class="theme-menu">
+        <button data-t="noir" class="active"><span class="swatch" data-c="noir"></span> Noir Émeraude</button>
+        <button data-t="sapphire"><span class="swatch" data-c="sapphire"></span> Midnight Sapphire</button>
+        <button data-t="rose"><span class="swatch" data-c="rose"></span> Rose Antique</button>
+        <button data-t="copper"><span class="swatch" data-c="copper"></span> Onyx & Copper</button>
+        <button data-t="ivory"><span class="swatch" data-c="ivory"></span> Ivory Luxe</button>
+        <button data-t="purple"><span class="swatch" data-c="purple"></span> Royal Purple</button>
+      </div>
+    </div>
   </nav>
 </header>
 
-<div>
-  <div>Est. 2026 — Kurasi Pilihan</div>
+<div class="hero">
+  <div class="eyebrow">Est. 2026 — Kurasi Pilihan</div>
   <h1>Serabimu</h1>
   <p>Keanggunan dalam setiap pilihan. Produk terkurasi, pelayanan tulus, dan cerita yang layak dikenang.</p>
 </div>
 
-<div id="feed">
-  <div>
-    <h2>Kabar Toko</h2>
-    <p>Update terbaru &amp; testimoni pelanggan</p>
+<!-- ================= BAGIAN KATALOG PRODUK ================= -->
+<div class="catalog-wrap" id="katalog">
+  <div class="section-title">
+    <h2>Katalog Pilihan</h2>
+    <p>Produk unggulan siap dipesan</p>
   </div>
 
-  <div>
-    <div class="feed-card">
-      <div class="feed-header">
-        <div class="avatar-brand">S</div>
-        <div>
-          <div>Serabimu</div>
-          <div>2 jam lalu</div>
+  <div class="product-grid">
+    <!-- Produk 1 -->
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Produk 1" class="product-img">
+      <div class="product-body">
+        <div class="product-title">Serabi Kuah Klasik</div>
+        <div class="product-desc">Kue tradisional dengan siraman kuah santan gula aren pilihan, legit dan harum.</div>
+        <div class="product-footer">
+          <span class="product-price">Rp 15.000</span>
+          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Kuah%20Klasik." target="_blank" class="btn-buy">Pesan</a>
         </div>
       </div>
+    </div>
 
-      <p>Koleksi baru telah tiba. Dibuat dengan tangan, dipilih dengan hati. Setiap detail dirancang untuk Anda yang menghargai keindahan.</p>
-      <img alt="Koleksi" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&amp;q=80">
+    <!-- Produk 2 -->
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80" alt="Produk 2" class="product-img">
+      <div class="product-body">
+        <div class="product-title">Koleksi Spesial Serabimu</div>
+        <div class="product-desc">Paket hantaran eksklusif terkurasi untuk momen spesial bersama orang terkasih.</div>
+        <div class="product-footer">
+          <span class="product-price">Rp 75.000</span>
+          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Koleksi%20Spesial%20Serabimu." target="_blank" class="btn-buy">Pesan</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= BAGIAN FEED & KOMENTAR ================= -->
+<div class="feed-wrap" id="feed">
+  <div class="section-title">
+    <h2>Kabar Toko</h2>
+    <p>Update terbaru & testimoni pelanggan</p>
+  </div>
+
+  <div class="feed">
+    <div class="post">
+      <div class="post-head">
+        <div class="avatar">S</div>
+        <div>
+          <div class="name">Serabimu</div>
+          <div class="time">2 jam lalu</div>
+        </div>
+      </div>
+      <p class="caption">Koleksi baru telah tiba. Dibuat dengan tangan, dipilih dengan hati. Setiap detail dirancang untuk Anda yang menghargai keindahan.</p>
+      <img class="photo" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Koleksi">
       
-      <!-- BAGIAN INTEGRASI KOMENTAR REAL-TIME -->
-      <div class="comments-section">
-        <h3>Komentar &amp; Ulasan</h3>
-
-        <!-- OPSI LOGIN PENGUNJUNG -->
+      <div class="comments">
+        <div class="c-head">Komentar & Ulasan</div>
+        
+        <!-- LOGIN GOOGLE -->
         <div id="auth-box" class="auth-box">
-          <button id="btn-login-google" class="btn-google">Login dengan Google untuk Komentar</button>
+          <button id="btn-login-google" class="btn-google">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+            Login Google untuk Komentar
+          </button>
         </div>
 
-        <!-- FORM KOMENTAR ASLI (Tampil jika sudah login) -->
+        <!-- FORM KOMENTAR -->
         <form id="comment-form" class="comment-form" style="display: none;">
-          <p style="font-size: 12px; margin-bottom: 6px;">Masuk sebagai: <b id="user-display-name"></b> (<a href="#" id="btn-logout">Keluar</a>)</p>
-          <textarea id="comment-text" placeholder="Tulis komentar atau ulasan Anda..." required rows="2"></textarea>
-          <button type="submit" class="btn-submit">Kirim Komentar</button>
+          <div style="font-size: 11.5px; color: var(--muted); margin-bottom: 4px;">
+            Masuk sebagai: <b id="user-display-name" style="color: var(--text);"></b> (<a href="#" id="btn-logout" style="color: var(--accent-soft);">Keluar</a>)
+          </div>
+          <div style="display: flex; gap: 10px; width: 100%;">
+            <input type="text" id="comment-text" placeholder="Tulis komentar Anda..." required>
+            <button type="submit">Kirim</button>
+          </div>
         </form>
 
-        <!-- DAFTAR KOMENTAR (Otomatis dari Firestore) -->
-        <div id="comments-list" style="margin-top: 15px;">
-          <p style="font-size: 12px; color: #888;">Memuat komentar...</p>
+        <!-- LIST KOMENTAR -->
+        <div class="comment-list" id="comments-list" style="margin-top: 15px;">
+          <div style="font-size: 13px; color: var(--muted);">Memuat komentar...</div>
         </div>
 
-        <!-- PANEL ADMIN (Bisa dibuka/tutup untuk bikin komentar palsu/custom) -->
+        <!-- PANEL ADMIN (FAKE COMMENT) -->
         <details class="admin-panel">
-          <summary><b>🛠 Panel Admin (Tambah Fake Comment)</b></summary>
+          <summary>🛠 Panel Admin (Tambah Fake Comment)</summary>
           <form id="fake-comment-form" class="fake-form">
-            <input type="text" id="fake-name" placeholder="Nama Pengirim (misal: Anisa Putri)" required>
-            <input type="text" id="fake-avatar" placeholder="URL Foto Profil (Opsional, kosongkan jika tanpa foto)">
-            <input type="text" id="fake-time" placeholder="Waktu Custom (misal: 10 menit lalu, Kemarin)">
+            <input type="text" id="fake-name" placeholder="Nama Pengirim (contoh: Anisa Putri)" required>
+            <input type="text" id="fake-avatar" placeholder="URL Foto Profil (Opsional)">
+            <input type="text" id="fake-time" placeholder="Keterangan Waktu (contoh: 2 jam lalu)">
             <textarea id="fake-text" placeholder="Isi komentar custom..." required rows="2"></textarea>
-            <button type="submit" class="btn-submit" style="background: #28a745;">Posting Komentar Custom</button>
+            <button type="submit">Posting Komentar Custom</button>
           </form>
         </details>
 
@@ -171,18 +389,17 @@
   </div>
 </div>
 
-<footer>
-  <div>Serabimu</div>
+<footer id="kontak">
+  <div class="brand">Serabimu</div>
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
 </footer>
 
-<!-- SCRIPT FIREBASE LOGIC -->
+<!-- SCRIPT FIREBASE & TEMA -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
   import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // GANTI DENGAN FIREBASE CONFIG PROYEK ANDA
   const firebaseConfig = {
     apiKey: "API_KEY_ANDA",
     authDomain: "PROJECT_ID_ANDA.firebaseapp.com",
@@ -203,7 +420,6 @@
   const commentForm = document.getElementById('comment-form');
   const userDisplayName = document.getElementById('user-display-name');
 
-  // LOGIN & LOGOUT
   document.getElementById('btn-login-google').onclick = () => signInWithPopup(auth, provider);
   document.getElementById('btn-logout').onclick = (e) => { e.preventDefault(); signOut(auth); };
 
@@ -219,7 +435,6 @@
     }
   });
 
-  // KIRIM KOMENTAR ASLI
   commentForm.onsubmit = async (e) => {
     e.preventDefault();
     const text = document.getElementById('comment-text').value;
@@ -232,11 +447,9 @@
       createdAt: serverTimestamp(),
       customTime: "Baru saja"
     });
-
     document.getElementById('comment-text').value = '';
   };
 
-  // KIRIM FAKE COMMENT (ADMIN)
   document.getElementById('fake-comment-form').onsubmit = async (e) => {
     e.preventDefault();
     const name = document.getElementById('fake-name').value;
@@ -251,42 +464,58 @@
       createdAt: serverTimestamp(),
       customTime: time
     });
-
     document.getElementById('fake-comment-form').reset();
     alert('Komentar custom berhasil diposting!');
   };
 
-  // MEMUAT KOMENTAR DARI FIRESTORE SECARA REALTIME
   const commentsList = document.getElementById('comments-list');
   const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
     commentsList.innerHTML = '';
     if (snapshot.empty) {
-      commentsList.innerHTML = '<p style="font-size: 12px; color: #888;">Belum ada komentar.</p>';
+      commentsList.innerHTML = '<div style="font-size: 13px; color: var(--muted);">Belum ada komentar.</div>';
       return;
     }
-
     snapshot.forEach((doc) => {
       const data = doc.data();
       const initial = data.name ? data.name.charAt(0).toUpperCase() : 'U';
-      
       const avatarHTML = data.avatar 
-        ? `<img src="${data.avatar}" class="comment-avatar-img">`
-        : `<div class="comment-avatar-initial">${initial}</div>`;
+        ? `<img src="${data.avatar}" class="avatar-img">`
+        : `<div class="avatar">${initial}</div>`;
 
-      const commentHTML = `
-        <div class="comment-item">
+      commentsList.insertAdjacentHTML('beforeend', `
+        <div class="comment">
           ${avatarHTML}
-          <div class="comment-body">
-            <div class="comment-header">
-              ${data.name} <span class="comment-time">• ${data.customTime}</span>
-            </div>
-            <div class="comment-text">${data.text}</div>
+          <div class="bubble">
+            <div class="cname">${data.name} <span style="font-weight:normal; font-size:11px; color:var(--muted);">• ${data.customTime || 'Baru saja'}</span></div>
+            <div class="ctext">${data.text}</div>
           </div>
         </div>
-      `;
-      commentsList.insertAdjacentHTML('beforeend', commentHTML);
+      `);
+    });
+  });
+</script>
+
+<script>
+  const dropdown = document.getElementById('themeDropdown');
+  const themeBtn = document.getElementById('themeBtn');
+  
+  themeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if(!dropdown.contains(e.target)) dropdown.classList.remove('open');
+  });
+
+  document.querySelectorAll('.theme-menu button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.body.setAttribute('data-theme', btn.dataset.t);
+      document.querySelectorAll('.theme-menu button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     });
   });
 </script>
