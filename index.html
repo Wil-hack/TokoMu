@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Mewah — Katalog & Testimoni</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0d;
+    --card:#141418;
+    --card-2:#1b1b21;
+    --gold:#d4af37;
+    --gold-soft:#f0d98c;
+    --text:#f5f5f7;
+    --muted:#9a9aa5;
+    --border:rgba(212,175,55,.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,11,13,.85);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{
+    font-family:'Playfair Display',serif;
+    font-size:24px;letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--gold-soft),var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand span{color:var(--text);font-family:'Inter';font-size:12px;letter-spacing:3px;display:block;margin-top:2px;background:none;-webkit-text-fill-color:var(--muted);}
+  nav a{
+    color:var(--muted);text-decoration:none;margin-left:26px;
+    font-size:14px;letter-spacing:.5px;transition:.3s;
+  }
+  nav a:hover{color:var(--gold-soft);}
+
+  /* ===== HERO ===== */
+  .hero{
+    text-align:center;padding:80px 24px 50px;
+    background:radial-gradient(circle at 50% 0%,rgba(212,175,55,.10),transparent 60%);
+  }
+  .hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(32px,5vw,54px);
+    font-weight:700;letter-spacing:1px;
+    background:linear-gradient(180deg,#fff,var(--gold-soft));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{color:var(--muted);max-width:520px;margin:16px auto 0;font-weight:300;}
+  .divider{
+    width:70px;height:2px;margin:26px auto;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+
+  /* ===== SECTION ===== */
+  section{max-width:1100px;margin:0 auto;padding:50px 24px;}
+  .section-title{
+    font-family:'Playfair Display',serif;
+    font-size:28px;margin-bottom:6px;
+  }
+  .section-sub{color:var(--muted);font-size:14px;margin-bottom:34px;}
+
+  /* ===== PRODUK GRID ===== */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:24px;
+  }
+  .product{
+    background:linear-gradient(160deg,var(--card),var(--card-2));
+    border:1px solid var(--border);
+    border-radius:18px;overflow:hidden;
+    transition:.4s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+  }
+  .product:hover{
+    transform:translateY(-6px);
+    border-color:rgba(212,175,55,.55);
+    box-shadow:0 18px 40px -18px rgba(212,175,55,.35);
+  }
+  .product .thumb{
+    height:180px;
+    background:linear-gradient(135deg,#232330,#16161c);
+    display:flex;align-items:center;justify-content:center;
+    font-size:42px;color:rgba(212,175,55,.4);
+    border-bottom:1px solid var(--border);
+  }
+  .product .body{padding:18px 20px 22px;}
+  .product h3{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .product .price{
+    color:var(--gold-soft);font-weight:600;font-size:15px;
+    letter-spacing:.3px;margin-bottom:14px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 18px;border-radius:999px;
+    font-size:13px;font-weight:500;letter-spacing:.4px;
+    text-decoration:none;cursor:pointer;border:none;
+    transition:.3s;
+  }
+  .btn-gold{
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    color:#0b0b0d;
+  }
+  .btn-gold:hover{filter:brightness(1.12);transform:scale(1.03);}
+  .btn-ghost{
+    background:transparent;color:var(--gold-soft);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{border-color:var(--gold);background:rgba(212,175,55,.07);}
+
+  /* ===== TESTIMONI FEED (ala Facebook) ===== */
+  .feed{display:flex;flex-direction:column;gap:22px;}
+  .post{
+    background:linear-gradient(160deg,var(--card),var(--card-2));
+    border:1px solid var(--border);
+    border-radius:20px;padding:22px 24px;
+    transition:.35s;
+  }
+  .post:hover{border-color:rgba(212,175,55,.4);}
+  .post-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .avatar{
+    width:46px;height:46px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),#8a6d1f);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:#0b0b0d;font-size:17px;
+    flex-shrink:0;
+  }
+  .post-head .name{font-weight:600;font-size:15px;}
+  .post-head .time{font-size:12px;color:var(--muted);}
+  .stars{color:var(--gold-soft);font-size:14px;letter-spacing:2px;margin-bottom:10px;}
+  .post p.content{font-size:14.5px;font-weight:300;color:#e7e7ec;}
+  .post .photo{
+    margin-top:16px;border-radius:14px;overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .post .photo img{width:100%;display:block;transition:.5s;}
+  .post .photo img:hover{transform:scale(1.02);}
+
+  /* ===== FORM ===== */
+  .form-wrap{
+    background:linear-gradient(160deg,var(--card),var(--card-2));
+    border:1px solid var(--border);
+    border-radius:22px;padding:34px;
+    max-width:640px;margin:0 auto;
+  }
+  .form-wrap h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:20px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:7px;letter-spacing:.5px;}
+  .field input,.field textarea{
+    width:100%;background:#0f0f13;border:1px solid var(--border);
+    border-radius:12px;padding:12px 15px;color:var(--text);
+    font-family:'Inter';font-size:14px;outline:none;transition:.3s;
+  }
+  .field input:focus,.field textarea:focus{
+    border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12);
+  }
+  .field textarea{resize:vertical;min-height:90px;}
+  .rating-select{display:flex;gap:8px;}
+  .rating-select button{
+    background:#0f0f13;border:1px solid var(--border);
+    color:var(--muted);width:42px;height:42px;border-radius:12px;
+    cursor:pointer;font-size:16px;transition:.25s;
+  }
+  .rating-select button.active,
+  .rating-select button:hover{
+    border-color:var(--gold);color:var(--gold-soft);
+    background:rgba(212,175,55,.10);
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    text-align:center;padding:50px 24px 40px;
+    border-top:1px solid var(--border);margin-top:40px;
+    color:var(--muted);font-size:13px;
+  }
+  footer .brand{font-size:18px;margin-bottom:8px;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:600px){
+    nav a{margin-left:16px;font-size:13px;}
+    header{padding:14px 16px;}
+    .form-wrap{padding:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">MAISON D'OR<span>TOKO PILIHAN</span></div>
+  <nav>
+    <a href="#produk">Produk</a>
+    <a href="#testimoni">Testimoni</a>
+    <a href="#kirim">Kirim Ulasan</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Keanggunan dalam Setiap Pilihan</h1>
+  <div class="divider"></div>
+  <p>Koleksi produk pilihan dengan kualitas terbaik. Dipercaya oleh pelanggan yang menghargai detail.</p>
+</div>
+
+<!-- PRODUK -->
+<section id="produk">
+  <h2 class="section-title">Koleksi Kami</h2>
+  <p class="section-sub">Produk unggulan yang dipilih dengan cermat</p>
+
+  <div class="grid">
+    <div class="product">
+      <div class="thumb">◆</div>
+      <div class="body">
+        <h3>Produk Eksklusif A</h3>
+        <div class="price">Rp 250.000</div>
+        <a href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20pesan%20Produk%20A" class="btn btn-gold">Pesan via WA</a>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="thumb">✦</div>
+      <div class="body">
+        <h3>Produk Eksklusif B</h3>
+        <div class="price">Rp 180.000</div>
+        <a href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20pesan%20Produk%20B" class="btn btn-gold">Pesan via WA</a>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="thumb">❖</div>
+      <div class="body">
+        <h3>Produk Eksklusif C</h3>
+        <div class="price">Rp 320.000</div>
+        <a href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20pesan%20Produk%20C" class="btn btn-gold">Pesan via WA</a>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="thumb">✧</div>
+      <div class="body">
+        <h3>Produk Eksklusif D</h3>
+        <div class="price">Rp 150.000</div>
+        <a href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20pesan%20Produk%20D" class="btn btn-gold">Pesan via WA</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONI -->
+<section id="testimoni">
+  <h2 class="section-title">Kata Pelanggan</h2>
+  <p class="section-sub">Ulasan asli dari mereka yang telah mempercayai kami</p>
+
+  <div class="feed">
+    <div class="post">
+      <div class="post-head">
+        <div class="avatar">S</div>
+        <div>
+          <div class="name">Siti Rahma</div>
+          <div class="time">2 hari lalu</div>
+        </div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="content">Kualitas produknya luar biasa, kemasan rapi dan elegan. Pengiriman cepat, pelayanan ramah. Sangat direkomendasikan!</p>
+    </div>
+
+    <div class="post">
+      <div class="post-head">
+        <div class="avatar">B</div>
+        <div>
+          <div class="name">Budi Santoso</div>
+          <div class="time">5 hari lalu</div>
+        </div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="content">Sudah dua kali pesan di sini, selalu puas. Barang sesuai deskripsi, bahkan melebihi ekspektasi. Terima kasih!</p>
+    </div>
+
+    <div class="post">
+      <div class="post-head">
+        <div class="avatar">A</div>
+        <div>
+          <div class="name">Anisa Putri</div>
+          <div class="time">1 minggu lalu</div>
+        </div>
+      </div>
+      <div class="stars">★★★★☆</div>
+      <p class="content">Produknya bagus dan original. Sedikit terlambat pengirimannya, tapi kualitasnya membuat saya tetap puas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORM KIRIM ULASAN -->
+<section id="kirim">
+  <h2 class="section-title" style="text-align:center">Bagikan Pengalaman Anda</h2>
+  <p class="section-sub" style="text-align:center">Ulasan Anda akan ditinjau sebelum ditampilkan</p>
+
+  <div class="form-wrap">
+    <h3>Kirim Testimoni</h3>
+    <div class="field">
+      <label>Nama Anda</label>
+      <input type="text" placeholder="Masukkan nama...">
+    </div>
+    <div class="field">
+      <label>Rating</label>
+      <div class="rating-select">
+        <button>★</button><button>★</button><button>★</button><button>★</button><button>★</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Ulasan</label>
+      <textarea placeholder="Ceritakan pengalaman Anda..."></textarea>
+    </div>
+    <div class="field">
+      <label>Foto (opsional)</label>
+      <input type="file" accept="image/*">
+    </div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:13px;">Kirim Ulasan</button>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">MAISON D'OR</div>
+  <p>© 2026 Maison d'Or. Semua hak dilindungi.</p>
+</footer>
+
+<script>
+  // Rating selector
+  const stars = document.querySelectorAll('.rating-select button');
+  stars.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      stars.forEach((b, j) => b.classList.toggle('active', j <= i));
+    });
+  });
+</script>
+
+</body>
+</html>
