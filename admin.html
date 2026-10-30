@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Serabimu</title>
+<title>Admin — Serabimu Kuliner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0908;--bg-2:#0f0e0c;--card:#161412;--card-2:#1c1a17;
-    --champagne:#d4bc8a;--champagne-soft:#f0e0bf;--champagne-glow:rgba(212,188,138,.16);
-    --text:#f5f1ea;--muted:#9a9186;--border:rgba(212,188,138,.14);
-    --border-soft:rgba(255,255,255,.05);--danger:#c96b5a;--success:#7fb88a;
+    --bg:#0a0908; --bg-2:#0f0e0c; --card:#161412; --card-2:#1c1a17;
+    --champagne:#d4bc8a; --champagne-soft:#f0e0bf; --champagne-glow:rgba(212,188,138,.16);
+    --text:#f5f1ea; --muted:#9a9186; --border:rgba(212,188,138,.14);
+    --border-soft:rgba(255,255,255,.05); --danger:#c96b5a; --success:#7fb88a;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
@@ -94,14 +94,13 @@
   .post .caption{padding:0 22px 16px;font-size:14.5px;font-weight:300;color:#e8e2d8;}
   .post .photo{width:100%;display:block;max-height:480px;object-fit:cover;
     border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);}
-  .post .post-stats{display:flex;gap:20px;padding:12px 22px;font-size:12px;color:var(--muted);letter-spacing:.5px;}
-  .post .post-stats strong{color:var(--champagne-soft);font-weight:600;}
 
   .side-col{position:sticky;top:90px;display:flex;flex-direction:column;gap:20px;}
   .side-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
     border-radius:18px;padding:20px 22px;}
   .side-card h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:4px;}
   .side-card .sub{font-size:11.5px;color:var(--muted);letter-spacing:.5px;margin-bottom:16px;}
+  
   .comment-item{padding:12px 0;border-bottom:1px solid var(--border-soft);}
   .comment-item:last-child{border-bottom:none;padding-bottom:0;}
   .comment-item .c-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
@@ -143,6 +142,7 @@
 
 <div class="layout">
   <div class="feed-col">
+    <!-- Buat Postingan / Ulasan -->
     <div class="composer">
       <div class="composer-head">
         <div class="avatar">S</div>
@@ -175,11 +175,29 @@
   </div>
 
   <div class="side-col">
+    <!-- Jam Operasional Toko -->
     <div class="side-card">
-      <h3>Moderasi Komentar</h3>
-      <p class="sub">Komentar terbaru dari pelanggan</p>
-      <div id="commentList"><div class="empty-state">Memuat komentar...</div></div>
+      <h3>Jam Operasional</h3>
+      <p class="sub">Atur status toko otomatis</p>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+        <label style="font-size:12px; color:var(--muted);">Buka Jam:
+          <input type="time" id="openTime" value="08:00" style="width:100%; margin-top:4px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); outline:none;">
+        </label>
+        <label style="font-size:12px; color:var(--muted);">Tutup Jam:
+          <input type="time" id="closeTime" value="21:00" style="width:100%; margin-top:4px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); outline:none;">
+        </label>
+        <button id="saveTimeBtn" style="background:var(--champagne); color:#0a0908; border:none; border-radius:8px; padding:10px; font-weight:600; cursor:pointer; margin-top:6px; transition:.2s;">Simpan Jam Toko</button>
+      </div>
     </div>
+
+    <!-- Moderasi Komentar -->
+    <div class="side-card">
+      <h3>Moderasi Ulasan</h3>
+      <p class="sub">Komentar terbaru dari pelanggan</p>
+      <div id="commentList"><div class="empty-state">Memuat ulasan...</div></div>
+    </div>
+
+    <!-- Ringkasan Statistik -->
     <div class="side-card">
       <h3>Ringkasan</h3>
       <p class="sub">Statistik toko Anda</p>
@@ -189,7 +207,7 @@
           <strong style="color:var(--champagne-soft);" id="statPosts">0</strong>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total komentar</span>
+          <span style="color:var(--muted);">Total ulasan</span>
           <strong style="color:var(--champagne-soft);" id="statComments">0</strong>
         </div>
       </div>
@@ -200,13 +218,13 @@
 <div class="toast" id="toast">✅ Berhasil</div>
 
 <script type="module">
-  // ====== 1. KONFIGURASI CLOUDINARY (GANTI) ======
+  // ====== KONFIGURASI CLOUDINARY ======
   const CLOUDINARY_CLOUD_NAME = "GANTI_CLOUD_NAME";
   const CLOUDINARY_UPLOAD_PRESET = "GANTI_PRESET_UNSIGNED";
 
-  // ====== 2. KONFIGURASI FIREBASE (GANTI) ======
+  // ====== KONFIGURASI FIREBASE ======
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc }
+  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -221,7 +239,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ====== 3. ELEMEN ======
+  // ====== ELEMEN DOM ======
   const fileInput = document.getElementById('fileInput');
   const imgPreview = document.getElementById('imgPreview');
   const previewImg = document.getElementById('previewImg');
@@ -233,7 +251,7 @@
   const toast = document.getElementById('toast');
   let selectedFile = null;
 
-  // ====== 4. PILIH FOTO DARI HP ======
+  // ====== PILIH FOTO DARI HP ======
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if(!file) return;
@@ -257,7 +275,7 @@
     previewImg.src = '';
   });
 
-  // ====== 5. UPLOAD KE CLOUDINARY ======
+  // ====== UPLOAD KE CLOUDINARY ======
   async function uploadToCloudinary(file){
     const formData = new FormData();
     formData.append('file', file);
@@ -271,7 +289,7 @@
     return data.secure_url;
   }
 
-  // ====== 6. PUBLIKASIKAN ======
+  // ====== PUBLIKASIKAN POSTINGAN ======
   publishBtn.addEventListener('click', async () => {
     const caption = captionEl.value.trim();
     if(!caption && !selectedFile){
@@ -301,7 +319,33 @@
     }
   });
 
-  // ====== 7. TAMPILKAN POSTINGAN ======
+  // ====== PENGATURAN JAM OPERASIONAL ======
+  const saveTimeBtn = document.getElementById('saveTimeBtn');
+  const openTimeEl = document.getElementById('openTime');
+  const closeTimeEl = document.getElementById('closeTime');
+  const storeSettingsRef = doc(db, "settings", "store_hours");
+
+  getDoc(storeSettingsRef).then((docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if(data.open) openTimeEl.value = data.open;
+      if(data.close) closeTimeEl.value = data.close;
+    }
+  });
+
+  saveTimeBtn.addEventListener('click', async () => {
+    try {
+      await setDoc(storeSettingsRef, {
+        open: openTimeEl.value,
+        close: closeTimeEl.value
+      });
+      showToast('✅ Jam operasional berhasil disimpan');
+    } catch(err) {
+      showToast('❌ Gagal menyimpan: ' + err.message, true);
+    }
+  });
+
+  // ====== TAMPILKAN POSTINGAN DI ADMIN ======
   const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
   onSnapshot(postsQuery, (snap) => {
     postList.innerHTML = "";
@@ -326,12 +370,12 @@
             <button class="del" data-id="${docSnap.id}" title="Hapus">✕</button>
           </div>
         </div>
-        <p class="caption">${d.caption || ''}</p>
+        <p class="caption" style="padding:0 22px 16px;">${d.caption || ''}</p>
         ${d.imageUrl ? `<img class="photo" src="${d.imageUrl}" alt="Postingan">` : ''}
       `;
       postList.appendChild(el);
     });
-    // Hapus postingan
+
     postList.querySelectorAll('.menu .del').forEach(btn => {
       btn.addEventListener('click', async () => {
         if(confirm('Hapus postingan ini?')){
@@ -342,12 +386,12 @@
     });
   });
 
-  // ====== 8. MODERASI KOMENTAR ======
+  // ====== MODERASI ULASAN / KOMENTAR ======
   const commentsQuery = query(collection(db, "comments"), orderBy("createdAt", "desc"));
   onSnapshot(commentsQuery, (snap) => {
     document.getElementById('statComments').textContent = snap.size;
     if(snap.empty){
-      commentList.innerHTML = '<div class="empty-state">Belum ada komentar.</div>';
+      commentList.innerHTML = '<div class="empty-state">Belum ada ulasan.</div>';
       return;
     }
     commentList.innerHTML = "";
@@ -368,17 +412,18 @@
       `;
       commentList.appendChild(div);
     });
+
     commentList.querySelectorAll('.del').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if(confirm('Hapus komentar ini?')){
+        if(confirm('Hapus ulasan ini?')){
           await deleteDoc(doc(db, "comments", btn.dataset.id));
-          showToast('Komentar dihapus');
+          showToast('Ulasan dihapus');
         }
       });
     });
   });
 
-  // ====== 9. UTILITAS ======
+  // ====== UTILITAS ======
   function timeAgo(ts){
     if(!ts) return "baru saja";
     const d = ts.toDate ? ts.toDate() : new Date(ts);
