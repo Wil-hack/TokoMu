@@ -165,7 +165,7 @@
   }
   .btn-buy:hover{filter:brightness(1.1);transform:scale(1.03);}
 
-  /* FEED & INTERaksi (LIKE & KOMENTAR) */
+  /* FEED & INTERAKSI (LIKE & KOMENTAR) */
   .feed-wrap{max-width:640px;margin:0 auto;padding:0 20px 50px;}
   .feed{display:flex;flex-direction:column;gap:24px;}
   .post{
@@ -184,7 +184,6 @@
   .post .caption{padding:0 20px 16px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
   .post .photo{width:100%;display:block;max-height:460px;object-fit:cover;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 
-  /* Tombol Like ala Facebook */
   .post-actions{
     padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted);
@@ -270,37 +269,37 @@
 <div class="hero">
   <div class="eyebrow">Est. 2026 — Kurasi Pilihan</div>
   <h1>Serabimu</h1>
-  <p>Keanggunan dalam setiap pilihan. Produk terkurasi, pelayanan tulus, dan cerita yang layak dikenang.</p>
+  <p>Kelezatan autentik dalam setiap gigitan. Resep warisan penuh cinta, manisnya pas di hati.</p>
 </div>
 
 <!-- KATALOG GESER -->
 <div class="catalog-wrap" id="katalog">
   <div class="section-title">
     <h2>Katalog Pilihan</h2>
-    <p>Geser ke kiri & kanan untuk melihat produk</p>
+    <p>Menu andalan siap memanjakan hari Anda (Geser kiri & kanan)</p>
   </div>
 
   <div class="catalog-slider">
     <div class="product-card">
-      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Produk 1" class="product-img">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80" alt="Serabi Kuah Klasik" class="product-img">
       <div class="product-body">
         <div class="product-title">Serabi Kuah Klasik</div>
-        <div class="product-desc">Kue tradisional dengan siraman kuah santan gula aren pilihan.</div>
+        <div class="product-desc">Serabi lembut berpadu sempurna dengan gurihnya kuah santan dan manisnya gula aren asli. Dibuat fresh setiap hari.</div>
         <div class="product-footer">
           <span class="product-price">Rp 15.000</span>
-          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Kuah%20Klasik." target="_blank" class="btn-buy">Pesan</a>
+          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Kuah%20Klasik." target="_blank" class="btn-buy">Cicipi</a>
         </div>
       </div>
     </div>
 
     <div class="product-card">
-      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80" alt="Produk 2" class="product-img">
+      <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=900&q=80" alt="Koleksi Spesial" class="product-img">
       <div class="product-body">
-        <div class="product-title">Koleksi Spesial</div>
-        <div class="product-desc">Paket hantaran eksklusif terkurasi untuk momen spesial.</div>
+        <div class="product-title">Paket Hantaran Spesial</div>
+        <div class="product-desc">Kotak hantaran eksklusif berisi ragam varian rasa terbaik untuk dibagikan kepada orang terkasih.</div>
         <div class="product-footer">
           <span class="product-price">Rp 75.000</span>
-          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Koleksi%20Spesial." target="_blank" class="btn-buy">Pesan</a>
+          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Paket%20Hantaran%20Spesial." target="_blank" class="btn-buy">Pesan</a>
         </div>
       </div>
     </div>
@@ -311,7 +310,7 @@
 <div class="feed-wrap" id="feed">
   <div class="section-title" style="margin-bottom: 24px;">
     <h2>Kabar Toko</h2>
-    <p>Update terbaru & testimoni pelanggan</p>
+    <p>Cita rasa istimewa buatan tangan hari ini</p>
   </div>
 
   <div class="feed">
@@ -323,10 +322,9 @@
           <div class="time">2 jam lalu</div>
         </div>
       </div>
-      <p class="caption">Koleksi baru telah tiba. Dibuat dengan tangan, dipilih dengan hati. Setiap detail dirancang untuk Anda yang menghargai keindahan.</p>
-      <img class="photo" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Koleksi">
+      <p class="caption">Adonan pertama baru saja matang di tungku tradisional. Harum santan dan pandan siap menghangatkan suasana santai sore Anda.</p>
+      <img class="photo" src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80" alt="Koleksi">
       
-      <!-- Tombol Like Realtime -->
       <div class="post-actions">
         <button class="btn-like" id="btn-like">
           ❤️ <span id="like-text">Suka</span>
@@ -335,12 +333,12 @@
       </div>
 
       <div class="comments">
-        <div class="c-head">Komentar & Ulasan</div>
+        <div class="c-head">Ulasan Penikmat Rasa</div>
         
         <div id="auth-box" class="auth-box">
           <button id="btn-login-google" class="btn-google">
             <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-            Login Google untuk Komentar
+            Login Google untuk Mengulas
           </button>
         </div>
 
@@ -349,13 +347,13 @@
             Masuk sebagai: <b id="user-display-name" style="color: var(--text);"></b> (<a href="#" id="btn-logout" style="color: var(--accent-soft);">Keluar</a>)
           </div>
           <div style="display: flex; gap: 8px; width: 100%;">
-            <input type="text" id="comment-text" placeholder="Tulis komentar..." required>
+            <input type="text" id="comment-text" placeholder="Tulis ulasan Anda..." required>
             <button type="submit">Kirim</button>
           </div>
         </form>
 
         <div class="comment-list" id="comments-list" style="margin-top: 12px;">
-          <div style="font-size: 12px; color: var(--muted);">Memuat komentar...</div>
+          <div style="font-size: 12px; color: var(--muted);">Memuat ulasan...</div>
         </div>
       </div>
     </div>
@@ -407,19 +405,16 @@
     }
   });
 
-  // SISTEM LIKE REALTIME TANPA LOGIN
   const likeBtn = document.getElementById('btn-like');
   const likeCountSpan = document.getElementById('like-count');
   const likeDocRef = doc(db, "stats", "post_likes");
 
-  // Inisialisasi dokumen like jika belum ada
   getDoc(likeDocRef).then((docSnap) => {
     if (!docSnap.exists()) {
       setDoc(likeDocRef, { count: 0 });
     }
   });
 
-  // Realtime listener jumlah like
   onSnapshot(likeDocRef, (docSnap) => {
     if (docSnap.exists()) {
       const data = docSnap.data();
@@ -427,7 +422,6 @@
     }
   });
 
-  // Cek apakah user ini sudah pernah like di browser ini
   if (localStorage.getItem("serabimu_liked") === "true") {
     likeBtn.classList.add('liked');
     document.getElementById('like-text').innerText = "Disukai";
@@ -451,7 +445,6 @@
     }
   };
 
-  // KIRIM KOMENTAR ASLI
   commentForm.onsubmit = async (e) => {
     e.preventDefault();
     const text = document.getElementById('comment-text').value;
@@ -467,14 +460,13 @@
     document.getElementById('comment-text').value = '';
   };
 
-  // MEMUAT KOMENTAR REALTIME
   const commentsList = document.getElementById('comments-list');
   const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
     commentsList.innerHTML = '';
     if (snapshot.empty) {
-      commentsList.innerHTML = '<div style="font-size: 12px; color: var(--muted);">Belum ada komentar.</div>';
+      commentsList.innerHTML = '<div style="font-size: 12px; color: var(--muted);">Belum ada ulasan.</div>';
       return;
     }
     snapshot.forEach((doc) => {
