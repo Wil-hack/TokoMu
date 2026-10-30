@@ -3,73 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Serabimu — Pilihan Tema</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<title>Serabimu — Toko Pilihan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ===== TEMA DASAR ===== */
+  :root{
+    --bg:#0a0a0b;
+    --bg-2:#0f0f12;
+    --card:#141418;
+    --card-2:#1a1a20;
+    --emerald:#1a6b4f;
+    --emerald-soft:#7fc9a8;
+    --emerald-glow:rgba(26,107,79,.20);
+    --text:#f0f5f2;
+    --muted:#8a9a92;
+    --border:rgba(127,201,168,.15);
+    --border-soft:rgba(255,255,255,.05);
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
+    background:var(--bg);color:var(--text);
     font-family:'Inter',sans-serif;line-height:1.65;
     -webkit-font-smoothing:antialiased;overflow-x:hidden;
-    transition:background .6s,color .6s;
   }
-
-  /* Variabel tema via data-theme */
-  body[data-theme="noir"]{
-    --bg:#0a0a0b;--bg-2:#0f0f12;--card:#141418;--card-2:#1a1a20;
-    --accent:#1a6b4f;--accent-soft:#7fc9a8;--gold:#d4e8dd;
-    --text:#f0f5f2;--muted:#8a9a92;--border:rgba(127,201,168,.15);
-    --glow:rgba(26,107,79,.18);
-  }
-  body[data-theme="ivory"]{
-    --bg:#faf6ef;--bg-2:#f3ece0;--card:#ffffff;--card-2:#fbf7f0;
-    --accent:#b8912f;--accent-soft:#d4b45a;--gold:#8a6d1f;
-    --text:#2e2418;--muted:#8a7a62;--border:rgba(184,145,47,.22);
-    --glow:rgba(184,145,47,.12);
-  }
-  body[data-theme="sapphire"]{
-    --bg:#0a1120;--bg-2:#0d1526;--card:#111a2e;--card-2:#15203a;
-    --accent:#c0c8d6;--accent-soft:#e6ebf5;--gold:#a8b8d8;
-    --text:#f5f8ff;--muted:#7f8aa8;--border:rgba(192,200,214,.15);
-    --glow:rgba(168,184,216,.14);
-  }
-  body[data-theme="rose"]{
-    --bg:#1a0d10;--bg-2:#211216;--card:#281418;--card-2:#2f181d;
-    --accent:#c98b7a;--accent-soft:#e8b8a8;--gold:#e8b8a8;
-    --text:#f5e6e0;--muted:#a88a82;--border:rgba(201,139,122,.2);
-    --glow:rgba(201,139,122,.16);
-  }
-  body[data-theme="copper"]{
-    --bg:#0c0c0e;--bg-2:#111114;--card:#16161a;--card-2:#1c1c22;
-    --accent:#b87333;--accent-soft:#e8a860;--gold:#e8a860;
-    --text:#f0e6dc;--muted:#9a8a7a;--border:rgba(184,115,51,.2);
-    --glow:rgba(184,115,51,.16);
-  }
-
-  body{background:var(--bg);color:var(--text);}
   body::before{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
-      radial-gradient(ellipse 60% 40% at 50% -10%, var(--glow), transparent 70%),
-      radial-gradient(ellipse 40% 30% at 100% 100%, var(--glow), transparent 70%);
-    transition:background .6s;
+      radial-gradient(ellipse 60% 40% at 50% -10%, var(--emerald-glow), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(127,201,168,.05), transparent 70%);
   }
 
   /* ===== HEADER ===== */
   header{
     position:sticky;top:0;z-index:100;
-    background:color-mix(in srgb, var(--bg) 80%, transparent);
+    background:rgba(10,10,11,.75);
     backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     border-bottom:1px solid var(--border);
-    padding:18px 36px;
+    padding:20px 40px;
     display:flex;align-items:center;justify-content:space-between;
-    gap:20px;flex-wrap:wrap;
   }
   .brand{
     font-family:'Playfair Display',serif;
     font-size:26px;font-weight:700;letter-spacing:1px;
-    background:linear-gradient(100deg,var(--accent-soft),var(--accent));
+    background:linear-gradient(100deg,var(--emerald-soft),var(--emerald));
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
   .brand span{
@@ -77,39 +53,33 @@
     letter-spacing:5px;color:var(--muted);-webkit-text-fill-color:var(--muted);
     margin-top:3px;text-transform:uppercase;
   }
-
-  /* Tombol tema */
-  .theme-switch{display:flex;gap:9px;flex-wrap:wrap;}
-  .theme-switch button{
-    width:30px;height:30px;border-radius:50%;cursor:pointer;
-    border:2px solid var(--border);transition:.3s;position:relative;
-    background:transparent;
+  nav{display:flex;gap:34px;}
+  nav a{
+    color:var(--muted);text-decoration:none;font-size:13px;
+    letter-spacing:1.5px;text-transform:uppercase;position:relative;
+    transition:color .35s;
   }
-  .theme-switch button:hover{transform:scale(1.15);}
-  .theme-switch button.active{
-    border-color:var(--accent-soft);
-    box-shadow:0 0 0 3px var(--glow);
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;
+    background:linear-gradient(90deg,var(--emerald),var(--emerald-soft));
+    transition:width .35s;
   }
-  .theme-switch button[data-t="noir"]{background:linear-gradient(135deg,#0a0a0b 50%,#1a6b4f 50%);}
-  .theme-switch button[data-t="ivory"]{background:linear-gradient(135deg,#faf6ef 50%,#b8912f 50%);}
-  .theme-switch button[data-t="sapphire"]{background:linear-gradient(135deg,#0a1120 50%,#c0c8d6 50%);}
-  .theme-switch button[data-t="rose"]{background:linear-gradient(135deg,#1a0d10 50%,#c98b7a 50%);}
-  .theme-switch button[data-t="copper"]{background:linear-gradient(135deg,#0c0c0e 50%,#b87333 50%);}
+  nav a:hover{color:var(--emerald-soft);}
+  nav a:hover::after{width:100%;}
 
   /* ===== HERO ===== */
-  .hero{text-align:center;padding:100px 24px 70px;position:relative;}
+  .hero{text-align:center;padding:110px 24px 80px;position:relative;}
   .hero .eyebrow{
     font-size:11px;letter-spacing:6px;text-transform:uppercase;
-    color:var(--accent-soft);margin-bottom:26px;font-weight:500;
-    font-family:'Inter';transition:color .6s;
+    color:var(--emerald-soft);margin-bottom:26px;font-weight:500;
   }
   .hero h1{
     font-family:'Playfair Display',serif;
-    font-size:clamp(40px,7vw,74px);
+    font-size:clamp(42px,7vw,78px);
     font-weight:700;line-height:1.1;letter-spacing:1px;
-    background:linear-gradient(180deg,var(--text) 0%,var(--accent-soft) 130%);
+    background:linear-gradient(180deg,#ffffff 0%,var(--emerald-soft) 130%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    margin-bottom:22px;transition:background .6s;
+    margin-bottom:22px;
   }
   .hero p{
     color:var(--muted);max-width:480px;margin:0 auto;
@@ -117,14 +87,14 @@
   }
   .hero .divider{
     width:90px;height:1px;margin:34px auto 0;
-    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    background:linear-gradient(90deg,transparent,var(--emerald),transparent);
     position:relative;
   }
   .hero .divider::after{
     content:"◆";position:absolute;left:50%;top:50%;
     transform:translate(-50%,-50%);
-    color:var(--accent-soft);font-size:9px;background:var(--bg);
-    padding:0 10px;transition:color .6s,background .6s;
+    color:var(--emerald-soft);font-size:9px;background:var(--bg);
+    padding:0 10px;
   }
 
   /* ===== FEED ===== */
@@ -133,7 +103,6 @@
   .feed-title h2{
     font-family:'Playfair Display',serif;font-size:30px;
     font-weight:600;letter-spacing:.5px;margin-bottom:8px;
-    color:var(--text);transition:color .6s;
   }
   .feed-title p{color:var(--muted);font-size:13.5px;letter-spacing:1px;}
 
@@ -141,81 +110,85 @@
 
   .post{
     background:linear-gradient(165deg,var(--card) 0%,var(--card-2) 100%);
-    border:1px solid var(--border);
+    border:1px solid var(--border-soft);
     border-radius:22px;overflow:hidden;
-    transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s,background .6s;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s;
     position:relative;
   }
-  .post:hover{
-    transform:translateY(-5px);
-    border-color:var(--accent-soft);
-    box-shadow:0 30px 60px -30px rgba(0,0,0,.6);
+  .post::before{
+    content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+    border:1px solid transparent;
+    background:linear-gradient(165deg,rgba(127,201,168,.22),transparent 40%) border-box;
+    -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:0;transition:opacity .4s;
   }
+  .post:hover{transform:translateY(-5px);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);}
+  .post:hover::before{opacity:1;}
 
   .post-head{display:flex;align-items:center;gap:14px;padding:22px 26px 16px;}
   .avatar{
     width:46px;height:46px;border-radius:50%;flex-shrink:0;
-    background:linear-gradient(135deg,var(--accent-soft),var(--accent));
+    background:linear-gradient(135deg,var(--emerald-soft),var(--emerald));
     display:flex;align-items:center;justify-content:center;
     font-family:'Playfair Display',serif;font-weight:700;
-    color:var(--bg);font-size:19px;
-    box-shadow:0 0 0 1px var(--border),0 0 20px -4px var(--glow);
-    transition:background .6s,color .6s;
+    color:#0a0a0b;font-size:19px;
+    box-shadow:0 0 0 1px rgba(127,201,168,.35),0 0 20px -4px var(--emerald-glow);
   }
-  .post-head .name{font-weight:600;font-size:15px;letter-spacing:.3px;color:var(--text);}
+  .post-head .name{font-weight:600;font-size:15px;letter-spacing:.3px;}
   .post-head .time{font-size:12px;color:var(--muted);letter-spacing:.5px;}
 
   .post .caption{
     padding:0 26px 20px;font-size:14.8px;font-weight:300;
-    color:var(--text);opacity:.92;letter-spacing:.2px;
+    color:#e3ebe6;letter-spacing:.2px;
   }
 
   /* Slot gambar: ganti src dengan file di folder GitHub Anda */
   .post .photo{
     width:100%;display:block;max-height:540px;object-fit:cover;
-    border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);
+    border-top:1px solid var(--border-soft);
+    border-bottom:1px solid var(--border-soft);
     background:var(--bg-2);
+    filter:saturate(.95) contrast(1.02);
     transition:filter .5s;
   }
   .post:hover .photo{filter:saturate(1.05) contrast(1.04);}
 
   /* ===== KOMENTAR ===== */
-  .comments{padding:20px 26px 24px;background:color-mix(in srgb, var(--bg) 55%, transparent);transition:background .6s;}
+  .comments{padding:20px 26px 24px;background:rgba(0,0,0,.22);}
   .comments .c-head{
     font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--accent-soft);margin-bottom:18px;font-weight:500;
-    transition:color .6s;
+    color:var(--emerald-soft);margin-bottom:18px;font-weight:500;
   }
   .comment{display:flex;gap:12px;margin-bottom:15px;}
   .comment .avatar{width:36px;height:36px;font-size:14px;}
   .comment .bubble{
-    background:var(--bg-2);border:1px solid var(--border);
-    border-radius:14px;padding:11px 16px;flex:1;transition:background .6s,border-color .6s;
+    background:var(--bg-2);border:1px solid var(--border-soft);
+    border-radius:14px;padding:11px 16px;flex:1;
   }
-  .comment .cname{font-size:12.8px;font-weight:600;color:var(--accent-soft);letter-spacing:.3px;transition:color .6s;}
-  .comment .ctext{font-size:13.8px;font-weight:300;color:var(--text);opacity:.88;margin-top:3px;}
+  .comment .cname{font-size:12.8px;font-weight:600;color:var(--emerald-soft);letter-spacing:.3px;}
+  .comment .ctext{font-size:13.8px;font-weight:300;color:#d8e0dc;margin-top:3px;}
   .comment .ctime{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.4px;}
 
   .comment-form{display:flex;gap:10px;margin-top:18px;}
   .comment-form input{
-    flex:1;background:var(--bg-2);border:1px solid var(--border);
+    flex:1;background:var(--bg-2);border:1px solid var(--border-soft);
     border-radius:999px;padding:12px 20px;color:var(--text);
     font-family:'Inter';font-size:13.5px;outline:none;transition:.35s;
   }
-  .comment-form input::placeholder{color:var(--muted);opacity:.7;}
+  .comment-form input::placeholder{color:#5c6b64;}
   .comment-form input:focus{
-    border-color:var(--accent-soft);
-    box-shadow:0 0 0 3px var(--glow);
+    border-color:rgba(127,201,168,.5);
+    box-shadow:0 0 0 3px var(--emerald-glow);
   }
   .comment-form button{
-    background:linear-gradient(100deg,var(--accent),var(--accent-soft));
-    color:var(--bg);border:none;border-radius:999px;padding:0 26px;
+    background:linear-gradient(100deg,var(--emerald),var(--emerald-soft));
+    color:#0a0a0b;border:none;border-radius:999px;padding:0 26px;
     font-family:'Inter';font-weight:600;font-size:12.5px;
     letter-spacing:1px;text-transform:uppercase;cursor:pointer;
     transition:.35s;
   }
-  .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
+  .comment-form button:hover{filter:brightness(1.12);transform:scale(1.03);}
 
   /* ===== FOOTER ===== */
   footer{
@@ -227,7 +200,9 @@
 
   /* ===== RESPONSIVE ===== */
   @media(max-width:640px){
-    header{padding:14px 18px;}
+    header{padding:16px 20px;}
+    nav{gap:18px;}
+    nav a{font-size:11px;letter-spacing:1px;}
     .brand{font-size:22px;}
     .hero{padding:70px 20px 50px;}
     .post-head{padding:18px 18px 14px;}
@@ -236,17 +211,14 @@
   }
 </style>
 </head>
-<body data-theme="noir">
+<body>
 
 <header>
   <div class="brand">Serabimu<span>Toko Pilihan</span></div>
-  <div class="theme-switch">
-    <button data-t="noir" class="active" title="Noir Émeraude"></button>
-    <button data-t="ivory" title="Ivory Luxe"></button>
-    <button data-t="sapphire" title="Midnight Sapphire"></button>
-    <button data-t="rose" title="Rose Antique"></button>
-    <button data-t="copper" title="Onyx & Copper"></button>
-  </div>
+  <nav>
+    <a href="#feed">Feed</a>
+    <a href="#kontak">Kontak</a>
+  </nav>
 </header>
 
 <div class="hero">
@@ -256,7 +228,7 @@
   <div class="divider"></div>
 </div>
 
-<div class="feed-wrap">
+<div class="feed-wrap" id="feed">
   <div class="feed-title">
     <h2>Kabar Toko</h2>
     <p>Update terbaru & testimoni pelanggan</p>
@@ -333,22 +305,10 @@
   </div>
 </div>
 
-<footer>
+<footer id="kontak">
   <div class="brand">Serabimu</div>
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
 </footer>
-
-<script>
-  // Ganti tema
-  const buttons = document.querySelectorAll('.theme-switch button');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.body.setAttribute('data-theme', btn.dataset.t);
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-</script>
 
 </body>
 </html>
