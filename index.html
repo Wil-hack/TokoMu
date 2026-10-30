@@ -94,36 +94,43 @@
   }
   nav a:hover{color:var(--accent-soft);}
 
-  /* --- Menu Tema Tersembunyi --- */
+  /* --- Menu Tema Tersembunyi (Ikon Elegan) --- */
   .theme-dropdown{ position:relative; }
   .theme-btn{
-    background:var(--bg-2); border:1px solid var(--border); color:var(--text);
-    width:38px; height:38px; border-radius:50%; cursor:pointer;
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    width:36px; height:36px; border-radius:50%; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
-    font-size:16px; transition:.3s;
+    transition:.3s;
   }
-  .theme-btn:hover{ border-color:var(--accent-soft); color:var(--accent-soft); }
+  .theme-btn svg{ width:18px; height:18px; transition:.3s; }
+  .theme-btn:hover, .theme-dropdown.open .theme-btn{ 
+    border-color:var(--accent-soft); 
+    color:var(--accent-soft); 
+    background:var(--bg-2);
+  }
   
   .theme-menu{
-    position:absolute; top:50px; right:0;
+    position:absolute; top:48px; right:0;
     background:var(--card); border:1px solid var(--border);
-    border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:6px;
+    border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:4px;
     opacity:0; visibility:hidden; transform:translateY(-10px);
     transition:.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow:0 10px 30px -10px rgba(0,0,0,.5); z-index:200;
+    box-shadow:0 15px 40px -10px rgba(0,0,0,.6); z-index:200;
   }
+  /* Menu tetap terbuka sampai diklik di luar */
   .theme-dropdown.open .theme-menu{ opacity:1; visibility:visible; transform:translateY(0); }
   
   .theme-menu button{
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:center; gap:12px;
     background:transparent; border:none; color:var(--text);
-    padding:8px 12px; border-radius:8px; cursor:pointer;
-    font-family:var(--font-body); font-size:12.5px; text-align:left;
+    padding:10px 14px; border-radius:10px; cursor:pointer;
+    font-family:var(--font-body); font-size:13px; text-align:left;
     transition:.25s; white-space:nowrap;
   }
   .theme-menu button:hover{ background:var(--bg-2); color:var(--accent-soft); }
-  .swatch{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(255,255,255,.2); }
+  .theme-menu button.active{ background:var(--bg-2); color:var(--accent-soft); font-weight:500; }
   
+  .swatch{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(255,255,255,.2); box-shadow:inset 0 0 4px rgba(0,0,0,.3); }
   .swatch[data-c="noir"]{ background:linear-gradient(135deg,#0a0a0b 50%,#1a6b4f 50%); }
   .swatch[data-c="sapphire"]{ background:linear-gradient(135deg,#0a1120 50%,#a8b8d8 50%); }
   .swatch[data-c="rose"]{ background:linear-gradient(135deg,#1a0d10 50%,#c98b7a 50%); }
@@ -133,16 +140,12 @@
 
   /* ================= HERO & FEED ================= */
   .hero{text-align:center;padding:90px 24px 70px;transition:color var(--transition);}
-  .hero .eyebrow{
-    font-size:11px;letter-spacing:6px;text-transform:uppercase;
-    color:var(--accent-soft);margin-bottom:26px;font-weight:500;
-  }
+  .hero .eyebrow{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:26px;font-weight:500;}
   .hero h1{
     font-family:var(--font-title);font-size:clamp(40px,6vw,70px);
     font-weight:700;line-height:1.1;letter-spacing:1px;
     background:linear-gradient(180deg,var(--text) 0%,var(--accent-soft) 130%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    margin-bottom:22px;
+    -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:22px;
   }
   .hero p{color:var(--muted);max-width:480px;margin:0 auto;font-weight:300;font-size:15.5px;}
 
@@ -222,9 +225,22 @@
     
     <!-- MENU TEMA TERSEMBUNYI -->
     <div class="theme-dropdown" id="themeDropdown">
-      <button class="theme-btn" id="themeBtn" title="Ganti Tema">🎨</button>
+      <button class="theme-btn" id="themeBtn" title="Ganti Tema">
+        <!-- Ikon Slider Elegan -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+          <line x1="1" y1="14" x2="7" y2="14"></line>
+          <line x1="9" y1="8" x2="15" y2="8"></line>
+          <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+      </button>
       <div class="theme-menu">
-        <button data-t="noir"><span class="swatch" data-c="noir"></span> Noir Émeraude</button>
+        <button data-t="noir" class="active"><span class="swatch" data-c="noir"></span> Noir Émeraude</button>
         <button data-t="sapphire"><span class="swatch" data-c="sapphire"></span> Midnight Sapphire</button>
         <button data-t="rose"><span class="swatch" data-c="rose"></span> Rose Antique</button>
         <button data-t="copper"><span class="swatch" data-c="copper"></span> Onyx & Copper</button>
@@ -294,23 +310,30 @@
     dropdown.classList.toggle('open');
   });
 
-  // Tutup menu jika klik di luar area
+  // Tutup menu HANYA jika klik di luar area menu
   document.addEventListener('click', (e) => {
     if(!dropdown.contains(e.target)) {
       dropdown.classList.remove('open');
     }
   });
 
-  // 2. Logika Ganti Tema
+  // 2. Logika Ganti Tema (Pop-up TIDAK menutup saat diklik)
   const themeOptions = document.querySelectorAll('.theme-menu button');
   themeOptions.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Mencegah menu tertutup
       document.body.setAttribute('data-theme', btn.dataset.t);
-      dropdown.classList.remove('open'); // Tutup menu setelah dipilih
+      
+      // Update status 'active' pada menu
+      themeOptions.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // CATATAN: dropdown.classList.remove('open') dihapus dari sini
+      // agar menu tetap terbuka dan user bisa mencoba warna lain.
     });
   });
 
-  // 3. Simulasi Kirim Komentar (Biar tombolnya berfungsi)
+  // 3. Simulasi Kirim Komentar
   function kirimKomentar(id) {
     const input = document.getElementById('input-' + id);
     const list = document.getElementById('list-' + id);
@@ -321,7 +344,6 @@
       return;
     }
 
-    // Buat elemen komentar baru
     const div = document.createElement('div');
     div.className = 'comment';
     div.innerHTML = `
@@ -332,7 +354,6 @@
       </div>
     `;
     
-    // Tampilkan dan kosongkan input
     list.appendChild(div);
     input.value = "";
   }
