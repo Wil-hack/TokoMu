@@ -4,205 +4,315 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Serabimu — Toko Pilihan</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0b0d; --card:#141418; --card-2:#1b1b21;
-    --gold:#d4af37; --gold-soft:#f0d98c;
-    --text:#f5f5f7; --muted:#9a9aa5;
-    --border:rgba(212,175,55,.18);
+    --bg:#08080a;
+    --bg-2:#0d0d10;
+    --card:#121216;
+    --card-2:#17171c;
+    --gold:#c9a227;
+    --gold-soft:#e8cf8a;
+    --gold-glow:rgba(201,162,39,.14);
+    --text:#f4f4f6;
+    --muted:#8f8f9a;
+    --border:rgba(201,162,39,.16);
+    --border-soft:rgba(255,255,255,.05);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* Latar cahaya emas halus */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% -10%, rgba(201,162,39,.10), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(201,162,39,.05), transparent 70%);
+  }
 
-  header{position:sticky;top:0;z-index:50;background:rgba(11,11,13,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
-  .brand{font-family:'Playfair Display',serif;font-size:24px;letter-spacing:.5px;background:linear-gradient(90deg,var(--gold-soft),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .brand span{display:block;font-family:'Inter';font-size:11px;letter-spacing:3px;color:var(--muted);-webkit-text-fill-color:var(--muted);margin-top:2px;}
-  nav a{color:var(--muted);text-decoration:none;margin-left:26px;font-size:14px;letter-spacing:.5px;transition:.3s;}
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(8,8,10,.72);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:20px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{
+    font-family:'Playfair Display',serif;
+    font-size:26px;font-weight:700;letter-spacing:1px;
+    background:linear-gradient(100deg,var(--gold-soft) 0%,var(--gold) 50%,var(--gold-soft) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand span{
+    display:block;font-family:'Inter';font-size:10px;font-weight:400;
+    letter-spacing:5px;color:var(--muted);-webkit-text-fill-color:var(--muted);
+    margin-top:3px;text-transform:uppercase;
+  }
+  nav{display:flex;gap:34px;}
+  nav a{
+    color:var(--muted);text-decoration:none;font-size:13px;
+    letter-spacing:1.5px;text-transform:uppercase;position:relative;
+    transition:color .35s;
+  }
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    transition:width .35s;
+  }
   nav a:hover{color:var(--gold-soft);}
+  nav a:hover::after{width:100%;}
 
-  .hero{text-align:center;padding:80px 24px 50px;background:radial-gradient(circle at 50% 0%,rgba(212,175,55,.10),transparent 60%);}
-  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,54px);font-weight:700;letter-spacing:1px;background:linear-gradient(180deg,#fff,var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .hero p{color:var(--muted);max-width:520px;margin:16px auto 0;font-weight:300;}
-  .divider{width:70px;height:2px;margin:26px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  /* ===== HERO ===== */
+  .hero{
+    text-align:center;padding:110px 24px 80px;position:relative;
+  }
+  .hero .eyebrow{
+    font-size:11px;letter-spacing:6px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:26px;font-weight:500;
+  }
+  .hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(40px,7vw,76px);
+    font-weight:700;line-height:1.1;letter-spacing:1px;
+    background:linear-gradient(180deg,#ffffff 0%,var(--gold-soft) 120%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:22px;
+  }
+  .hero p{
+    color:var(--muted);max-width:480px;margin:0 auto;
+    font-weight:300;font-size:15.5px;letter-spacing:.3px;
+  }
+  .hero .divider{
+    width:90px;height:1px;margin:34px auto 0;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    position:relative;
+  }
+  .hero .divider::after{
+    content:"◆";position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    color:var(--gold);font-size:9px;background:var(--bg);padding:0 10px;
+  }
 
-  section{max-width:760px;margin:0 auto;padding:40px 24px;}
-  .section-title{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px;}
-  .section-sub{color:var(--muted);font-size:14px;margin-bottom:30px;}
+  /* ===== FEED ===== */
+  .feed-wrap{max-width:680px;margin:0 auto;padding:0 24px 60px;}
+  .feed-title{
+    text-align:center;margin-bottom:44px;
+  }
+  .feed-title h2{
+    font-family:'Playfair Display',serif;font-size:30px;
+    font-weight:600;letter-spacing:.5px;margin-bottom:8px;
+  }
+  .feed-title p{color:var(--muted);font-size:13.5px;letter-spacing:1px;}
 
-  /* ===== FEED POST ===== */
-  .feed{display:flex;flex-direction:column;gap:26px;}
-  .post{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:.35s;}
-  .post:hover{border-color:rgba(212,175,55,.4);}
-  .post-head{display:flex;align-items:center;gap:13px;padding:18px 22px 14px;}
-  .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8a6d1f);display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b0b0d;font-size:16px;flex-shrink:0;}
-  .post-head .name{font-weight:600;font-size:15px;}
-  .post-head .time{font-size:12px;color:var(--muted);}
-  .post .caption{padding:0 22px 16px;font-size:14.5px;font-weight:300;color:#e7e7ec;}
-  .post .photo{width:100%;display:block;max-height:520px;object-fit:cover;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .feed{display:flex;flex-direction:column;gap:34px;}
+
+  .post{
+    background:linear-gradient(165deg,var(--card) 0%,var(--card-2) 100%);
+    border:1px solid var(--border-soft);
+    border-radius:22px;overflow:hidden;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .5s;
+    position:relative;
+  }
+  .post::before{
+    content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+    border:1px solid transparent;
+    background:linear-gradient(165deg,rgba(201,162,39,.25),transparent 40%) border-box;
+    -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:0;transition:opacity .4s;
+  }
+  .post:hover{transform:translateY(-5px);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);}
+  .post:hover::before{opacity:1;}
+
+  .post-head{display:flex;align-items:center;gap:14px;padding:22px 26px 16px;}
+  .avatar{
+    width:46px;height:46px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--gold-soft),#8a6d1f);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-weight:700;
+    color:#0b0b0d;font-size:19px;
+    box-shadow:0 0 0 1px rgba(201,162,39,.4),0 0 20px -4px var(--gold-glow);
+  }
+  .post-head .name{font-weight:600;font-size:15px;letter-spacing:.3px;}
+  .post-head .time{font-size:12px;color:var(--muted);letter-spacing:.5px;}
+
+  .post .caption{
+    padding:0 26px 20px;font-size:14.8px;font-weight:300;
+    color:#e6e6ea;letter-spacing:.2px;
+  }
+  .post .photo{
+    width:100%;display:block;max-height:540px;object-fit:cover;
+    border-top:1px solid var(--border-soft);
+    border-bottom:1px solid var(--border-soft);
+    filter:saturate(.95) contrast(1.02);
+    transition:filter .5s;
+  }
+  .post:hover .photo{filter:saturate(1.05) contrast(1.04);}
 
   /* ===== KOMENTAR ===== */
-  .comments{padding:16px 22px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,.18);}
-  .comments h4{font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;font-weight:500;}
-  .comment{display:flex;gap:11px;margin-bottom:14px;}
-  .comment .avatar{width:34px;height:34px;font-size:13px;}
-  .comment .bubble{background:#0f0f13;border:1px solid var(--border);border-radius:12px;padding:10px 14px;flex:1;}
-  .comment .bubble .cname{font-size:13px;font-weight:600;color:var(--gold-soft);}
-  .comment .bubble .ctext{font-size:13.5px;font-weight:300;color:#dcdce2;margin-top:3px;}
-  .comment .bubble .ctime{font-size:11px;color:var(--muted);margin-top:5px;}
+  .comments{padding:20px 26px 24px;background:rgba(0,0,0,.22);}
+  .comments .c-head{
+    font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:18px;font-weight:500;
+  }
+  .comment{display:flex;gap:12px;margin-bottom:15px;}
+  .comment .avatar{width:36px;height:36px;font-size:14px;}
+  .comment .bubble{
+    background:var(--bg-2);border:1px solid var(--border-soft);
+    border-radius:14px;padding:11px 16px;flex:1;
+  }
+  .comment .cname{font-size:12.8px;font-weight:600;color:var(--gold-soft);letter-spacing:.3px;}
+  .comment .ctext{font-size:13.8px;font-weight:300;color:#d8d8de;margin-top:3px;}
+  .comment .ctime{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.4px;}
 
-  .comment-form{display:flex;gap:10px;margin-top:14px;}
-  .comment-form input{flex:1;background:#0f0f13;border:1px solid var(--border);border-radius:999px;padding:11px 18px;color:var(--text);font-family:'Inter';font-size:13.5px;outline:none;transition:.3s;}
-  .comment-form input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12);}
-  .comment-form button{background:linear-gradient(90deg,var(--gold),var(--gold-soft));color:#0b0b0d;border:none;border-radius:999px;padding:0 22px;font-weight:600;font-size:13px;cursor:pointer;transition:.3s;}
-  .comment-form button:hover{filter:brightness(1.12);}
+  .comment-form{display:flex;gap:10px;margin-top:18px;}
+  .comment-form input{
+    flex:1;background:var(--bg-2);border:1px solid var(--border-soft);
+    border-radius:999px;padding:12px 20px;color:var(--text);
+    font-family:'Inter';font-size:13.5px;outline:none;transition:.35s;
+  }
+  .comment-form input::placeholder{color:#5c5c66;}
+  .comment-form input:focus{
+    border-color:rgba(201,162,39,.5);
+    box-shadow:0 0 0 3px var(--gold-glow);
+  }
+  .comment-form button{
+    background:linear-gradient(100deg,var(--gold),var(--gold-soft));
+    color:#0b0b0d;border:none;border-radius:999px;padding:0 26px;
+    font-family:'Inter';font-weight:600;font-size:12.5px;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+    transition:.35s;
+  }
+  .comment-form button:hover{filter:brightness(1.12);transform:scale(1.03);}
 
-  footer{text-align:center;padding:50px 24px 40px;border-top:1px solid var(--border);margin-top:40px;color:var(--muted);font-size:13px;}
-  footer .brand{font-size:18px;margin-bottom:8px;}
+  /* ===== FOOTER ===== */
+  footer{
+    text-align:center;padding:60px 24px 50px;
+    border-top:1px solid var(--border);margin-top:20px;
+  }
+  footer .brand{font-size:20px;margin-bottom:10px;}
+  footer p{color:var(--muted);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;}
 
-  @media(max-width:600px){
-    nav a{margin-left:14px;font-size:12.5px;}
-    header{padding:14px 16px;}
-    section{padding:30px 16px;}
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:640px){
+    header{padding:16px 20px;}
+    nav{gap:18px;}
+    nav a{font-size:11px;letter-spacing:1px;}
+    .brand{font-size:22px;}
+    .hero{padding:70px 20px 50px;}
+    .post-head{padding:18px 18px 14px;}
+    .post .caption{padding:0 18px 18px;}
+    .comments{padding:16px 18px 20px;}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">SERABIMU<span>TOKO PILIHAN</span></div>
+  <div class="brand">Serabimu<span>Toko Pilihan</span></div>
   <nav>
     <a href="#feed">Feed</a>
-    <a href="admin.html">Admin</a>
+    <a href="#kontak">Kontak</a>
   </nav>
 </header>
 
+<!-- HERO -->
 <div class="hero">
+  <div class="eyebrow">Est. 2026 — Kurasi Pilihan</div>
   <h1>Serabimu</h1>
+  <p>Keanggunan dalam setiap pilihan. Produk terkurasi, pelayanan tulus, dan cerita yang layak dikenang.</p>
   <div class="divider"></div>
-  <p>Keanggunan dalam setiap pilihan. Produk terkurasi, pelayanan tulus.</p>
 </div>
 
-<section id="feed">
-  <h2 class="section-title">Kabar Toko</h2>
-  <p class="section-sub">Update terbaru & testimoni pelanggan</p>
-
-  <div class="feed" id="feedContainer">
-    <!-- Postingan akan dimuat dari Firebase di sini -->
+<!-- FEED -->
+<div class="feed-wrap" id="feed">
+  <div class="feed-title">
+    <h2>Kabar Toko</h2>
+    <p>Update terbaru & testimoni pelanggan</p>
   </div>
-</section>
 
-<footer>
-  <div class="brand">SERABIMU</div>
-  <p>© 2026 Serabimu. Semua hak dilindungi.</p>
-</footer>
+  <div class="feed">
 
-<script type="module">
-  // ====== GANTI DENGAN KONFIGURASI FIREBASE ANDA ======
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "GANTI_API_KEY",
-    authDomain: "GANTI.firebaseapp.com",
-    projectId: "GANTI_PROJECT_ID",
-    storageBucket: "GANTI.appspot.com",
-    messagingSenderId: "GANTI_SENDER_ID",
-    appId: "GANTI_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const feedContainer = document.getElementById('feedContainer');
-
-  // Muat postingan real-time
-  const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-  onSnapshot(postsQuery, (snapshot) => {
-    feedContainer.innerHTML = "";
-    snapshot.forEach((docSnap) => {
-      const post = docSnap.data();
-      const postId = docSnap.id;
-      renderPost(postId, post);
-      loadComments(postId);
-    });
-  });
-
-  function timeAgo(ts){
-    if(!ts) return "baru saja";
-    const d = ts.toDate();
-    const diff = Math.floor((Date.now() - d.getTime())/1000);
-    if(diff < 60) return "baru saja";
-    if(diff < 3600) return Math.floor(diff/60) + " menit lalu";
-    if(diff < 86400) return Math.floor(diff/3600) + " jam lalu";
-    return Math.floor(diff/86400) + " hari lalu";
-  }
-
-  function renderPost(postId, post){
-    const el = document.createElement('div');
-    el.className = 'post';
-    el.innerHTML = `
+    <!-- POSTINGAN 1 -->
+    <div class="post">
       <div class="post-head">
         <div class="avatar">S</div>
         <div>
           <div class="name">Serabimu</div>
-          <div class="time">${timeAgo(post.createdAt)}</div>
+          <div class="time">2 jam lalu</div>
         </div>
       </div>
-      <p class="caption">${post.caption || ''}</p>
-      ${post.imageUrl ? `<img class="photo" src="${post.imageUrl}" alt="Postingan">` : ''}
+      <p class="caption">Koleksi baru telah tiba. Dibuat dengan tangan, dipilih dengan hati. Setiap detail dirancang untuk Anda yang menghargai keindahan.</p>
+      <img class="photo" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Koleksi Serabimu">
       <div class="comments">
-        <h4>Komentar</h4>
-        <div class="comment-list" id="comments-${postId}"></div>
+        <div class="c-head">Komentar</div>
+        <div class="comment">
+          <div class="avatar">A</div>
+          <div class="bubble">
+            <div class="cname">Anisa Putri</div>
+            <div class="ctext">Kualitasnya luar biasa, kemasannya juga sangat rapi. Suka banget!</div>
+            <div class="ctime">1 jam lalu</div>
+          </div>
+        </div>
+        <div class="comment">
+          <div class="avatar">R</div>
+          <div class="bubble">
+            <div class="cname">Rizky Maulana</div>
+            <div class="ctext">Sudah dua kali pesan, selalu puas. Recommended.</div>
+            <div class="ctime">45 menit lalu</div>
+          </div>
+        </div>
         <div class="comment-form">
-          <input type="text" placeholder="Tulis komentar..." data-post="${postId}">
-          <button data-post="${postId}">Kirim</button>
+          <input type="text" placeholder="Tulis komentar...">
+          <button>Kirim</button>
         </div>
       </div>
-    `;
-    feedContainer.appendChild(el);
+    </div>
 
-    // Kirim komentar
-    el.querySelector('.comment-form button').addEventListener('click', async () => {
-      const input = el.querySelector('.comment-form input');
-      const text = input.value.trim();
-      if(!text) return;
-      const name = prompt("Nama Anda:") || "Anonim";
-      await addDoc(collection(db, "comments"), {
-        postId: postId,
-        name: name,
-        text: text,
-        createdAt: serverTimestamp()
-      });
-      input.value = "";
-    });
-  }
-
-  function loadComments(postId){
-    const q = query(collection(db, "comments"), orderBy("createdAt", "asc"));
-    onSnapshot(q, (snap) => {
-      const list = document.getElementById(`comments-${postId}`);
-      if(!list) return;
-      list.innerHTML = "";
-      snap.forEach((c) => {
-        const d = c.data();
-        if(d.postId !== postId) return;
-        const div = document.createElement('div');
-        div.className = 'comment';
-        div.innerHTML = `
-          <div class="avatar">${(d.name||'A')[0].toUpperCase()}</div>
+    <!-- POSTINGAN 2 -->
+    <div class="post">
+      <div class="post-head">
+        <div class="avatar">S</div>
+        <div>
+          <div class="name">Serabimu</div>
+          <div class="time">1 hari lalu</div>
+        </div>
+      </div>
+      <p class="caption">Di balik setiap produk ada cerita. Terima kasih kepada semua yang telah mempercayai Serabimu.</p>
+      <img class="photo" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900&q=80" alt="Cerita Serabimu">
+      <div class="comments">
+        <div class="c-head">Komentar</div>
+        <div class="comment">
+          <div class="avatar">D</div>
           <div class="bubble">
-            <div class="cname">${d.name || 'Anonim'}</div>
-            <div class="ctext">${d.text}</div>
-            <div class="ctime">${timeAgo(d.createdAt)}</div>
+            <div class="cname">Dewi Lestari</div>
+            <div class="ctext">Pelayanannya ramah, pengiriman cepat. Terima kasih Serabimu!</div>
+            <div class="ctime">20 jam lalu</div>
           </div>
-        `;
-        list.appendChild(div);
-      });
-    });
-  }
-</script>
+        </div>
+        <div class="comment-form">
+          <input type="text" placeholder="Tulis komentar...">
+          <button>Kirim</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer id="kontak">
+  <div class="brand">Serabimu</div>
+  <p>© 2026 Serabimu — Semua hak dilindungi</p>
+</footer>
 
 </body>
 </html>
