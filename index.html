@@ -14,44 +14,37 @@
     --transition:.35s;
   }
   
-  /* Tema 1: Noir Émeraude (Default) */
   body[data-theme="noir"]{
     --bg:#0a0a0b; --bg-2:#0f0f12; --card:#141418; --card-2:#1a1a20;
     --accent:#1a6b4f; --accent-soft:#7fc9a8; --text:#f0f5f2; --muted:#8a9a92;
     --border:rgba(127,201,168,.15); --glow:rgba(26,107,79,.2);
   }
-  /* Tema 2: Midnight Sapphire */
   body[data-theme="sapphire"]{
     --bg:#0a1120; --bg-2:#0d1526; --card:#111a2e; --card-2:#15203a;
     --accent:#a8b8d8; --accent-soft:#e6ebf5; --text:#f5f8ff; --muted:#7f8aa8;
     --border:rgba(192,200,214,.15); --glow:rgba(168,184,216,.15);
   }
-  /* Tema 3: Rose Antique */
   body[data-theme="rose"]{
     --bg:#1a0d10; --bg-2:#211216; --card:#281418; --card-2:#2f181d;
     --accent:#c98b7a; --accent-soft:#e8b8a8; --text:#f5e6e0; --muted:#a88a82;
     --border:rgba(201,139,122,.2); --glow:rgba(201,139,122,.16);
   }
-  /* Tema 4: Onyx & Copper */
   body[data-theme="copper"]{
     --bg:#0c0c0e; --bg-2:#111114; --card:#16161a; --card-2:#1c1c22;
     --accent:#b87333; --accent-soft:#e8a860; --text:#f0e6dc; --muted:#9a8a7a;
     --border:rgba(184,115,51,.2); --glow:rgba(184,115,51,.16);
   }
-  /* Tema 5: Ivory Luxe */
   body[data-theme="ivory"]{
     --bg:#faf6ef; --bg-2:#f0e8db; --card:#ffffff; --card-2:#fdfbf7;
     --accent:#b8912f; --accent-soft:#8a6d1f; --text:#2e2418; --muted:#8a7a62;
     --border:rgba(184,145,47,.25); --glow:rgba(184,145,47,.1);
   }
-  /* Tema 6: Royal Purple */
   body[data-theme="purple"]{
     --bg:#0e0714; --bg-2:#140a1c; --card:#1a0d24; --card-2:#21102d;
     --accent:#a34fde; --accent-soft:#e2b8ff; --text:#f7ebff; --muted:#a38db8;
     --border:rgba(226,184,255,.15); --glow:rgba(163,79,222,.2);
   }
 
-  /* ================= DASAR ================= */
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -63,10 +56,9 @@
   body::before{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:radial-gradient(ellipse 60% 40% at 50% -10%, var(--glow), transparent 70%);
-    transition:background var(--transition);
   }
 
-  /* ================= HEADER RAPI ================= */
+  /* HEADER RAPI */
   header{
     position:sticky; top:0; z-index:100;
     background:color-mix(in srgb, var(--bg) 90%, transparent);
@@ -129,7 +121,7 @@
   .swatch[data-c="ivory"]{ background:linear-gradient(135deg,#faf6ef 50%,#b8912f 50%); }
   .swatch[data-c="purple"]{ background:linear-gradient(135deg,#0e0714 50%,#a34fde 50%); }
 
-  /* ================= HERO ================= */
+  /* HERO */
   .hero{text-align:center;padding:50px 20px 30px;}
   .hero .eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
   .hero h1{
@@ -140,18 +132,17 @@
   }
   .hero p{color:var(--muted);max-width:440px;margin:0 auto;font-weight:300;font-size:14px;}
 
-  /* ================= KATALOG GESER (HORIZONTAL SCROLL) ================= */
+  /* KATALOG GESER */
   .catalog-wrap{max-width:100%;margin:10px 0 40px;padding:0 0 10px;}
   .section-title{text-align:center;margin-bottom:20px;padding:0 20px;}
   .section-title h2{font-family:var(--font-title);font-size:24px;font-weight:600;color:var(--text);}
   .section-title p{color:var(--muted);font-size:12.5px;letter-spacing:.5px;margin-top:4px;}
 
-  /* Kontainer Geser Kiri Kanan */
   .catalog-slider{
     display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory;
-    padding:10px 20px 20px; scrollbar-width:none; /* Sembunyikan scrollbar di Firefox */
+    padding:10px 20px 20px; scrollbar-width:none;
   }
-  .catalog-slider::-webkit-scrollbar{ display:none; /* Sembunyikan scrollbar di Chrome/Safari */ }
+  .catalog-slider::-webkit-scrollbar{ display:none; }
 
   .product-card{
     flex:0 0 260px; scroll-snap-align:start;
@@ -164,7 +155,7 @@
   .product-img{width:100%;height:160px;object-fit:cover;border-bottom:1px solid var(--border);}
   .product-body{padding:16px;display:flex;flex-direction:column;flex:1;}
   .product-title{font-family:var(--font-title);font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;}
-  .product-desc{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:12px;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .product-desc{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:12px;flex:1;}
   .product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
   .product-price{font-weight:600;font-size:14px;color:var(--accent-soft);}
   .btn-buy{
@@ -174,7 +165,7 @@
   }
   .btn-buy:hover{filter:brightness(1.1);transform:scale(1.03);}
 
-  /* ================= FEED & KOMENTAR ================= */
+  /* FEED & INTERaksi (LIKE & KOMENTAR) */
   .feed-wrap{max-width:640px;margin:0 auto;padding:0 20px 50px;}
   .feed{display:flex;flex-direction:column;gap:24px;}
   .post{
@@ -192,6 +183,19 @@
   .post-head .time{font-size:11px;color:var(--muted);}
   .post .caption{padding:0 20px 16px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
   .post .photo{width:100%;display:block;max-height:460px;object-fit:cover;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+
+  /* Tombol Like ala Facebook */
+  .post-actions{
+    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted);
+  }
+  .btn-like{
+    background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
+    padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px; transition: .2s; font-weight: 500;
+  }
+  .btn-like:hover{ background: var(--border); color: var(--accent-soft); }
+  .btn-like.liked{ color: #ff4757; border-color: rgba(255,71,87,.3); }
 
   .comments{padding:16px 20px 20px;background:color-mix(in srgb, var(--bg) 60%, transparent);}
   .comments .c-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
@@ -227,22 +231,6 @@
   }
   .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
 
-  .admin-panel{
-    margin-top: 20px; background: var(--card); border: 1px dashed var(--accent);
-    border-radius: 10px; padding: 12px; font-size: 12px;
-  }
-  .admin-panel summary{ cursor: pointer; color: var(--accent-soft); font-weight: 600; }
-  .fake-form{ margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
-  .fake-form input, .fake-form textarea{
-    background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 10px; color: var(--text); font-family: var(--font-body); font-size: 12px; outline: none;
-  }
-  .fake-form button{
-    background: var(--accent); color: var(--bg); border: none; border-radius: 6px;
-    padding: 6px; font-weight: 600; cursor: pointer; transition: .3s;
-  }
-  .fake-form button:hover{ filter: brightness(1.1); }
-
   footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);margin-top:20px;}
   footer .brand{font-size:18px;margin-bottom:6px;}
   footer p{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;}
@@ -257,7 +245,6 @@
     <a href="#feed">Feed</a>
     <a href="#kontak">Kontak</a>
     
-    <!-- MENU TEMA -->
     <div class="theme-dropdown" id="themeDropdown">
       <button class="theme-btn" id="themeBtn" title="Ganti Tema">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -286,7 +273,7 @@
   <p>Keanggunan dalam setiap pilihan. Produk terkurasi, pelayanan tulus, dan cerita yang layak dikenang.</p>
 </div>
 
-<!-- ================= KATALOG GESER (HORIZONTAL) ================= -->
+<!-- KATALOG GESER -->
 <div class="catalog-wrap" id="katalog">
   <div class="section-title">
     <h2>Katalog Pilihan</h2>
@@ -294,12 +281,11 @@
   </div>
 
   <div class="catalog-slider">
-    <!-- Produk 1 -->
     <div class="product-card">
       <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Produk 1" class="product-img">
       <div class="product-body">
         <div class="product-title">Serabi Kuah Klasik</div>
-        <div class="product-desc">Kue tradisional dengan siraman kuah santan gula aren pilihan, legit dan harum.</div>
+        <div class="product-desc">Kue tradisional dengan siraman kuah santan gula aren pilihan.</div>
         <div class="product-footer">
           <span class="product-price">Rp 15.000</span>
           <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Kuah%20Klasik." target="_blank" class="btn-buy">Pesan</a>
@@ -307,35 +293,21 @@
       </div>
     </div>
 
-    <!-- Produk 2 -->
     <div class="product-card">
       <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80" alt="Produk 2" class="product-img">
       <div class="product-body">
         <div class="product-title">Koleksi Spesial</div>
-        <div class="product-desc">Paket hantaran eksklusif terkurasi untuk momen spesial bersama orang terkasih.</div>
+        <div class="product-desc">Paket hantaran eksklusif terkurasi untuk momen spesial.</div>
         <div class="product-footer">
           <span class="product-price">Rp 75.000</span>
           <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Koleksi%20Spesial." target="_blank" class="btn-buy">Pesan</a>
         </div>
       </div>
     </div>
-
-    <!-- Produk 3 (Tambahan contoh geser) -->
-    <div class="product-card">
-      <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900&q=80" alt="Produk 3" class="product-img">
-      <div class="product-body">
-        <div class="product-title">Serabi Pandan Wangi</div>
-        <div class="product-desc">Aroma pandan alami berpadu lembut dengan taburan keju melimpah.</div>
-        <div class="product-footer">
-          <span class="product-price">Rp 18.000</span>
-          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Pandan%20Wangi." target="_blank" class="btn-buy">Pesan</a>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- ================= FEED & KOMENTAR ================= -->
+<!-- FEED & KOMENTAR -->
 <div class="feed-wrap" id="feed">
   <div class="section-title" style="margin-bottom: 24px;">
     <h2>Kabar Toko</h2>
@@ -354,10 +326,17 @@
       <p class="caption">Koleksi baru telah tiba. Dibuat dengan tangan, dipilih dengan hati. Setiap detail dirancang untuk Anda yang menghargai keindahan.</p>
       <img class="photo" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80" alt="Koleksi">
       
+      <!-- Tombol Like Realtime -->
+      <div class="post-actions">
+        <button class="btn-like" id="btn-like">
+          ❤️ <span id="like-text">Suka</span>
+        </button>
+        <span id="like-count">0 Suka</span>
+      </div>
+
       <div class="comments">
         <div class="c-head">Komentar & Ulasan</div>
         
-        <!-- LOGIN GOOGLE -->
         <div id="auth-box" class="auth-box">
           <button id="btn-login-google" class="btn-google">
             <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
@@ -365,7 +344,6 @@
           </button>
         </div>
 
-        <!-- FORM KOMENTAR -->
         <form id="comment-form" class="comment-form" style="display: none;">
           <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">
             Masuk sebagai: <b id="user-display-name" style="color: var(--text);"></b> (<a href="#" id="btn-logout" style="color: var(--accent-soft);">Keluar</a>)
@@ -376,23 +354,9 @@
           </div>
         </form>
 
-        <!-- LIST KOMENTAR -->
         <div class="comment-list" id="comments-list" style="margin-top: 12px;">
           <div style="font-size: 12px; color: var(--muted);">Memuat komentar...</div>
         </div>
-
-        <!-- PANEL ADMIN (FAKE COMMENT) -->
-        <details class="admin-panel">
-          <summary>🛠 Panel Admin (Tambah Fake Comment)</summary>
-          <form id="fake-comment-form" class="fake-form">
-            <input type="text" id="fake-name" placeholder="Nama Pengirim (contoh: Anisa Putri)" required>
-            <input type="text" id="fake-avatar" placeholder="URL Foto Profil (Opsional)">
-            <input type="text" id="fake-time" placeholder="Keterangan Waktu (contoh: 2 jam lalu)">
-            <textarea id="fake-text" placeholder="Isi komentar custom..." required rows="2"></textarea>
-            <button type="submit">Posting Komentar Custom</button>
-          </form>
-        </details>
-
       </div>
     </div>
   </div>
@@ -403,11 +367,10 @@
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
 </footer>
 
-<!-- SCRIPT FIREBASE & TEMA -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "API_KEY_ANDA",
@@ -444,6 +407,51 @@
     }
   });
 
+  // SISTEM LIKE REALTIME TANPA LOGIN
+  const likeBtn = document.getElementById('btn-like');
+  const likeCountSpan = document.getElementById('like-count');
+  const likeDocRef = doc(db, "stats", "post_likes");
+
+  // Inisialisasi dokumen like jika belum ada
+  getDoc(likeDocRef).then((docSnap) => {
+    if (!docSnap.exists()) {
+      setDoc(likeDocRef, { count: 0 });
+    }
+  });
+
+  // Realtime listener jumlah like
+  onSnapshot(likeDocRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      likeCountSpan.innerText = `${data.count || 0} Suka`;
+    }
+  });
+
+  // Cek apakah user ini sudah pernah like di browser ini
+  if (localStorage.getItem("serabimu_liked") === "true") {
+    likeBtn.classList.add('liked');
+    document.getElementById('like-text').innerText = "Disukai";
+  }
+
+  likeBtn.onclick = async () => {
+    if (localStorage.getItem("serabimu_liked") === "true") {
+      alert("Anda sudah menyukai postingan ini.");
+      return;
+    }
+
+    try {
+      await updateDoc(likeDocRef, {
+        count: increment(1)
+      });
+      localStorage.setItem("serabimu_liked", "true");
+      likeBtn.classList.add('liked');
+      document.getElementById('like-text').innerText = "Disukai";
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // KIRIM KOMENTAR ASLI
   commentForm.onsubmit = async (e) => {
     e.preventDefault();
     const text = document.getElementById('comment-text').value;
@@ -459,24 +467,7 @@
     document.getElementById('comment-text').value = '';
   };
 
-  document.getElementById('fake-comment-form').onsubmit = async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('fake-name').value;
-    const avatar = document.getElementById('fake-avatar').value;
-    const time = document.getElementById('fake-time').value || "Baru saja";
-    const text = document.getElementById('fake-text').value;
-
-    await addDoc(collection(db, "comments"), {
-      name: name,
-      avatar: avatar,
-      text: text,
-      createdAt: serverTimestamp(),
-      customTime: time
-    });
-    document.getElementById('fake-comment-form').reset();
-    alert('Komentar custom berhasil diposting!');
-  };
-
+  // MEMUAT KOMENTAR REALTIME
   const commentsList = document.getElementById('comments-list');
   const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
 
