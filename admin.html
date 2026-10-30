@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Serabimu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0b0d;--card:#141418;--card-2:#1b1b21;--gold:#d4af37;--gold-soft:#f0d98c;--text:#f5f5f7;--muted:#9a9aa5;--border:rgba(212,175,55,.18);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;}
+  header{padding:18px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .brand{font-family:'Playfair Display',serif;font-size:22px;background:linear-gradient(90deg,var(--gold-soft),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .brand span{display:block;font-family:'Inter';font-size:10px;letter-spacing:3px;color:var(--muted);-webkit-text-fill-color:var(--muted);}
+  header a{color:var(--muted);text-decoration:none;font-size:13px;}
+  header a:hover{color:var(--gold-soft);}
+  main{max-width:640px;margin:0 auto;padding:40px 24px;}
+  h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:20px;}
+  .card{background:linear-gradient(160deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:18px;padding:26px;margin-bottom:30px;}
+  .field{margin-bottom:15px;}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:7px;letter-spacing:.5px;}
+  .field input,.field textarea{width:100%;background:#0f0f13;border:1px solid var(--border);border-radius:12px;padding:12px 15px;color:var(--text);font-family:'Inter';font-size:14px;outline:none;transition:.3s;}
+  .field input:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12);}
+  .field textarea{resize:vertical;min-height:90px;}
+  .btn{background:linear-gradient(90deg,var(--gold),var(--gold-soft));color:#0b0b0d;border:none;border-radius:999px;padding:12px 26px;font-weight:600;font-size:13.5px;cursor:pointer;transition:.3s;width:100%;}
+  .btn:hover{filter:brightness(1.12);}
+  .status{font-size:13px;color:var(--muted);margin-top:10px;text-align:center;}
+  .mod-item{border-bottom:1px solid var(--border);padding:14px 0;font-size:13.5px;}
+  .mod-item:last-child{border-bottom:none;}
+  .mod-item .m-name{color:var(--gold-soft);font-weight:600;}
+  .mod-item button{background:transparent;border:1px solid var(--border);color:var(--gold-soft);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;margin-right:6px;margin-top:6px;}
+  .mod-item button:hover{border-color:var(--gold);background:rgba(212,175,55,.08);}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SERABIMU<span>ADMIN</span></div>
+  <a href="index.html">← Lihat Toko</a>
+</header>
+
+<main>
+  <h2>Upload Postingan Baru</h2>
+  <div class="card">
+    <div class="field">
+      <label>Caption</label>
+      <textarea id="caption" placeholder="Tulis caption postingan..."></textarea>
+    </div>
+    <div class="field">
+      <label>Foto (URL gambar)</label>
+      <input type="text" id="imageUrl" placeholder="https://... (link foto dari Cloudinary/imgur)">
+    </div>
+    <button class="btn" id="postBtn">Publikasikan</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <h2>Moderasi Komentar</h2>
+  <div class="card" id="modContainer">
+    <p class="status">Memuat komentar...</p>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "GANTI_API_KEY",
+    authDomain: "GANTI.firebaseapp.com",
+    projectId: "GANTI_PROJECT_ID",
+    storageBucket: "GANTI.appspot.com",
+    messagingSenderId: "GANTI_SENDER_ID",
+    appId: "GANTI_APP_ID"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Upload postingan
+  document.getElementById('postBtn').addEventListener('click', async () => {
+    const caption = document.getElementById('caption').value.trim();
+    const imageUrl = document.getElementById('imageUrl').value.trim();
+    const status = document.getElementById('status');
+    if(!caption && !imageUrl){ status.textContent = "Isi caption atau foto dulu."; return; }
+    status.textContent = "Mengunggah...";
+    try{
+      await addDoc(collection(db, "posts"), {
+        caption: caption,
+        imageUrl: imageUrl,
+        createdAt: serverTimestamp()
+      });
+      status.textContent = "✅ Postingan berhasil dipublikasikan!";
+      document.getElementById('caption').value = "";
+      document.getElementById('imageUrl').value = "";
+    } catch(e){
+      status.textContent = "❌ Gagal: " + e.message;
+    }
+  });
+
+  // Moderasi komentar
+  const modContainer = document.getElementById('modContainer');
+  const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snap) => {
+    if(snap.empty){ modContainer.innerHTML = '<p class="status">Belum ada komentar.</p>'; return; }
+    modContainer.innerHTML = "";
+    snap.forEach((c) => {
+      const d = c.data();
+      const div = document.createElement('div');
+      div.className = 'mod-item';
+      div.innerHTML = `
+        <div class="m-name">${d.name || 'Anonim'}</div>
+        <div>${d.text}</div>
+        <button data-id="${c.id}">Hapus</button>
+      `;
+      modContainer.appendChild(div);
+    });
+    modContainer.querySelectorAll('button').forEach((b) => {
+      b.addEventListener('click', async () => {
+        if(confirm("Hapus komentar ini?")){
+          await deleteDoc(doc(db, "comments", b.dataset.id));
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
