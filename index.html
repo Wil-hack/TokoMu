@@ -414,7 +414,7 @@ footer p{color:var(--muted);font-size:11px;letter-spacing:1.2px;text-transform:u
     <div class="form-body" style="text-align:center">
       <h3 style="color:var(--soft)">Masuk Mode Admin</h3>
       <p class="sub">Masukkan PIN Admin</p>
-      <input type="password" id="adminPinInput" placeholder="••••" style="text-align:center;letter-spacing:6px;font-size:20px">
+      <input type="text" id="adminPinInput" placeholder="Masukkan PIN" style="text-align:center;font-size:16px;letter-spacing:2px">
       <button class="btn-submit-form" id="submitPinBtn">Masuk</button>
     </div>
   </div>
@@ -439,7 +439,6 @@ const db = getFirestore(app);
 
 /* ===== KONFIGURASI TOKO ===== */
 const DEFAULT_WA = '6285737447844'; // +62 857-3744-7844
-const ADMIN_PIN_OBF = 'bGFsYXBuZW5ha0o='; // base64 dari "lalapnenakJ"
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -979,30 +978,25 @@ const backTop = $('#backTop');
 window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 400));
 backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-/* ===== ADMIN PIN ===== */
+/* ===== ADMIN PIN (SIMPEL & TERLIHAT) ===== */
 const adminModal = $('#adminModal');
 $('#adminLoginTrigger').addEventListener('click', () => { adminModal.classList.add('open'); $('#adminPinInput').focus(); });
 $('#cancelPinBtn').addEventListener('click', () => { adminModal.classList.remove('open'); $('#adminPinInput').value = ''; });
-$('#submitPinBtn').addEventListener('click', verifyPin);
-$('#adminPinInput').addEventListener('keypress', e => { if(e.key === 'Enter') verifyPin(); });
 adminModal.addEventListener('click', e => { if(e.target === adminModal) { adminModal.classList.remove('open'); $('#adminPinInput').value = ''; } });
 
 function verifyPin() {
-  const pin = $('#adminPinInput').value;
-  if(!pin) return;
-  let expected = '';
-  try { expected = atob(ADMIN_PIN_OBF); } catch(e) { expected = ''; }
-  if(pin === expected) {
-    sessionStorage.setItem('isAdmin', 'true');
-    adminModal.classList.remove('open');
-    $('#adminPinInput').value = '';
-    window.location.href = 'admin.html';
+  const pin = $('#adminPinInput').value.trim();
+  if(pin === '7454lalapan') {
+    localStorage.setItem('isAdmin', 'true'); 
+    alert('PIN Benar! Membuka Admin...'); 
+    window.location.replace('admin.html'); 
   } else {
-    toast('PIN Admin Salah!', true);
-    $('#adminPinInput').value = '';
-    $('#adminPinInput').focus();
+    alert('PIN SALAH! Yang Anda ketik: ' + pin);
   }
 }
+
+$('#submitPinBtn').addEventListener('click', verifyPin);
+$('#adminPinInput').addEventListener('keypress', e => { if(e.key === 'Enter') verifyPin(); });
 
 /* ===== INIT ===== */
 updateCartBadge();
