@@ -1,380 +1,595 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Serabimu Kuliner</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Panel — Serabimu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0a0908; --bg-2:#0f0e0c; --card:#161412; --card-2:#1c1a17;
-    --champagne:#d4bc8a; --champagne-soft:#f0e0bf; --champagne-glow:rgba(212,188,138,.16);
-    --text:#f5f1ea; --muted:#9a9186; --border:rgba(212,188,138,.14);
-    --border-soft:rgba(255,255,255,.05); --danger:#c96b5a; --success:#7fb88a;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
-  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-    background:radial-gradient(ellipse 50% 35% at 50% -10%,var(--champagne-glow),transparent 70%),
-    radial-gradient(ellipse 35% 25% at 100% 100%,rgba(212,188,138,.05),transparent 70%);}
+:root{--font-title:'Playfair Display',serif;--font-body:'Inter',sans-serif;--r:16px;--t:.3s}
+body{--bg:#0a0a0b;--bg2:#0f0f12;--card:#141418;--card2:#1a1a20;--accent:#1a6b4f;--soft:#7fc9a8;--text:#f0f5f2;--muted:#8a9a92;--border:rgba(127,201,168,.15);--glow:rgba(26,107,79,.25);--grad:linear-gradient(100deg,#7fc9a8,#1a6b4f);--danger:#ff4757}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--soft);color:var(--bg)}
 
-  header{
-    position:sticky; top:0; z-index:100; background:rgba(10,9,8,.95); backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-  }
-  .brand{font-family:'Playfair Display',serif; font-size:20px; font-weight:700; letter-spacing:1px;
-    background:linear-gradient(100deg,var(--champagne-soft),var(--champagne));
-    -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .brand span{display:inline-block; font-family:'Inter'; font-size:9px; letter-spacing:3px; color:var(--muted);
-    -webkit-text-fill-color:var(--muted); margin-left:6px; text-transform:uppercase; vertical-align:middle;}
-  .header-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-  .badge-admin{font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--champagne-soft);
-    border:1px solid var(--border); padding:4px 10px; border-radius:999px; background:rgba(212,188,138,.06); white-space:nowrap;}
-  .header-actions a{color:var(--muted); text-decoration:none; font-size:12px; letter-spacing:.5px; transition:.3s; white-space:nowrap;}
-  .header-actions a:hover{color:var(--champagne-soft);}
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.brand{font-family:var(--font-title);font-size:22px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand span{font-family:var(--font-body);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--muted);-webkit-text-fill-color:var(--muted);margin-left:8px;text-transform:uppercase}
+.header-actions{display:flex;gap:8px;align-items:center}
+.btn-outline{background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:999px;font-size:12px;text-decoration:none;transition:.2s;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-outline:hover{border-color:var(--soft);color:var(--soft)}
 
-  .layout{max-width:1180px;margin:0 auto;padding:24px 16px 60px;display:grid;
-    grid-template-columns:1fr 340px;gap:24px;align-items:start;}
-  .feed-col{display:flex;flex-direction:column;gap:20px;}
+/* LAYOUT & TABS */
+.container{max-width:900px;margin:0 auto;padding:20px}
+.tabs{display:flex;overflow-x:auto;gap:6px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:10px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:transparent;border:none;color:var(--muted);font-family:var(--font-body);font-size:13px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;transition:.2s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:var(--bg2)}
+.tab-btn.active{background:var(--card);color:var(--soft);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.tab-pane{display:none;animation:fadeIn .3s ease}
+.tab-pane.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-  .composer{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
-    border-radius:18px;padding:18px 20px;transition:border-color .35s;}
-  .composer:focus-within{border-color:rgba(212,188,138,.4);}
-  .composer-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-  .composer-user .avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;
-    background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);display:flex;align-items:center;justify-content:center;
-    font-family:'Playfair Display',serif;font-weight:700;color:#0a0908;font-size:16px;}
-  .composer-user .who{font-size:13.5px;font-weight:600;}
-  .composer-user .who span{display:block;font-size:11px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
+/* CARDS & FORMS */
+.card{background:linear-gradient(165deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.card h3{font-family:var(--font-title);font-size:18px;margin-bottom:12px;color:var(--soft)}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:var(--font-body);font-size:13.5px;outline:none;transition:.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--soft);box-shadow:0 0 0 3px var(--glow)}
+textarea{resize:vertical;min-height:80px}
+.btn-primary{background:var(--grad);color:var(--bg);border:none;padding:12px 20px;border-radius:10px;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;transition:.2s;width:100%;display:flex;justify-content:center;align-items:center;gap:8px}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-danger{background:rgba(255,71,87,.1);color:var(--danger);border:1px solid rgba(255,71,87,.3);padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer;transition:.2s}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.row{display:flex;gap:10px}
 
-  .composer textarea, .composer input[type="text"]{width:100%;background:var(--bg-2);border:1px solid var(--border);
-    border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;margin-bottom:10px;}
-  .composer textarea{resize:none;min-height:65px;}
+/* LIST ITEMS */
+.list-item{display:flex;gap:14px;padding:14px;border-bottom:1px solid var(--border);align-items:center}
+.list-item:last-child{border-bottom:none}
+.list-img{width:60px;height:60px;border-radius:10px;object-fit:cover;background:var(--bg2);flex-shrink:0}
+.list-info{flex:1;min-width:0}
+.list-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list-sub{font-size:12px;color:var(--muted)}
+.list-actions{display:flex;gap:6px}
+.btn-icon{background:var(--bg2);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.btn-icon:hover{color:var(--soft);border-color:var(--soft)}
 
-  .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:4px;}
-  .btn-upload{display:inline-flex;align-items:center;gap:6px;background:var(--bg-2);
-    border:1px solid var(--border-soft);color:var(--champagne-soft);border-radius:10px;
-    padding:10px 14px;font-family:'Inter';font-weight:500;font-size:12px;cursor:pointer;transition:.3s;}
-  .btn-upload:hover{border-color:rgba(212,188,138,.45);background:rgba(212,188,138,.06);}
+/* PREVIEW UPLOAD */
+.preview-img{max-width:100%;height:150px;object-fit:contain;border-radius:8px;margin-top:10px;display:none;background:var(--bg2)}
+.preview-img.show{display:block}
 
-  .btn-publish{background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));
-    color:#0a0908;border:none;border-radius:10px;padding:10px 20px;font-family:'Inter';
-    font-weight:600;font-size:12px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.3s;}
-  .btn-publish:hover{filter:brightness(1.1);}
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-content{background:var(--card);border:1px solid var(--border);border-radius:var(--r);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;padding:24px;position:relative}
+.close-modal{position:absolute;top:16px;right:16px;background:var(--bg2);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.close-modal:hover{background:var(--danger);color:#fff}
 
-  .section-heading{font-family:'Playfair Display',serif; font-size:18px; font-weight:600; margin-top:10px; margin-bottom:2px; color:var(--text);}
-  
-  .product-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:12px;}
-  .product-item-card{background:linear-gradient(165deg,var(--card),var(--card-2)); border:1px solid var(--border); border-radius:14px; padding:12px; display:flex; flex-direction:column;}
-  .product-item-card img{width:100%; height:110px; object-fit:cover; border-radius:8px; margin-bottom:8px;}
-  .product-item-card .prod-name{font-weight:600; font-size:13px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .product-item-card .prod-price{color:var(--champagne-soft); font-size:12px; font-weight:500; margin-bottom:8px;}
-
-  .post-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border-soft);
-    border-radius:16px;overflow:hidden;margin-bottom:14px;padding:16px;}
-  .post-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
-  .post-top span{font-size:13px; font-weight:600; color:var(--champagne-soft);}
-  .btn-del-post{background:transparent; border:1px solid var(--border-soft); color:var(--danger); width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:12px; transition:.2s;}
-  .btn-del-post:hover{background:rgba(201,107,90,.15); border-color:var(--danger);}
-
-  .side-col{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px;}
-  .side-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
-    border-radius:16px;padding:18px;}
-  .side-card h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;margin-bottom:2px;}
-  .side-card .sub{font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:12px;}
-
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));color:#0a0908;
-    padding:10px 22px;border-radius:999px;font-size:12.5px;font-weight:600;
-    opacity:0;pointer-events:none;transition:.4s;z-index:200;}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  @media(max-width:900px){.layout{grid-template-columns:1fr;}.side-col{position:static;}}
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--card);color:var(--text);border:1px solid var(--border);padding:12px 24px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.3s;z-index:1000;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.error{border-color:rgba(255,71,87,.4);color:#ff4757}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">Serabimu<span>Admin Panel</span></div>
+  <div class="brand">Serabimu <span>Admin Panel</span></div>
   <div class="header-actions">
-    <span class="badge-admin">● Mode Admin</span>
-    <a href="index.html">Lihat Toko →</a>
+    <a href="index.html" class="btn-outline">Lihat Toko ↗</a>
+    <button id="logoutBtn" class="btn-outline" style="color:var(--danger);border-color:rgba(255,71,87,.3)">Keluar</button>
   </div>
 </header>
 
-<div class="layout">
-  <div class="feed-col">
-    
-    <!-- 1. FORM KELOLA KATALOG MENU -->
-    <div class="composer">
-      <div class="composer-head">
-        <div class="composer-user">
-          <div class="avatar">K</div>
-          <div class="who">
-            <span>Tambah Menu Katalog Baru</span>
-            <span>Tampil di halaman depan pelanggan</span>
-          </div>
-        </div>
+<div class="container">
+  <!-- TABS MENU -->
+  <div class="tabs">
+    <button class="tab-btn active" data-target="tab-katalog">🛍️ Katalog Produk</button>
+    <button class="tab-btn" data-target="tab-feed">📰 Postingan Feed</button>
+    <button class="tab-btn" data-target="tab-setting">⚙️ Pengaturan Toko</button>
+    <button class="tab-btn" data-target="tab-ulasan">💬 Ulasan Pelanggan</button>
+  </div>
+
+  <!-- TAB 1: KATALOG PRODUK -->
+  <div id="tab-katalog" class="tab-pane active">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin-bottom:0">Daftar Produk</h3>
+        <button class="btn-outline" id="btnAddProduct" style="padding:6px 12px">+ Tambah</button>
       </div>
-      <input type="text" id="prodTitle" placeholder="Nama Menu (Contoh: Serabi Kuah Durian)">
-      <textarea id="prodDesc" placeholder="Deskripsi Singkat (Contoh: Serabi lembut dengan kuah durian asli...)"></textarea>
-      <input type="text" id="prodPrice" placeholder="Harga (Contoh: Rp 18.000)">
-      
-      <div class="composer-tools">
-        <label class="btn-upload" for="prodFileInput">📷 Pilih Foto Menu</label>
-        <input type="file" id="prodFileInput" accept="image/*" style="display:none;">
-        <button class="btn-publish" id="saveProductBtn">Simpan Katalog</button>
+      <div id="productList">
+        <div class="list-sub" style="text-align:center;padding:20px">Memuat produk...</div>
       </div>
-    </div>
-
-    <!-- DAFTAR KATALOG -->
-    <h2 class="section-heading">Daftar Katalog Produk</h2>
-    <div id="adminProductList" class="product-grid">
-      <div style="font-size:12px; color:var(--muted);">Memuat katalog...</div>
-    </div>
-
-    <hr style="border:none; border-top:1px solid var(--border); margin:10px 0;">
-
-    <!-- 2. FORM KABAR TOKO / FEED -->
-    <div class="composer">
-      <div class="composer-head">
-        <div class="composer-user">
-          <div class="avatar">S</div>
-          <div class="who">
-            <span>Buat Kabar Toko / Feed</span>
-            <span>Bagikan info terbaru ke pengunjung</span>
-          </div>
-        </div>
-      </div>
-      <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
-      <input type="text" id="locationInput" placeholder="📍 Lokasi (Contoh: Lapangan Nguling, Pasuruan)">
-
-      <div class="composer-tools">
-        <label class="btn-upload" for="fileInput">🖼️ Foto / Video Feed</label>
-        <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none;">
-        <button class="btn-publish" id="publishBtn">Publikasikan</button>
-      </div>
-    </div>
-
-    <h2 class="section-heading">Postingan Feed Toko</h2>
-    <div id="postList">
-      <div style="font-size:12px; color:var(--muted);">Memuat postingan...</div>
     </div>
   </div>
 
-  <div class="side-col">
-    <!-- Ringkasan Statistik -->
-    <div class="side-card">
-      <h3>Ringkasan Toko</h3>
-      <p class="sub">Statistik data saat ini</p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total Produk Katalog</span>
-          <strong style="color:var(--champagne-soft);" id="statProducts">0</strong>
+  <!-- TAB 2: POSTINGAN FEED -->
+  <div id="tab-feed" class="tab-pane">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin-bottom:0">Postingan Feed</h3>
+        <button class="btn-outline" id="btnAddPost" style="padding:6px 12px">+ Buat Post</button>
+      </div>
+      <div id="postList">
+        <div class="list-sub" style="text-align:center;padding:20px">Memuat feed...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: PENGATURAN TOKO -->
+  <div id="tab-setting" class="tab-pane">
+    <div class="card">
+      <h3>Jam Operasional & Kontak</h3>
+      <div class="row">
+        <div class="form-group" style="flex:1">
+          <label>Jam Buka</label>
+          <input type="time" id="setOpen" value="08:00">
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total Kabar Toko</span>
-          <strong style="color:var(--champagne-soft);" id="statPosts">0</strong>
+        <div class="form-group" style="flex:1">
+          <label>Jam Tutup</label>
+          <input type="time" id="setClose" value="21:00">
         </div>
+      </div>
+      <div class="form-group">
+        <label>Nomor WhatsApp Bisnis (Format: 628...)</label>
+        <input type="text" id="setWa" placeholder="Contoh: 6285737447844">
+      </div>
+      <button class="btn-primary" id="saveSettings">Simpan Pengaturan</button>
+    </div>
+  </div>
+
+  <!-- TAB 4: ULASAN -->
+  <div id="tab-ulasan" class="tab-pane">
+    <div class="card">
+      <h3>Moderasi Ulasan</h3>
+      <div id="reviewList">
+        <div class="list-sub" style="text-align:center;padding:20px">Memuat ulasan...</div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">✅ Berhasil</div>
+<!-- MODAL PRODUK -->
+<div id="modalProduct" class="modal">
+  <div class="modal-content">
+    <button class="close-modal" id="closeModalProduct">✕</button>
+    <h3 style="color:var(--soft);margin-bottom:16px" id="productFormTitle">Tambah Produk Baru</h3>
+    <form id="productForm">
+      <input type="hidden" id="pId">
+      <div class="form-group">
+        <label>Nama Produk *</label>
+        <input type="text" id="pTitle" required>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi Singkat</label>
+        <textarea id="pDesc" rows="2" placeholder="Bahan-bahan, rasa, dll."></textarea>
+      </div>
+      <div class="row">
+        <div class="form-group" style="flex:1">
+          <label>Harga (Angka saja) *</label>
+          <input type="number" id="pPrice" required placeholder="15000">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>Kategori</label>
+          <input type="text" id="pCat" placeholder="Misal: Serabi">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Upload Foto Produk *</label>
+        <input type="file" id="pImageFile" accept="image/*">
+        <input type="hidden" id="pImageUrl">
+        <img id="pImagePreview" class="preview-img" alt="Preview">
+        <div class="list-sub" style="margin-top:4px" id="uploadStatus"></div>
+      </div>
+      <button type="submit" class="btn-primary" id="btnSaveProduct">Simpan Produk</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL POSTINGAN -->
+<div id="modalPost" class="modal">
+  <div class="modal-content">
+    <button class="close-modal" id="closeModalPost">✕</button>
+    <h3 style="color:var(--soft);margin-bottom:16px" id="postFormTitle">Buat Postingan Baru</h3>
+    <form id="postForm">
+      <input type="hidden" id="postId">
+      <div class="form-group">
+        <label>Caption / Teks *</label>
+        <textarea id="postCaption" rows="3" required placeholder="Apa yang ingin dibagikan hari ini?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Lokasi (Opsional)</label>
+        <input type="text" id="postLocation" placeholder="Nama tempat / Link Gmaps">
+      </div>
+      <div class="form-group">
+        <label>Upload Foto/Video (Bisa pilih banyak)</label>
+        <input type="file" id="postMediaFile" accept="image/*,video/*" multiple>
+        <input type="hidden" id="postMediaUrls">
+        <div id="postMediaPreview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"></div>
+        <div class="list-sub" style="margin-top:4px" id="uploadPostStatus"></div>
+      </div>
+      <button type="submit" class="btn-primary" id="btnSavePost">Publikasikan</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script type="module">
-  const CLOUDINARY_CLOUD_NAME = "ywxfumtm";
-  const CLOUDINARY_UPLOAD_PRESET = "Serabimu";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// 1. CEK KEAMANAN: Apakah sudah login?
+if(sessionStorage.getItem('isAdmin') !== 'true') {
+  alert('Akses ditolak. Silakan login dari halaman utama.');
+  window.location.href = 'index.html';
+  throw new Error('Not logged in');
+}
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
-    authDomain: "serabimu-96990.firebaseapp.com",
-    projectId: "serabimu-96990",
-    storageBucket: "serabimu-96990.firebasestorage.app",
-    messagingSenderId: "888492450453",
-    appId: "1:888492450453:web:eacb698dfa8f483f78719c"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
+  authDomain: "serabimu-96990.firebaseapp.com",
+  projectId: "serabimu-96990",
+  storageBucket: "serabimu-96990.firebasestorage.app",
+  messagingSenderId: "888492450453",
+  appId: "1:888492450453:web:eacb698dfa8f483f78719c"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const CLOUDINARY_CLOUD = "ywxfumtm";
+const CLOUDINARY_PRESET = "Serabimu";
 
-  const toast = document.getElementById('toast');
-  const showToast = (msg) => {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2500);
-  };
+const $ = s => document.querySelector(s);
+const toast = (msg, isErr) => {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isErr);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
+const fmt = n => 'Rp ' + (Number(n)||0).toLocaleString('id-ID');
 
-  async function uploadToCloudinary(file){
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, { method: 'POST', body: formData });
-    if(!res.ok) throw new Error('Upload gagal');
-    const data = await res.json();
-    return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
-  }
+// 2. LOGOUT
+$('#logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('isAdmin');
+  window.location.href = 'index.html';
+});
 
-  // ====== A. KELOLA KATALOG PRODUK ======
-  const saveProductBtn = document.getElementById('saveProductBtn');
-  const prodFileInput = document.getElementById('prodFileInput');
-
-  saveProductBtn.addEventListener('click', async () => {
-    const title = document.getElementById('prodTitle').value.trim();
-    const desc = document.getElementById('prodDesc').value.trim();
-    const price = document.getElementById('prodPrice').value.trim();
-    const file = prodFileInput.files[0];
-
-    if(!title || !price) {
-      alert("Nama menu & harga wajib diisi!");
-      return;
-    }
-
-    saveProductBtn.disabled = true;
-    saveProductBtn.textContent = "Menyimpan...";
-
-    try {
-      let imageUrl = "";
-      if(file) {
-        const uploaded = await uploadToCloudinary(file);
-        imageUrl = uploaded.url;
-      }
-
-      await addDoc(collection(db, "products"), {
-        title: title,
-        description: desc,
-        price: price,
-        imageUrl: imageUrl,
-        createdAt: serverTimestamp()
-      });
-
-      document.getElementById('prodTitle').value = '';
-      document.getElementById('prodDesc').value = '';
-      document.getElementById('prodPrice').value = '';
-      prodFileInput.value = '';
-      showToast("✅ Menu Katalog Disimpan!");
-    } catch(err) {
-      alert("Gagal: " + err.message);
-    } finally {
-      saveProductBtn.disabled = false;
-      saveProductBtn.textContent = "Simpan Katalog";
-    }
+// 3. NAVIGASI TAB
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).classList.add('active');
   });
+});
 
-  const qProds = query(collection(db, "products"), orderBy("createdAt", "desc"));
-  onSnapshot(qProds, (snap) => {
-    const adminProductList = document.getElementById('adminProductList');
-    document.getElementById('statProducts').textContent = snap.size;
+// 4. UPLOAD CLOUDINARY
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`, { method: 'POST', body: formData });
+  if(!res.ok) throw new Error('Upload gagal');
+  const data = await res.json();
+  return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
+}
+
+/* =========================================
+   KELOLA PRODUK (KATALOG)
+   ========================================= */
+const modalProduct = $('#modalProduct');
+const productForm = $('#productForm');
+
+$('#btnAddProduct').addEventListener('click', () => {
+  productForm.reset();
+  $('#pId').value = '';
+  $('#pImageUrl').value = '';
+  $('#pImagePreview').classList.remove('show');
+  $('#uploadStatus').textContent = '';
+  $('#productFormTitle').textContent = 'Tambah Produk Baru';
+  modalProduct.classList.add('open');
+});
+$('#closeModalProduct').addEventListener('click', () => modalProduct.classList.remove('open'));
+
+$('#pImageFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('#pImagePreview').src = ev.target.result;
+    $('#pImagePreview').classList.add('show');
+  };
+  reader.readAsDataURL(file);
+});
+
+productForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#btnSaveProduct');
+  const id = $('#pId').value;
+  const title = $('#pTitle').value.trim();
+  const desc = $('#pDesc').value.trim();
+  const price = Number($('#pPrice').value);
+  const category = $('#pCat').value.trim();
+  const file = $('#pImageFile').files[0];
+  let imageUrl = $('#pImageUrl').value;
+
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
+  $('#uploadStatus').textContent = file ? 'Mengunggah gambar...' : '';
+
+  try {
+    if(file) {
+      const uploaded = await uploadToCloudinary(file);
+      imageUrl = uploaded.url;
+    }
+    if(!imageUrl) throw new Error('Gambar wajib diunggah');
+
+    const data = { title, description: desc, price, category, imageUrl };
     
-    if(snap.empty) {
-      adminProductList.innerHTML = '<div style="font-size:12px; color:var(--muted);">Belum ada produk katalog.</div>';
-      return;
+    if(id) {
+      await updateDoc(doc(db, 'products', id), data);
+      toast('Produk diperbarui!');
+    } else {
+      data.createdAt = serverTimestamp();
+      data.totalRating = 0;
+      data.ratingCount = 0;
+      data.likes = 0;
+      await addDoc(collection(db, 'products'), data);
+      toast('Produk ditambahkan!');
     }
+    modalProduct.classList.remove('open');
+  } catch(err) {
+    toast(err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Simpan Produk';
+    $('#uploadStatus').textContent = '';
+  }
+});
 
-    adminProductList.innerHTML = '';
-    snap.forEach((docSnap) => {
-      const p = docSnap.data();
-      const div = document.createElement('div');
-      div.className = 'product-item-card';
-      div.innerHTML = `
-        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80'}" alt="Menu">
-        <div class="prod-name">${p.title}</div>
-        <div class="prod-price">${p.price}</div>
-        <button class="del-prod" data-id="${docSnap.id}" style="background:rgba(201,107,90,.15); border:1px solid rgba(201,107,90,.3); color:var(--danger); width:100%; padding:6px; border-radius:6px; margin-top:auto; cursor:pointer; font-size:11px; transition:.2s;">Hapus Menu</button>
-      `;
-      adminProductList.appendChild(div);
-    });
+onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap => {
+  const list = $('#productList');
+  if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada produk.</div>'; return; }
+  list.innerHTML = '';
+  snap.forEach(d => {
+    const p = d.data();
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <img src="${p.imageUrl || 'https://via.placeholder.com/60'}" class="list-img">
+      <div class="list-info">
+        <div class="list-title">${p.title}</div>
+        <div class="list-sub">${fmt(p.price)} · ${p.category || 'Umum'}</div>
+      </div>
+      <div class="list-actions">
+        <button class="btn-icon btn-edit" data-id="${d.id}" title="Edit">✏️</button>
+        <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+      </div>`;
+    list.appendChild(el);
 
-    adminProductList.querySelectorAll('.del-prod').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if(confirm('Hapus menu ini dari katalog?')) {
-          await deleteDoc(doc(db, "products", btn.dataset.id));
-          showToast('Menu katalog dihapus');
-        }
-      });
-    });
-  });
-
-  // ====== B. KELOLA FEED TOKO ======
-  const publishBtn = document.getElementById('publishBtn');
-  const fileInput = document.getElementById('fileInput');
-
-  publishBtn.addEventListener('click', async () => {
-    const caption = document.getElementById('caption').value.trim();
-    const location = document.getElementById('locationInput').value.trim();
-    const files = Array.from(fileInput.files);
-
-    if(!caption && files.length === 0) return alert("Isi caption atau pilih file foto/video terlebih dahulu!");
-
-    publishBtn.disabled = true;
-    publishBtn.textContent = "Memproses...";
-
-    try {
-      let mediaUrls = [];
-      for(const file of files) {
-        const uploaded = await uploadToCloudinary(file);
-        mediaUrls.push(uploaded);
+    // Tombol Edit
+    el.querySelector('.btn-edit').addEventListener('click', async () => {
+      const docSnap = await getDoc(doc(db, 'products', d.id));
+      if(docSnap.exists()) {
+        const data = docSnap.data();
+        $('#pId').value = d.id;
+        $('#pTitle').value = data.title || '';
+        $('#pDesc').value = data.description || '';
+        $('#pPrice').value = data.price || '';
+        $('#pCat').value = data.category || '';
+        $('#pImageUrl').value = data.imageUrl || '';
+        $('#pImagePreview').src = data.imageUrl || '';
+        if(data.imageUrl) $('#pImagePreview').classList.add('show');
+        $('#productFormTitle').textContent = 'Edit Produk';
+        modalProduct.classList.add('open');
       }
+    });
 
-      await addDoc(collection(db, "posts"), {
-        caption: caption,
-        location: location,
-        mediaUrls: mediaUrls,
-        likes: 0,
-        createdAt: serverTimestamp()
-      });
-
-      document.getElementById('caption').value = '';
-      document.getElementById('locationInput').value = '';
-      fileInput.value = '';
-      showToast("✅ Kabar Toko Dipublikasikan!");
-    } catch(err) {
-      alert("Gagal: " + err.message);
-    } finally {
-      publishBtn.disabled = false;
-      publishBtn.textContent = "Publikasikan";
-    }
+    // Tombol Hapus
+    el.querySelector('.btn-del').addEventListener('click', async () => {
+      if(confirm('Hapus produk ini secara permanen?')) {
+        await deleteDoc(doc(db, 'products', d.id));
+        toast('Produk dihapus');
+      }
+    });
   });
+});
 
-  const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-  onSnapshot(qPosts, (snap) => {
-    const postList = document.getElementById('postList');
-    document.getElementById('statPosts').textContent = snap.size;
+/* =========================================
+   KELOLA FEED (POSTINGAN)
+   ========================================= */
+const modalPost = $('#modalPost');
+const postForm = $('#postForm');
+let postMediaTemp = [];
 
-    if(snap.empty) {
-      postList.innerHTML = '<div style="font-size:12px; color:var(--muted);">Belum ada postingan kabar toko.</div>';
-      return;
-    }
+$('#btnAddPost').addEventListener('click', () => {
+  postForm.reset();
+  $('#postId').value = '';
+  $('#postMediaUrls').value = '';
+  $('#postMediaPreview').innerHTML = '';
+  $('#uploadPostStatus').textContent = '';
+  postMediaTemp = [];
+  $('#postFormTitle').textContent = 'Buat Postingan Baru';
+  modalPost.classList.add('open');
+});
+$('#closeModalPost').addEventListener('click', () => modalPost.classList.remove('open'));
 
-    postList.innerHTML = '';
-    snap.forEach((docSnap) => {
-      const d = docSnap.data();
+$('#postMediaFile').addEventListener('change', e => {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
       const div = document.createElement('div');
-      div.className = 'post-card';
-      div.innerHTML = `
-        <div class="post-top">
-          <span>Serabimu — Kabar Toko</span>
-          <button class="btn-del-post" data-id="${docSnap.id}" title="Hapus">✕</button>
-        </div>
-        <p style="font-size:13px; font-weight:300; color:var(--text); opacity:.9;">${d.caption || '(Tanpa teks)'}</p>
-      `;
-      postList.appendChild(div);
+      div.style.cssText = 'width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--border)';
+      div.innerHTML = file.type.startsWith('video/') 
+        ? `<video src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover"></video>` 
+        : `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+      $('#postMediaPreview').appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+postForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#btnSavePost');
+  const id = $('#postId').value;
+  const caption = $('#postCaption').value.trim();
+  const location = $('#postLocation').value.trim();
+  const files = $('#postMediaFile').files;
+  let existingMedia = JSON.parse($('#postMediaUrls').value || '[]');
+  
+  btn.disabled = true;
+  btn.textContent = 'Memproses...';
+  $('#uploadPostStatus').textContent = files.length > 0 ? 'Mengunggah media...' : '';
+
+  try {
+    let mediaUrls = [...existingMedia];
+    for(let i=0; i<files.length; i++) {
+      const uploaded = await uploadToCloudinary(files[i]);
+      mediaUrls.push(uploaded);
+    }
+
+    const data = { caption, location, mediaUrls };
+
+    if(id) {
+      await updateDoc(doc(db, 'posts', id), data);
+      toast('Postingan diperbarui!');
+    } else {
+      data.createdAt = serverTimestamp();
+      data.likes = 0;
+      await addDoc(collection(db, 'posts'), data);
+      toast('Postingan dipublikasikan!');
+    }
+    modalPost.classList.remove('open');
+  } catch(err) {
+    toast(err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Publikasikan';
+    $('#uploadPostStatus').textContent = '';
+  }
+});
+
+onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap => {
+  const list = $('#postList');
+  if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada postingan.</div>'; return; }
+  list.innerHTML = '';
+  snap.forEach(d => {
+    const p = d.data();
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <div class="list-info">
+        <div class="list-title">${p.caption || '(Tanpa Teks)'}</div>
+        <div class="list-sub">${p.mediaUrls ? p.mediaUrls.length : 0} media · ${p.location || 'Tanpa lokasi'}</div>
+      </div>
+      <div class="list-actions">
+        <button class="btn-icon btn-edit" data-id="${d.id}" title="Edit">✏️</button>
+        <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+      </div>`;
+    list.appendChild(el);
+
+    el.querySelector('.btn-edit').addEventListener('click', async () => {
+      const docSnap = await getDoc(doc(db, 'posts', d.id));
+      if(docSnap.exists()) {
+        const data = docSnap.data();
+        $('#postId').value = d.id;
+        $('#postCaption').value = data.caption || '';
+        $('#postLocation').value = data.location || '';
+        $('#postMediaUrls').value = JSON.stringify(data.mediaUrls || []);
+        postMediaTemp = data.mediaUrls || [];
+        $('#postMediaPreview').innerHTML = '';
+        postMediaTemp.forEach(m => {
+          const div = document.createElement('div');
+          div.style.cssText = 'width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--border)';
+          div.innerHTML = m.type === 'video' 
+            ? `<video src="${m.url}" style="width:100%;height:100%;object-fit:cover"></video>` 
+            : `<img src="${m.url}" style="width:100%;height:100%;object-fit:cover">`;
+          $('#postMediaPreview').appendChild(div);
+        });
+        $('#postFormTitle').textContent = 'Edit Postingan';
+        modalPost.classList.add('open');
+      }
     });
 
-    postList.querySelectorAll('.btn-del-post').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if(confirm('Hapus postingan ini?')) {
-          await deleteDoc(doc(db, "posts", btn.dataset.id));
-          showToast('Postingan dihapus');
-        }
-      });
+    el.querySelector('.btn-del').addEventListener('click', async () => {
+      if(confirm('Hapus postingan ini?')) {
+        await deleteDoc(doc(db, 'posts', d.id));
+        toast('Postingan dihapus');
+      }
     });
   });
-</script>
+});
 
+/* =========================================
+   PENGATURAN TOKO
+   ========================================= */
+const storeSettingsRef = doc(db, 'settings', 'store_hours');
+getDoc(storeSettingsRef).then(snap => {
+  if(snap.exists()) {
+    const d = snap.data();
+    if(d.open) $('#setOpen').value = d.open;
+    if(d.close) $('#setClose').value = d.close;
+    if(d.whatsapp) $('#setWa').value = d.whatsapp;
+  }
+});
+
+$('#saveSettings').addEventListener('click', async () => {
+  const open = $('#setOpen').value;
+  const close = $('#setClose').value;
+  const whatsapp = $('#setWa').value.trim();
+  const btn = $('#saveSettings');
+  
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    await setDoc(storeSettingsRef, { open, close, whatsapp }, { merge: true });
+    toast('Pengaturan berhasil disimpan!');
+  } catch(e) {
+    toast('Gagal: ' + e.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan Pengaturan';
+  }
+});
+
+/* =========================================
+   MODERASI ULASAN (KOMENTAR)
+   ========================================= */
+onSnapshot(query(collection(db, 'comments'), orderBy('createdAt', 'desc')), snap => {
+  const list = $('#reviewList');
+  if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada ulasan.</div>'; return; }
+  list.innerHTML = '';
+  snap.forEach(d => {
+    const c = d.data();
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <div class="list-info">
+        <div class="list-title" style="color:var(--soft)">${c.name || 'Anonim'}</div>
+        <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${c.text}"</div>
+      </div>
+      <div class="list-actions">
+        <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+      </div>`;
+    list.appendChild(el);
+
+    el.querySelector('.btn-del').addEventListener('click', async () => {
+      if(confirm('Hapus ulasan ini?')) {
+        await deleteDoc(doc(db, 'comments', d.id));
+        toast('Ulasan dihapus');
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>
