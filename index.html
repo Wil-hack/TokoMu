@@ -230,8 +230,11 @@
   }
   .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
 
-  footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);margin-top:20px;}
-  footer .brand{font-size:18px;margin-bottom:6px;}
+  footer{
+    text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:20px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  footer .brand{font-size:18px;margin-bottom:2px;}
   footer p{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;}
 </style>
 </head>
@@ -363,7 +366,22 @@
 <footer id="kontak">
   <div class="brand">Serabimu</div>
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
+  <!-- Tombol Akses Admin Tersembunyi di Footer -->
+  <button id="adminLoginTrigger" style="background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:11px; letter-spacing:1px; margin-top:4px; opacity:0.6; transition:.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">🔒 Admin Panel</button>
 </footer>
+
+<!-- Modal Login Admin PIN -->
+<div id="adminModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+  <div style="background:var(--card); padding:24px; border-radius:16px; border:1px solid var(--border); width:90%; max-width:320px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+    <h3 style="margin-bottom:8px; color:var(--accent-soft); font-family:var(--font-title); font-size:18px;">Masuk Mode Admin</h3>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN keamanan toko Anda</p>
+    <input type="password" id="adminPinInput" placeholder="••••" maxlength="6" style="width:100%; padding:12px; margin-bottom:14px; border-radius:10px; border:1px solid var(--border); background:var(--bg-2); color:var(--text); text-align:center; font-size:20px; letter-spacing:4px; outline:none;">
+    <div style="display:flex; gap:8px;">
+      <button id="cancelPinBtn" style="flex:1; padding:10px; background:var(--bg-2); color:var(--muted); border:1px solid var(--border); border-radius:8px; font-weight:500; cursor:pointer;">Batal</button>
+      <button id="submitPinBtn" style="flex:1; padding:10px; background:linear-gradient(100deg,var(--accent),var(--accent-soft)); color:var(--bg); border:none; border-radius:8px; font-weight:600; cursor:pointer;">Masuk</button>
+    </div>
+  </div>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -490,6 +508,7 @@
 </script>
 
 <script>
+  /* Script Ganti Tema */
   const dropdown = document.getElementById('themeDropdown');
   const themeBtn = document.getElementById('themeBtn');
   
@@ -509,6 +528,50 @@
       document.querySelectorAll('.theme-menu button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     });
+  });
+
+  /* Script Keamanan PIN Admin */
+  const ADMIN_PIN = "1234"; // Anda bisa mengganti PIN ini sesuai keinginan
+  const adminModal = document.getElementById('adminModal');
+  const adminLoginTrigger = document.getElementById('adminLoginTrigger');
+  const submitPinBtn = document.getElementById('submitPinBtn');
+  const cancelPinBtn = document.getElementById('cancelPinBtn');
+  const adminPinInput = document.getElementById('adminPinInput');
+
+  adminLoginTrigger.addEventListener('click', () => {
+    adminModal.style.display = 'flex';
+    adminPinInput.focus();
+  });
+
+  cancelPinBtn.addEventListener('click', () => {
+    adminModal.style.display = 'none';
+    adminPinInput.value = '';
+  });
+
+  submitPinBtn.addEventListener('click', verifyPin);
+  adminPinInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') verifyPin();
+  });
+
+  function verifyPin() {
+    if (adminPinInput.value === ADMIN_PIN) {
+      sessionStorage.setItem('isAdmin', 'true');
+      adminModal.style.display = 'none';
+      adminPinInput.value = '';
+      // Mengarahkan ke file admin.html yang kini sudah menyatu dalam satu repositori
+      window.location.href = "admin.html";
+    } else {
+      alert('PIN Admin Salah!');
+      adminPinInput.value = '';
+      adminPinInput.focus();
+    }
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === adminModal) {
+      adminModal.style.display = 'none';
+      adminPinInput.value = '';
+    }
   });
 </script>
 
