@@ -176,13 +176,12 @@
   .post-head .name{font-weight:600;font-size:14px;color:var(--text);}
   .post-head .time{font-size:11px;color:var(--muted);}
   .post .caption{padding:0 20px 12px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
+  .post-location{padding:0 20px 14px;font-size:12px;color:var(--accent-soft);display:flex;align-items:center;gap:6px;}
 
-  /* Media Grid di Postingan Pengunjung */
   .post-media-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:4px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#000;}
   .post-media-grid img, .post-media-grid video{width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;transition:.2s;}
   .post-media-grid img:hover{opacity:.9;}
 
-  /* Lightbox Overlay Fullscreen */
   #lightbox{
     position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999;
     display:none; align-items:center; justify-content:center; padding:20px;
@@ -194,6 +193,48 @@
     display:flex; align-items:center; justify-content:center; transition:.2s;
   }
   #lightboxClose:hover{background:rgba(255,255,255,0.4);}
+
+  .post-actions{
+    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted);
+  }
+  .btn-like{
+    background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
+    padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px; transition: .2s; font-weight: 500;
+  }
+  .btn-like:hover{ background: var(--border); color: var(--accent-soft); }
+  .btn-like.liked{ color: #ff4757; border-color: rgba(255,71,87,.3); }
+
+  .comments{padding:16px 20px 20px;background:color-mix(in srgb, var(--bg) 60%, transparent);}
+  .comments .c-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
+  
+  .comment{display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
+  .comment-row{display:flex; gap:10px; align-items:flex-start;}
+  .comment .avatar{width:28px;height:28px;font-size:12px; flex-shrink:0;}
+  .comment .bubble{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:8px 12px;flex:1;}
+  .comment .cname{font-size:12px;font-weight:600;color:var(--accent-soft);}
+  .comment .ctext{font-size:13px;font-weight:300;color:var(--text);opacity:.88;margin-top:2px;}
+  .comment .c-meta{display:flex; gap:10px; font-size:11px; margin-top:4px;}
+  .comment .btn-reply-trigger{background:none; border:none; color:var(--muted); cursor:pointer;}
+  .comment .btn-reply-trigger:hover{color:var(--accent-soft);}
+
+  .comment-replies{margin-left:34px; border-left:1px dashed var(--border); padding-left:10px; margin-top:6px;}
+
+  .comment-form{display:flex;gap:8px;margin-top:12px;}
+  .comment-form input{
+    flex:1;background:var(--bg-2);border:1px solid var(--border);
+    border-radius:999px;padding:8px 14px;color:var(--text);
+    font-family:var(--font-body);font-size:12.5px;outline:none;transition:.35s;
+  }
+  .comment-form input:focus{border-color:var(--accent-soft);box-shadow:0 0 0 2px var(--glow);}
+  .comment-form button{
+    background:linear-gradient(100deg,var(--accent),var(--accent-soft));
+    color:var(--bg);border:none;border-radius:999px;padding:0 16px;
+    font-family:var(--font-body);font-weight:600;font-size:11px;
+    letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.35s;
+  }
+  .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
 
   footer{
     text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:20px;
@@ -240,41 +281,19 @@
   <p>Kelezatan autentik dalam setiap gigitan. Resep warisan penuh cinta, manisnya pas di hati.</p>
 </div>
 
-<!-- KATALOG GESER -->
+<!-- KATALOG OTOMATIS DARI FIRESTORE -->
 <div class="catalog-wrap" id="katalog">
   <div class="section-title">
     <h2>Katalog Pilihan</h2>
     <p>Menu andalan siap memanjakan hari Anda (Geser kiri & kanan)</p>
   </div>
 
-  <div class="catalog-slider">
-    <div class="product-card">
-      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80" alt="Serabi Kuah Klasik" class="product-img">
-      <div class="product-body">
-        <div class="product-title">Serabi Kuah Klasik</div>
-        <div class="product-desc">Serabi lembut berpadu sempurna dengan gurihnya kuah santan dan manisnya gula aren asli. Dibuat fresh setiap hari.</div>
-        <div class="product-footer">
-          <span class="product-price">Rp 15.000</span>
-          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Serabi%20Kuah%20Klasik." target="_blank" class="btn-buy">Cicipi</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=900&q=80" alt="Koleksi Spesial" class="product-img">
-      <div class="product-body">
-        <div class="product-title">Paket Hantaran Spesial</div>
-        <div class="product-desc">Kotak hantaran eksklusif berisi ragam varian rasa terbaik untuk dibagikan kepada orang terkasih.</div>
-        <div class="product-footer">
-          <span class="product-price">Rp 75.000</span>
-          <a href="https://wa.me/628xxxxxxxxxx?text=Halo%2C%20saya%20tertarik%20pesan%20Paket%20Hantaran%20Spesial." target="_blank" class="btn-buy">Pesan</a>
-        </div>
-      </div>
-    </div>
+  <div class="catalog-slider" id="dynamicCatalogSlider">
+    <div style="font-size: 13px; color: var(--muted); text-align: center; width:100%;">Memuat katalog menu...</div>
   </div>
 </div>
 
-<!-- FEED DINAMIS DARI ADMIN -->
+<!-- FEED DINAMIS -->
 <div class="feed-wrap" id="feed">
   <div class="section-title" style="margin-bottom: 24px;">
     <h2>Kabar Toko</h2>
@@ -286,7 +305,7 @@
   </div>
 </div>
 
-<!-- LIGHTBOX MODAL FULLSCREEN -->
+<!-- LIGHTBOX -->
 <div id="lightbox">
   <button id="lightboxClose">✕</button>
   <div id="lightboxContent"></div>
@@ -313,8 +332,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-  import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, increment, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
@@ -328,6 +346,36 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // ====== 1. MEMUAT KATALOG PRODUK DINAMIS ======
+  const catalogSlider = document.getElementById('dynamicCatalogSlider');
+  const qProducts = query(collection(db, "products"), orderBy("createdAt", "desc"));
+
+  onSnapshot(qProducts, (snapshot) => {
+    catalogSlider.innerHTML = '';
+    if (snapshot.empty) {
+      catalogSlider.innerHTML = '<div style="font-size: 13px; color: var(--muted); text-align: center; width:100%;">Belum ada menu di katalog.</div>';
+      return;
+    }
+    snapshot.forEach((docSnap) => {
+      const p = docSnap.data();
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80'}" alt="${p.title}" class="product-img">
+        <div class="product-body">
+          <div class="product-title">${p.title}</div>
+          <div class="product-desc">${p.description}</div>
+          <div class="product-footer">
+            <span class="product-price">${p.price}</span>
+            <a href="https://wa.me/628xxxxxxxxxx?text=${encodeURIComponent('Halo, saya berminat pesan ' + p.title)}" target="_blank" class="btn-buy">Cicipi</a>
+          </div>
+        </div>
+      `;
+      catalogSlider.appendChild(card);
+    });
+  });
+
+  // ====== 2. MEMUAT POSTINGAN FEED ======
   const publicFeedList = document.getElementById('publicFeedList');
   const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
@@ -340,41 +388,15 @@
 
     snapshot.forEach((docSnap) => {
       const d = docSnap.data();
+      const postId = docSnap.id;
       let mediaHtml = '';
       if(d.mediaUrls && d.mediaUrls.length > 0){
         mediaHtml = `<div class="post-media-grid">`;
         d.mediaUrls.forEach(m => {
-          if(m.type === 'video') {
-            mediaHtml += `<video src="${m.url}" controls class="zoomable-media"></video>`;
-          } else {
-            mediaHtml += `<img src="${m.url}" alt="Foto Postingan" class="zoomable-media">`;
-          }
+          if(m.type === 'video') mediaHtml += `<video src="${m.url}" controls class="zoomable-media"></video>`;
+          else mediaHtml += `<img src="${m.url}" alt="Post Media" class="zoomable-media">`;
         });
         mediaHtml += `</div>`;
-      }
-
-      // Format lokasi menjadi tombol tautan rute Google Maps yang interaktif
-      let locationHtml = '';
-      if(d.location) {
-        const isCoordinates = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(d.location.trim());
-        let mapsUrl = '';
-        let displayLocText = '';
-
-        if (isCoordinates) {
-          mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(d.location.trim())}`;
-          displayLocText = '📍 Petunjuk Rute Google Maps';
-        } else {
-          mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.location)}`;
-          displayLocText = `📍 ${d.location}`;
-        }
-
-        locationHtml = `
-          <div style="padding: 0 20px 14px;">
-            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; color: var(--accent-soft); text-decoration: none; font-weight: 500; font-size: 12.5px; background: color-mix(in srgb, var(--accent) 15%, transparent); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .2s;">
-              ${displayLocText} ↗
-            </a>
-          </div>
-        `;
       }
 
       const postDiv = document.createElement('div');
@@ -388,15 +410,142 @@
           </div>
         </div>
         <p class="caption">${d.caption || ''}</p>
-        ${locationHtml}
+        ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
         ${mediaHtml}
+        
+        <div class="post-actions">
+          <button class="btn-like" data-id="${postId}">
+            ❤️ <span class="like-count">${d.likes || 0}</span> Suka
+          </button>
+        </div>
+
+        <div class="comments">
+          <div class="c-head">Ulasan & Diskusi</div>
+          <div class="comment-list-inner" id="comments-${postId}">
+            <div style="font-size:11px; color:var(--muted);">Memuat ulasan...</div>
+          </div>
+          
+          <div class="comment-form">
+            <input type="text" placeholder="Tulis komentar..." id="input-comment-${postId}">
+            <button class="btn-send-comment" data-id="${postId}">Kirim</button>
+          </div>
+        </div>
       `;
       publicFeedList.appendChild(postDiv);
+
+      // Event Tombol Like
+      postDiv.querySelector('.btn-like').addEventListener('click', async () => {
+        const postRef = doc(db, "posts", postId);
+        await updateDoc(postRef, { likes: increment(1) });
+      });
+
+      // Event Kirim Komentar
+      postDiv.querySelector('.btn-send-comment').addEventListener('click', () => sendComment(postId));
+      postDiv.querySelector(`#input-comment-${postId}`).addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') sendComment(postId);
+      });
+
+      // Load Komentar Post
+      loadCommentsForPost(postId);
     });
 
     setupLightbox();
   });
 
+  // ====== 3. FITUR KOMENTAR & BALASAN ======
+  async function sendComment(postId) {
+    const inputEl = document.getElementById(`input-comment-${postId}`);
+    const sendBtn = inputEl.nextElementSibling;
+    const text = inputEl.value.trim();
+    const parentId = sendBtn.dataset.parentId || "";
+
+    if (!text) return;
+
+    let userName = localStorage.getItem('serabimu_user_name');
+    if (!userName) {
+      userName = prompt("Masukkan nama Anda untuk berkomentar:") || "Pelanggan Setia";
+      localStorage.setItem('serabimu_user_name', userName);
+    }
+
+    try {
+      await addDoc(collection(db, "comments"), {
+        postId: postId,
+        parentId: parentId,
+        name: userName,
+        text: text,
+        createdAt: serverTimestamp()
+      });
+      inputEl.value = "";
+      delete sendBtn.dataset.parentId;
+      inputEl.placeholder = "Tulis komentar...";
+    } catch (err) {
+      alert("Gagal mengirim komentar: " + err.message);
+    }
+  }
+
+  function loadCommentsForPost(postId) {
+    const container = document.getElementById(`comments-${postId}`);
+    const qC = query(collection(db, "comments"), where("postId", "==", postId), orderBy("createdAt", "asc"));
+
+    onSnapshot(qC, (snap) => {
+      container.innerHTML = '';
+      if (snap.empty) {
+        container.innerHTML = '<div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Belum ada komentar.</div>';
+        return;
+      }
+
+      const commentsMap = {};
+      const rootComments = [];
+
+      snap.forEach(docSnap => {
+        const c = { id: docSnap.id, ...docSnap.data() };
+        commentsMap[c.id] = c;
+        if (!c.parentId) rootComments.push(c);
+      });
+
+      rootComments.forEach(rc => {
+        container.appendChild(renderCommentTree(rc, commentsMap, postId));
+      });
+    });
+  }
+
+  function renderCommentTree(comment, map, postId) {
+    const mainDiv = document.createElement('div');
+    mainDiv.className = 'comment';
+    
+    mainDiv.innerHTML = `
+      <div class="comment-row">
+        <div class="avatar">${(comment.name || 'A')[0].toUpperCase()}</div>
+        <div class="bubble">
+          <div class="cname">${comment.name || 'Anonim'}</div>
+          <div class="ctext">${comment.text}</div>
+          <div class="c-meta">
+            <button class="btn-reply-trigger" data-id="${comment.id}">Balas</button>
+            <span style="color:var(--muted);">${timeAgo(comment.createdAt)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="comment-replies" id="replies-${comment.id}"></div>
+    `;
+
+    mainDiv.querySelector('.btn-reply-trigger').addEventListener('click', () => {
+      const inputEl = document.getElementById(`input-comment-${postId}`);
+      const sendBtn = inputEl.nextElementSibling;
+      inputEl.placeholder = `Membalas ${comment.name}...`;
+      inputEl.focus();
+      sendBtn.dataset.parentId = comment.id;
+    });
+
+    const repliesContainer = mainDiv.querySelector(`#replies-${comment.id}`);
+    const replies = Object.values(map).filter(item => item.parentId === comment.id);
+    replies.forEach(rep => {
+      repliesContainer.appendChild(renderCommentTree(rep, map, postId));
+    });
+
+    return mainDiv;
+  }
+
+  // ====== LIGHTBOX & WAKTU ======
   const lightbox = document.getElementById('lightbox');
   const lightboxContent = document.getElementById('lightboxContent');
   const lightboxClose = document.getElementById('lightboxClose');
@@ -421,17 +570,8 @@
     });
   }
 
-  lightboxClose.addEventListener('click', () => {
-    lightbox.style.display = 'none';
-    lightboxContent.innerHTML = '';
-  });
-
-  lightbox.addEventListener('click', (e) => {
-    if(e.target === lightbox){
-      lightbox.style.display = 'none';
-      lightboxContent.innerHTML = '';
-    }
-  });
+  lightboxClose.addEventListener('click', () => { lightbox.style.display = 'none'; lightboxContent.innerHTML = ''; });
+  lightbox.addEventListener('click', (e) => { if(e.target === lightbox){ lightbox.style.display = 'none'; lightboxContent.innerHTML = ''; } });
 
   const timeAgo = (ts) => {
     if(!ts) return "baru saja";
@@ -443,18 +583,11 @@
     return Math.floor(diff/86400) + " hari lalu";
   };
 
+  // ====== TEMA & PIN ADMIN ======
   const dropdown = document.getElementById('themeDropdown');
   const themeBtn = document.getElementById('themeBtn');
-  
-  themeBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('open');
-  });
-
-  document.addEventListener('click', (e) => {
-    if(!dropdown.contains(e.target)) dropdown.classList.remove('open');
-  });
-
+  themeBtn.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', (e) => { if(!dropdown.contains(e.target)) dropdown.classList.remove('open'); });
   document.querySelectorAll('.theme-menu button').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -471,20 +604,10 @@
   const cancelPinBtn = document.getElementById('cancelPinBtn');
   const adminPinInput = document.getElementById('adminPinInput');
 
-  adminLoginTrigger.addEventListener('click', () => {
-    adminModal.style.display = 'flex';
-    adminPinInput.focus();
-  });
-
-  cancelPinBtn.addEventListener('click', () => {
-    adminModal.style.display = 'none';
-    adminPinInput.value = '';
-  });
-
+  adminLoginTrigger.addEventListener('click', () => { adminModal.style.display = 'flex'; adminPinInput.focus(); });
+  cancelPinBtn.addEventListener('click', () => { adminModal.style.display = 'none'; adminPinInput.value = ''; });
   submitPinBtn.addEventListener('click', verifyPin);
-  adminPinInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') verifyPin();
-  });
+  adminPinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') verifyPin(); });
 
   function verifyPin() {
     if (adminPinInput.value === ADMIN_PIN) {
@@ -498,13 +621,6 @@
       adminPinInput.focus();
     }
   }
-
-  window.addEventListener('click', (e) => {
-    if (e.target === adminModal) {
-      adminModal.style.display = 'none';
-      adminPinInput.value = '';
-    }
-  });
 </script>
 
 </body>
