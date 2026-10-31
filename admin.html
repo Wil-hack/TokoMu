@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -225,10 +224,12 @@ textarea{resize:vertical;min-height:80px}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// 1. CEK KEAMANAN: Apakah sudah login?
-if(sessionStorage.getItem('isAdmin') !== 'true') {
-  alert('Akses ditolak. Silakan login dari halaman utama.');
-  window.location.href = 'index.html';
+// ==========================================
+// 1. CEK KEAMANAN (MENGGUNAKAN LOCALSTORAGE)
+// ==========================================
+if(localStorage.getItem('isAdmin') !== 'true') {
+  alert('Anda belum login sebagai admin.');
+  window.location.replace('index.html');
   throw new Error('Not logged in');
 }
 
@@ -258,7 +259,7 @@ const fmt = n => 'Rp ' + (Number(n)||0).toLocaleString('id-ID');
 
 // 2. LOGOUT
 $('#logoutBtn').addEventListener('click', () => {
-  sessionStorage.removeItem('isAdmin');
+  localStorage.removeItem('isAdmin'); // Hapus status login
   window.location.href = 'index.html';
 });
 
