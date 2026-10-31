@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Serabimu Kuliner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Leaflet CSS untuk Peta Interaktif -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
     --bg:#0a0908; --bg-2:#0f0e0c; --card:#161412; --card-2:#1c1a17;
@@ -51,6 +53,12 @@
   .composer textarea::placeholder{color:#5f5a52;}
   .composer-divider{height:1px;background:var(--border);margin:10px 0 16px;}
 
+  /* Bagian Peta Pemilihan Lokasi */
+  .map-picker-section{margin-bottom:16px;}
+  .map-picker-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;}
+  #map{width:100%;height:180px;border-radius:12px;border:1px solid var(--border);margin-bottom:8px;}
+  .location-info{font-size:11.5px;color:var(--champagne-soft);background:var(--bg-2);padding:6px 10px;border-radius:6px;border:1px solid var(--border-soft);}
+
   .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
   .btn-upload{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);
     border:1px solid var(--border-soft);color:var(--champagne-soft);border-radius:12px;
@@ -65,7 +73,6 @@
   .btn-publish:hover{filter:brightness(1.1);transform:translateY(-1px);}
   .btn-publish:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 
-  /* Area Preview Multi Media */
   .preview-container{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
   .preview-item{width:90px;height:90px;border-radius:10px;overflow:hidden;border:1px solid var(--border);position:relative;background:#000;}
   .preview-item img, .preview-item video{width:100%;height:100%;object-fit:cover;}
@@ -90,8 +97,8 @@
   .post-head .menu button:hover{border-color:rgba(212,188,138,.4);color:var(--champagne-soft);}
   .post-head .menu button.del:hover{border-color:rgba(201,107,90,.5);color:var(--danger);}
   .post .caption{padding:0 22px 16px;font-size:14.5px;font-weight:300;color:#e8e2d8;}
-  
-  /* Media Grid di Postingan */
+  .post-location{padding:0 22px 12px;font-size:12px;color:var(--champagne-soft);display:flex;align-items:center;gap:6px;}
+
   .post-media-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:4px;border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);background:#000;}
   .post-media-grid img, .post-media-grid video{width:100%;height:220px;object-fit:cover;display:block;}
 
@@ -142,7 +149,7 @@
 
 <div class="layout">
   <div class="feed-col">
-    <!-- Buat Postingan / Ulasan -->
+    <!-- Buat Postingan -->
     <div class="composer">
       <div class="composer-head">
         <div class="avatar">S</div>
@@ -150,6 +157,14 @@
       </div>
       <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
       <div class="composer-divider"></div>
+
+      <!-- Peta Pilih Lokasi -->
+      <div class="map-picker-section">
+        <span class="map-picker-label">📍 Pin Lokasi (Geser peta atau klik pada titik lokasi):</span>
+        <div id="map"></div>
+        <div class="location-info" id="locationInfo">Lokasi terpilih: Lapangan Nguling, Pasuruan</div>
+      </div>
+
       <div class="composer-tools">
         <label class="btn-upload" for="fileInput">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -172,7 +187,7 @@
   </div>
 
   <div class="side-col">
-    <!-- Jam Operasional Toko -->
+    <!-- Jam Operasional -->
     <div class="side-card">
       <h3>Jam Operasional</h3>
       <p class="sub">Atur status toko otomatis</p>
@@ -194,7 +209,7 @@
       <div id="commentList"><div class="empty-state">Memuat ulasan...</div></div>
     </div>
 
-    <!-- Ringkasan Statistik -->
+    <!-- Statistik -->
     <div class="side-card">
       <h3>Ringkasan</h3>
       <p class="sub">Statistik toko Anda</p>
@@ -214,6 +229,8 @@
 
 <div class="toast" id="toast">✅ Berhasil</div>
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
   const CLOUDINARY_CLOUD_NAME = "ywxfumtm";
   const CLOUDINARY_UPLOAD_PRESET = "Serabimu";
@@ -234,6 +251,52 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // ====== INISIALISASI PETA INTERAKTIF (Leaflet) ======
+  // Koordinat awal diset di sekitar Nguling, Pasuruan (-7.65, 113.03)
+  let selectedLat = -7.6543;
+  let selectedLng = 113.0312;
+  let selectedLocationName = "Lapangan Nguling, Pasuruan";
+
+  const map = L.map('map').setView([selectedLat, selectedLng], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  let marker = L.marker([selectedLat, selectedLng], {draggable: true}).addTo(map);
+
+  // Fungsi update info saat marker digeser atau peta diklik
+  function updateLocationData(lat, lng) {
+    selectedLat = lat;
+    selectedLng = lng;
+    // Menggunakan reverse geocoding sederhana via Nominatim API agar otomatis mendeteksi nama daerah/kota
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+      .then(res => res.json())
+      .then(data => {
+        if(data && data.display_name){
+          const parts = data.display_name.split(',');
+          selectedLocationName = parts.slice(0, 3).join(',').trim();
+        } else {
+          selectedLocationName = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+        }
+        document.getElementById('locationInfo').textContent = `Lokasi terpilih: ${selectedLocationName}`;
+      }).catch(() => {
+        selectedLocationName = `Lokasi Koordinat (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+        document.getElementById('locationInfo').textContent = `Lokasi terpilih: ${selectedLocationName}`;
+      });
+  }
+
+  map.on('click', (e) => {
+    marker.setLatLng(e.latlng);
+    updateLocationData(e.latlng.lat, e.latlng.lng);
+  });
+
+  marker.on('dragend', (e) => {
+    const pos = marker.getLatLng();
+    updateLocationData(pos.lat, pos.lng);
+  });
+
+  // ====== FORM UPLOAD & PUBLISH ======
   const fileInput = document.getElementById('fileInput');
   const previewContainer = document.getElementById('previewContainer');
   const publishBtn = document.getElementById('publishBtn');
@@ -242,14 +305,11 @@
   const commentList = document.getElementById('commentList');
   const toast = document.getElementById('toast');
   
-  let selectedFiles = []; // Array untuk menampung banyak file (foto/video)
+  let selectedFiles = [];
 
-  // ====== PILIH BANYAK FOTO / VIDEO ======
   fileInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
-    files.forEach(file => {
-      selectedFiles.push(file);
-    });
+    files.forEach(file => selectedFiles.push(file));
     renderPreviews();
   });
 
@@ -277,23 +337,19 @@
       previewContainer.appendChild(div);
     });
 
-    // Tombol hapus item preview
     previewContainer.querySelectorAll('.remove-media').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const idx = parseInt(e.target.dataset.index);
-        selectedFiles.splice(idx, 1);
+        selectedFiles.splice(parseInt(e.target.dataset.index), 1);
         renderPreviews();
       });
     });
   }
 
-  // ====== UPLOAD KE CLOUDINARY (Mendukung Foto & Video) ======
   async function uploadToCloudinary(file){
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
     
-    // Cloudinary menggunakan endpoint 'auto' agar bisa mendeteksi gambar atau video secara otomatis
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
       method: 'POST',
       body: formData
@@ -303,7 +359,6 @@
     return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
   }
 
-  // ====== PUBLIKASIKAN POSTINGAN DENGAN MULTI MEDIA ======
   publishBtn.addEventListener('click', async () => {
     const caption = captionEl.value.trim();
     if(!caption && selectedFiles.length === 0){
@@ -321,14 +376,15 @@
 
       await addDoc(collection(db, "posts"), {
         caption: caption,
-        mediaUrls: mediaUrls, // Menyimpan array berisi banyak foto/video
+        mediaUrls: mediaUrls,
+        location: selectedLocationName,
         createdAt: serverTimestamp()
       });
       captionEl.value = '';
       selectedFiles = [];
       renderPreviews();
       fileInput.value = '';
-      showToast('✅ Postingan berhasil dipublikasikan');
+      showToast('✅ Postingan & lokasi berhasil dipublikasikan');
     } catch(err){
       showToast('❌ ' + err.message, true);
     } finally {
@@ -337,7 +393,7 @@
     }
   });
 
-  // ====== PENGATURAN JAM OPERASIONAL ======
+  // Jam Operasional & Realtime Listeners
   const saveTimeBtn = document.getElementById('saveTimeBtn');
   const openTimeEl = document.getElementById('openTime');
   const closeTimeEl = document.getElementById('closeTime');
@@ -353,60 +409,43 @@
 
   saveTimeBtn.addEventListener('click', async () => {
     try {
-      await setDoc(storeSettingsRef, {
-        open: openTimeEl.value,
-        close: closeTimeEl.value
-      });
-      showToast('✅ Jam operasional berhasil disimpan');
+      await setDoc(storeSettingsRef, { open: openTimeEl.value, close: closeTimeEl.value });
+      showToast('✅ Jam operasional disimpan');
     } catch(err) {
-      showToast('❌ Gagal menyimpan: ' + err.message, true);
+      showToast('❌ Gagal: ' + err.message, true);
     }
   });
 
-  // ====== TAMPILKAN POSTINGAN MULTI MEDIA DI ADMIN ======
   const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
   onSnapshot(postsQuery, (snap) => {
     postList.innerHTML = "";
     document.getElementById('postCount').textContent = snap.size + " postingan";
     document.getElementById('statPosts').textContent = snap.size;
     if(snap.empty){
-      postList.innerHTML = '<div class="empty-state">Belum ada postingan. Mulai dengan membuat yang pertama.</div>';
+      postList.innerHTML = '<div class="empty-state">Belum ada postingan.</div>';
       return;
     }
     snap.forEach((docSnap) => {
       const d = docSnap.data();
-      
-      // Render media grid (bisa gambar atau video, mendukung banyak file)
       let mediaHtml = '';
       if(d.mediaUrls && d.mediaUrls.length > 0){
         mediaHtml = `<div class="post-media-grid">`;
         d.mediaUrls.forEach(m => {
-          if(m.type === 'video'){
-            mediaHtml += `<video src="${m.url}" controls></video>`;
-          } else {
-            mediaHtml += `<img src="${m.url}" alt="Postingan">`;
-          }
+          if(m.type === 'video') mediaHtml += `<video src="${m.url}" controls></video>`;
+          else mediaHtml += `<img src="${m.url}" alt="Post">`;
         });
         mediaHtml += `</div>`;
-      } else if(d.imageUrl){
-        // Kompatibilitas mundur jika ada postingan lama berformat 1 foto
-        mediaHtml = `<div class="post-media-grid"><img src="${d.imageUrl}" alt="Postingan"></div>`;
       }
-
       const el = document.createElement('div');
       el.className = 'post';
       el.innerHTML = `
         <div class="post-head">
           <div class="avatar">S</div>
-          <div>
-            <div class="name">Serabimu</div>
-            <div class="time">${timeAgo(d.createdAt)}</div>
-          </div>
-          <div class="menu">
-            <button class="del" data-id="${docSnap.id}" title="Hapus">✕</button>
-          </div>
+          <div><div class="name">Serabimu</div><div class="time">${timeAgo(d.createdAt)}</div></div>
+          <div class="menu"><button class="del" data-id="${docSnap.id}">✕</button></div>
         </div>
         <p class="caption">${d.caption || ''}</p>
+        ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
         ${mediaHtml}
       `;
       postList.appendChild(el);
@@ -422,44 +461,29 @@
     });
   });
 
-  // ====== MODERASI ULASAN / KOMENTAR ======
   const commentsQuery = query(collection(db, "comments"), orderBy("createdAt", "desc"));
   onSnapshot(commentsQuery, (snap) => {
     document.getElementById('statComments').textContent = snap.size;
-    if(snap.empty){
-      commentList.innerHTML = '<div class="empty-state">Belum ada ulasan.</div>';
-      return;
-    }
+    if(snap.empty){ commentList.innerHTML = '<div class="empty-state">Belum ada ulasan.</div>'; return; }
     commentList.innerHTML = "";
     snap.forEach((c) => {
       const d = c.data();
       const div = document.createElement('div');
       div.className = 'comment-item';
       div.innerHTML = `
-        <div class="c-top">
-          <div class="avatar">${(d.name||'A')[0].toUpperCase()}</div>
-          <span class="c-name">${d.name || 'Anonim'}</span>
-          <span class="c-time">${timeAgo(d.createdAt)}</span>
-        </div>
+        <div class="c-top"><div class="avatar">${(d.name||'A')[0].toUpperCase()}</div><span class="c-name">${d.name || 'Anonim'}</span><span class="c-time">${timeAgo(d.createdAt)}</span></div>
         <div class="c-text">${d.text}</div>
-        <div class="c-actions">
-          <button class="del" data-id="${c.id}">Hapus</button>
-        </div>
+        <div class="c-actions"><button class="del" data-id="${c.id}">Hapus</button></div>
       `;
-      commentList.uploadContent ? '' : commentList.appendChild(div); // Aman
+      commentList.appendChild(div);
     });
-
     commentList.querySelectorAll('.del').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if(confirm('Hapus ulasan ini?')){
-          await deleteDoc(doc(db, "comments", btn.dataset.id));
-          showToast('Ulasan dihapus');
-        }
+        if(confirm('Hapus ulasan?')){ await deleteDoc(doc(db, "comments", btn.dataset.id)); showToast('Ulasan dihapus'); }
       });
     });
   });
 
-  // ====== UTILITAS ======
   const timeAgo = (ts) => {
     if(!ts) return "baru saja";
     const d = ts.toDate ? ts.toDate() : new Date(ts);
@@ -472,9 +496,7 @@
 
   const showToast = (msg, isError) => {
     toast.textContent = msg;
-    toast.style.background = isError
-      ? 'linear-gradient(100deg,#c96b5a,#e08a7a)'
-      : 'linear-gradient(100deg,var(--champagne),var(--champagne-soft))';
+    toast.style.background = isError ? 'linear-gradient(100deg,#c96b5a,#e08a7a)' : 'linear-gradient(100deg,var(--champagne),var(--champagne-soft))';
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2600);
   };
