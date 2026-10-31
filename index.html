@@ -6,6 +6,12 @@
 <title>Serabimu — Kuliner Autentik</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#0a0a0b">
+
+<!-- ===== KONFIGURASI PWA (APLIKASI) ===== -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://firestore.googleapis.com">
@@ -988,7 +994,7 @@ function verifyPin() {
   const pin = $('#adminPinInput').value.trim();
   if(pin === '7454lalapan') {
     localStorage.setItem('isAdmin', 'true'); 
-    alert('PIN Benar! Membuka Admin...'); 
+    // alert('PIN Benar! Membuka Admin...'); // Bisa dihapus jika sudah lancar
     window.location.replace('admin.html'); 
   } else {
     alert('PIN SALAH! Yang Anda ketik: ' + pin);
@@ -1001,6 +1007,21 @@ $('#adminPinInput').addEventListener('keypress', e => { if(e.key === 'Enter') ve
 /* ===== INIT ===== */
 updateCartBadge();
 renderCart();
+</script>
+
+<!-- ===== SCRIPT PENDAFTAR PWA (APLIKASI) ===== -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(registration => {
+          console.log('PWA Service Worker berhasil didaftarkan!', registration.scope);
+        })
+        .catch(err => {
+          console.log('PWA Service Worker gagal:', err);
+        });
+    });
+  }
 </script>
 
 </body>
