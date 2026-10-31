@@ -51,11 +51,14 @@
   .composer textarea::placeholder{color:#5f5a52;}
   .composer-divider{height:1px;background:var(--border);margin:10px 0 16px;}
 
-  /* Input Google Maps Lokasi */
+  /* Input Lokasi & Tombol GPS */
   .map-section{margin-bottom:16px;}
   .map-section label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;}
-  .map-section input{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;}
+  .map-row{display:flex;gap:8px;}
+  .map-section input{flex:1;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;}
   .map-section input:focus{border-color:var(--champagne-soft);}
+  .btn-gps{background:var(--champagne);color:#0a0908;border:none;border-radius:10px;padding:0 14px;font-weight:600;font-size:12px;cursor:pointer;white-space:nowrap;transition:.2s;}
+  .btn-gps:hover{filter:brightness(1.1);}
 
   .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
   .btn-upload{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);
@@ -159,10 +162,13 @@
       <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
       <div class="composer-divider"></div>
 
-      <!-- Input Lokasi Google Maps -->
+      <!-- Input Lokasi & Tombol GPS -->
       <div class="map-section">
-        <label>📍 Lokasi Google Maps (Tulis nama tempat atau link Google Maps):</label>
-        <input type="text" id="locationInput" placeholder="Contoh: Lapangan Nguling, Pasuruan">
+        <label>📍 Lokasi Jualan / Tag Tempat:</label>
+        <div class="map-row">
+          <input type="text" id="locationInput" placeholder="Contoh: Lapangan Nguling, Pasuruan">
+          <button type="button" id="btnGetGPS" class="btn-gps">📡 Share Loc GPS</button>
+        </div>
       </div>
 
       <div class="composer-tools">
@@ -191,7 +197,6 @@
   </div>
 
   <div class="side-col">
-    <!-- Jam Operasional -->
     <div class="side-card">
       <h3>Jam Operasional</h3>
       <p class="sub">Atur status toko otomatis</p>
@@ -206,14 +211,12 @@
       </div>
     </div>
 
-    <!-- Moderasi Komentar -->
     <div class="side-card">
       <h3>Moderasi Ulasan</h3>
       <p class="sub">Komentar terbaru dari pelanggan</p>
       <div id="commentList"><div class="empty-state">Memuat ulasan...</div></div>
     </div>
 
-    <!-- Ringkasan -->
     <div class="side-card">
       <h3>Ringkasan</h3>
       <p class="sub">Statistik toko Anda</p>
@@ -259,6 +262,7 @@
   const cancelEditBtn = document.getElementById('cancelEditBtn');
   const captionEl = document.getElementById('caption');
   const locationInput = document.getElementById('locationInput');
+  const btnGetGPS = document.getElementById('btnGetGPS');
   const postList = document.getElementById('postList');
   const commentList = document.getElementById('commentList');
   const toast = document.getElementById('toast');
@@ -266,8 +270,36 @@
   const formSubtitle = document.getElementById('formSubtitle');
 
   let selectedFiles = [];
-  let editingPostId = null; // Menyimpan ID jika sedang mode edit
-  let existingMediaUrls = []; // Menyimpan media lama saat edit
+  let editingPostId = null;
+  let existingMediaUrls = [];
+
+  // Fitur Ambil Lokasi GPS Otomatis
+  btnGetGPS.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      showToast('❌ Browser/HP Anda tidak mendukung GPS', true);
+      return;
+    }
+    btnGetGPS.textContent = '⏳ Mendeteksi...';
+    btnGetGPS.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        locationInput.value = `${lat},${lng}`;
+        btnGetGPS.textContent = '✅ Berhasil';
+        btnGetGPS.disabled = false;
+        showToast('✅ Lokasi GPS berhasil dikunci');
+        setTimeout(() => { btnGetGPS.textContent = '📡 Share Loc GPS'; }, 2000);
+      },
+      (err) => {
+        showToast('❌ Gagal mengambil GPS. Pastikan izin aktif.', true);
+        btnGetGPS.textContent = '📡 Share Loc GPS';
+        btnGetGPS.disabled = false;
+      },
+      { enableHighAccuracy: true }
+    );
+  });
 
   fileInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
@@ -283,7 +315,6 @@
     }
     previewContainer.style.display = 'flex';
 
-    // Tampilkan media lama jika sedang edit
     existingMediaUrls.forEach((m, index) => {
       const div = document.createElement('div');
       div.className = 'preview-item';
@@ -291,7 +322,6 @@
       previewContainer.appendChild(div);
     });
 
-    // Tampilkan media baru yang dipilih
     selectedFiles.forEach((file, index) => {
       const reader = new FileReader();
       const div = document.createElement('div');
@@ -323,7 +353,6 @@
     return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
   }
 
-  // Tombol Publikasikan / Simpan Perubahan
   publishBtn.addEventListener('click', async () => {
     const caption = captionEl.value.trim();
     const location = locationInput.value.trim();
@@ -342,22 +371,11 @@
       }
 
       if(editingPostId){
-        // Mode Update / Edit
-        await updateDoc(doc(db, "posts", editingPostId), {
-          caption: caption,
-          location: location,
-          mediaUrls: mediaUrls
-        });
+        await updateDoc(doc(db, "posts", editingPostId), { caption, location, mediaUrls });
         showToast('✅ Postingan berhasil diperbarui');
         resetForm();
       } else {
-        // Mode Buat Baru
-        await addDoc(collection(db, "posts"), {
-          caption: caption,
-          location: location,
-          mediaUrls: mediaUrls,
-          createdAt: serverTimestamp()
-        });
+        await addDoc(collection(db, "posts"), { caption, location, mediaUrls, createdAt: serverTimestamp() });
         showToast('✅ Postingan berhasil dipublikasikan');
         resetForm();
       }
@@ -384,7 +402,6 @@
 
   cancelEditBtn.onclick = resetForm;
 
-  // Render Postingan di Admin (Dilengkapi Tombol Edit & Hapus)
   const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
   onSnapshot(postsQuery, (snap) => {
     postList.innerHTML = "";
@@ -423,7 +440,6 @@
       postList.appendChild(el);
     });
 
-    // Event Klik Tombol Edit
     postList.querySelectorAll('.menu .edit').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = btn.dataset.id;
@@ -445,7 +461,6 @@
       });
     });
 
-    // Event Klik Tombol Hapus
     postList.querySelectorAll('.menu .del').forEach(btn => {
       btn.addEventListener('click', async () => {
         if(confirm('Hapus postingan ini?')){
@@ -456,7 +471,6 @@
     });
   });
 
-  // Jam Operasional & Komentar
   const saveTimeBtn = document.getElementById('saveTimeBtn');
   const openTimeEl = document.getElementById('openTime');
   const closeTimeEl = document.getElementById('closeTime');
