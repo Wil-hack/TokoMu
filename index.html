@@ -76,12 +76,24 @@
     letter-spacing:3px; color:var(--muted); -webkit-text-fill-color:var(--muted);
     margin-left:6px; text-transform:uppercase; vertical-align:middle;
   }
-  nav{display:flex; gap:16px; align-items:center;}
+  nav{display:flex; gap:14px; align-items:center;}
   nav a{
     color:var(--muted); text-decoration:none; font-size:11.5px;
     letter-spacing:1px; text-transform:uppercase; transition:color .35s; font-weight:500;
   }
   nav a:hover{color:var(--accent-soft);}
+
+  /* Store Status Badge */
+  .store-status-badge{
+    display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600;
+    padding:4px 12px; border-radius:999px; border:1px solid var(--border); background:var(--bg-2);
+    letter-spacing:.5px; text-transform:uppercase;
+  }
+  .store-status-badge .dot{ width:8px; height:8px; border-radius:50%; background:#8a9a92; }
+  .store-status-badge.open{ color:var(--accent-soft); border-color:var(--border); }
+  .store-status-badge.open .dot{ background:#7fb88a; box-shadow:0 0 8px #7fb88a; }
+  .store-status-badge.closed{ color:#c96b5a; border-color:rgba(201,107,90,.3); }
+  .store-status-badge.closed .dot{ background:#c96b5a; }
 
   .theme-dropdown{ position:relative; }
   .theme-btn{
@@ -153,12 +165,12 @@
   .product-desc{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:12px;flex:1;}
   .product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
   .product-price{font-weight:600;font-size:14px;color:var(--accent-soft);}
-  .btn-buy{
+  .btn-add-cart{
     background:linear-gradient(100deg,var(--accent),var(--accent-soft));
-    color:var(--bg);text-decoration:none;padding:6px 14px;border-radius:999px;
-    font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:.3s;
+    color:var(--bg);border:none;padding:6px 14px;border-radius:999px;
+    font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:.3s;cursor:pointer;
   }
-  .btn-buy:hover{filter:brightness(1.1);transform:scale(1.03);}
+  .btn-add-cart:hover{filter:brightness(1.1);transform:scale(1.03);}
 
   .feed-wrap{max-width:640px;margin:0 auto;padding:0 20px 50px;}
   .feed{display:flex;flex-direction:column;gap:24px;}
@@ -204,7 +216,6 @@
     display: inline-flex; align-items: center; gap: 6px; transition: .2s; font-weight: 500;
   }
   .btn-like:hover{ background: var(--border); color: var(--accent-soft); }
-  .btn-like.liked{ color: #ff4757; border-color: rgba(255,71,87,.3); }
 
   .comments{padding:16px 20px 20px;background:color-mix(in srgb, var(--bg) 60%, transparent);}
   .comments .c-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
@@ -236,6 +247,70 @@
   }
   .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
 
+  /* Floating Cart Button & Modal */
+  .floating-cart-btn{
+    position:fixed; bottom:24px; right:24px; z-index:900;
+    background:linear-gradient(100deg,var(--accent),var(--accent-soft)); color:var(--bg);
+    border:none; border-radius:999px; padding:12px 20px; font-family:var(--font-body);
+    font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:.3s;
+  }
+  .floating-cart-btn:hover{ transform:scale(1.05); filter:brightness(1.1); }
+  .cart-badge{ background:var(--bg); color:var(--text); padding:2px 8px; border-radius:999px; font-size:11px; }
+
+  #cartModal{
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999;
+    display:none; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px);
+  }
+  .cart-content{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    width:100%; max-width:440px; padding:20px; box-shadow:0 20px 40px rgba(0,0,0,0.6);
+  }
+  .cart-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .cart-header h3{ font-family:var(--font-title); font-size:18px; color:var(--text); }
+  .cart-items{ max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+  .cart-item{ display:flex; align-items:center; justify-content:space-between; background:var(--bg-2); border:1px solid var(--border); border-radius:12px; padding:10px 14px; }
+  .cart-item-title{ font-size:13px; font-weight:600; color:var(--text); }
+  .cart-item-price{ font-size:11.5px; color:var(--accent-soft); }
+  .cart-qty-ctrl{ display:flex; align-items:center; gap:8px; }
+  .cart-qty-ctrl button{ background:var(--card); border:1px solid var(--border); color:var(--text); width:24px; height:24px; border-radius:6px; cursor:pointer; font-weight:700; }
+  .cart-total-row{ display:flex; justify-content:space-between; font-weight:700; font-size:15px; margin-bottom:16px; border-top:1px solid var(--border); padding-top:12px; }
+  .btn-checkout-wa{
+    width:100%; background:#25d366; color:#fff; border:none; border-radius:999px; padding:12px;
+    font-family:var(--font-body); font-weight:700; font-size:13px; cursor:pointer; transition:.3s; text-align:center;
+  }
+  .btn-checkout-wa:hover{ filter:brightness(1.1); }
+
+  /* Modal Peta Google Maps */
+  #mapModal{
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999;
+    display:none; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px);
+  }
+  .map-modal-content{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    width:100%; max-width:600px; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.6);
+  }
+  .map-modal-header{ padding:16px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
+  .map-modal-header h3{ font-family:var(--font-title); font-size:18px; color:var(--text); }
+  .map-close-btn{ background:transparent; border:none; color:var(--muted); font-size:18px; cursor:pointer; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .map-iframe-wrap{ width:100%; height:350px; background:#000; }
+  .map-iframe-wrap iframe{ width:100%; height:100%; border:0; }
+  
+  .store-location-trigger{
+    background:var(--bg-2); border:1px solid var(--border); color:var(--accent-soft);
+    padding:8px 16px; border-radius:999px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:.3s; margin-top:8px;
+  }
+  .store-location-trigger:hover{ background:var(--border); transform:scale(1.02); }
+
+  /* Toast Notification */
+  .toast{
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(100deg,var(--accent),var(--accent-soft)); color:var(--bg);
+    padding:10px 22px; border-radius:999px; font-size:12.5px; font-weight:600;
+    opacity:0; pointer-events:none; transition:.4s; z-index:10000; box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
   footer{
     text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:20px;
     display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -253,6 +328,11 @@
     <a href="#feed">Feed</a>
     <a href="#kontak">Kontak</a>
     
+    <div class="store-status-badge" id="storeStatusBadge">
+      <span class="dot"></span>
+      <span id="storeStatusText">Memeriksa Status Toko...</span>
+    </div>
+
     <div class="theme-dropdown" id="themeDropdown">
       <button class="theme-btn" id="themeBtn" title="Ganti Tema">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -311,9 +391,50 @@
   <div id="lightboxContent"></div>
 </div>
 
+<!-- FLOATING CART BUTTON -->
+<button class="floating-cart-btn" id="openCartBtn">
+  🛒 Keranjang <span class="cart-badge" id="cartCount">0</span>
+</button>
+
+<!-- MODAL KERANJANG BELANJA -->
+<div id="cartModal">
+  <div class="cart-content">
+    <div class="cart-header">
+      <h3>Keranjang Belanja</h3>
+      <button class="map-close-btn" id="closeCartBtn">✕</button>
+    </div>
+    <div class="cart-items" id="cartItemsList">
+      <div style="font-size:12px; color:var(--muted); text-align:center; padding:20px;">Keranjang Anda masih kosong.</div>
+    </div>
+    <div class="cart-total-row">
+      <span>Total Bayar:</span>
+      <span id="cartTotalPrice" style="color:var(--accent-soft);">Rp 0</span>
+    </div>
+    <button class="btn-checkout-wa" id="checkoutWaBtn">💬 Pesan via WhatsApp</button>
+  </div>
+</div>
+
+<!-- MODAL PETA GOOGLE MAPS -->
+<div id="mapModal">
+  <div class="map-modal-content">
+    <div class="map-modal-header">
+      <h3>Lokasi Kedai Serabimu</h3>
+      <button class="map-close-btn" id="closeMapModalBtn">✕</button>
+    </div>
+    <div class="map-iframe-wrap">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.698319642514!2d112.731731!3d-7.275618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMTYnMzIuMiJTIDExMsKwNDMnNTQuMyJF!5e0!3m2!1sid!2sid!4v1650000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
 <footer id="kontak">
   <div class="brand">Serabimu</div>
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
+  
+  <button class="store-location-trigger" id="openMapModalBtn">
+    📍 Lihat Lokasi Toko di Peta
+  </button>
+
   <button id="adminLoginTrigger" style="background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:11px; letter-spacing:1px; margin-top:4px; opacity:0.6; transition:.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">🔒 Admin Panel</button>
 </footer>
 
@@ -330,9 +451,11 @@
   </div>
 </div>
 
+<div class="toast" id="toast">✅ Berhasil</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, increment, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, updateDoc, increment, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
@@ -346,7 +469,157 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ====== 1. MEMUAT KATALOG PRODUK DINAMIS ======
+  const toast = document.getElementById('toast');
+  const showToast = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2400);
+  };
+
+  // ====== 1. KERANJANG BELANJA & CHECKOUT WA ======
+  let cart = [];
+  const openCartBtn = document.getElementById('openCartBtn');
+  const closeCartBtn = document.getElementById('closeCartBtn');
+  const cartModal = document.getElementById('cartModal');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartTotalPrice = document.getElementById('cartTotalPrice');
+  const cartCount = document.getElementById('cartCount');
+  const checkoutWaBtn = document.getElementById('checkoutWaBtn');
+
+  function parsePrice(priceStr) {
+    if (!priceStr) return 0;
+    return parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
+  }
+
+  function updateCartUI() {
+    let totalItems = 0;
+    let totalPrice = 0;
+    cartItemsList.innerHTML = '';
+
+    if (cart.length === 0) {
+      cartItemsList.innerHTML = '<div style="font-size:12px; color:var(--muted); text-align:center; padding:20px;">Keranjang Anda masih kosong.</div>';
+    } else {
+      cart.forEach((item, index) => {
+        totalItems += item.qty;
+        const itemTotal = item.numPrice * item.qty;
+        totalPrice += itemTotal;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <div>
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-price">Rp ${itemTotal.toLocaleString('id-ID')}</div>
+          </div>
+          <div class="cart-qty-ctrl">
+            <button class="btn-dec" data-index="${index}">-</button>
+            <span style="font-size:12px; font-weight:600;">${item.qty}</span>
+            <button class="btn-inc" data-index="${index}">+</button>
+          </div>
+        `;
+        cartItemsList.appendChild(div);
+      });
+    }
+
+    cartCount.textContent = totalItems;
+    cartTotalPrice.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+
+    cartItemsList.querySelectorAll('.btn-inc').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.dataset.index;
+        cart[idx].qty++;
+        updateCartUI();
+      });
+    });
+
+    cartItemsList.querySelectorAll('.btn-dec').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.dataset.index;
+        if (cart[idx].qty > 1) {
+          cart[idx].qty--;
+        } else {
+          cart.splice(idx, 1);
+        }
+        updateCartUI();
+      });
+    });
+  }
+
+  function addToCart(product) {
+    const numPrice = parsePrice(product.price);
+    const existingIndex = cart.findIndex(item => item.title === product.title);
+    if (existingIndex > -1) {
+      cart[existingIndex].qty++;
+    } else {
+      cart.push({ title: product.title, price: product.price, numPrice: numPrice, qty: 1 });
+    }
+    updateCartUI();
+    showToast(`🛒 ${product.title} ditambah ke keranjang`);
+  }
+
+  openCartBtn.addEventListener('click', () => cartModal.style.display = 'flex');
+  closeCartBtn.addEventListener('click', () => cartModal.style.display = 'none');
+  cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.style.display = 'none'; });
+
+  checkoutWaBtn.addEventListener('click', () => {
+    if (cart.length === 0) return alert("Keranjang belanja masih kosong!");
+    let text = "Halo Serabimu, saya ingin pesan:\n\n";
+    let grandTotal = 0;
+    cart.forEach(item => {
+      const sub = item.numPrice * item.qty;
+      grandTotal += sub;
+      text += `- ${item.title} (${item.qty}x) : Rp ${sub.toLocaleString('id-ID')}\n`;
+    });
+    text += `\nTotal Bayar: Rp ${grandTotal.toLocaleString('id-ID')}\n\nMohon dikonfirmasi ya, terima kasih!`;
+    const waUrl = `https://wa.me/628xxxxxxxxxx?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+  });
+
+  // ====== 2. STATUS TOKO OTOMATIS ======
+  const storeStatusBadge = document.getElementById('storeStatusBadge');
+  const storeStatusText = document.getElementById('storeStatusText');
+
+  function checkStoreHours(openStr, closeStr) {
+    if (!openStr || !closeStr) return true;
+    const now = new Date();
+    const currentMins = now.getHours() * 60 + now.getMinutes();
+
+    const [openH, openM] = openStr.split(':').map(Number);
+    const [closeH, closeM] = closeStr.split(':').map(Number);
+
+    const openMins = openH * 60 + openM;
+    const closeMins = closeH * 60 + closeM;
+
+    if (closeMins > openMins) {
+      return currentMins >= openMins && currentMins < closeMins;
+    } else {
+      return currentMins >= openMins || currentMins < closeMins;
+    }
+  }
+
+  const storeHoursRef = doc(db, "settings", "store_hours");
+  onSnapshot(storeHoursRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      const isOpen = checkStoreHours(data.open, data.close);
+      if (isOpen) {
+        storeStatusBadge.className = "store-status-badge open";
+        storeStatusText.textContent = `BUKA (${data.open || ''} - ${data.close || ''})`;
+        checkoutWaBtn.disabled = false;
+        checkoutWaBtn.style.opacity = "1";
+      } else {
+        storeStatusBadge.className = "store-status-badge closed";
+        storeStatusText.textContent = `TUTUP (Buka ${data.open || ''})`;
+        checkoutWaBtn.disabled = true;
+        checkoutWaBtn.style.opacity = "0.5";
+      }
+    } else {
+      storeStatusBadge.className = "store-status-badge open";
+      storeStatusText.textContent = "BUKA";
+    }
+  });
+
+  // ====== 3. MEMUAT KATALOG PRODUK DINAMIS ======
   const catalogSlider = document.getElementById('dynamicCatalogSlider');
   const qProducts = query(collection(db, "products"), orderBy("createdAt", "desc"));
 
@@ -367,15 +640,16 @@
           <div class="product-desc">${p.description}</div>
           <div class="product-footer">
             <span class="product-price">${p.price}</span>
-            <a href="https://wa.me/628xxxxxxxxxx?text=${encodeURIComponent('Halo, saya berminat pesan ' + p.title)}" target="_blank" class="btn-buy">Cicipi</a>
+            <button class="btn-add-cart">+ Keranjang</button>
           </div>
         </div>
       `;
+      card.querySelector('.btn-add-cart').addEventListener('click', () => addToCart(p));
       catalogSlider.appendChild(card);
     });
   });
 
-  // ====== 2. MEMUAT POSTINGAN FEED ======
+  // ====== 4. MEMUAT POSTINGAN FEED ======
   const publicFeedList = document.getElementById('publicFeedList');
   const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
@@ -433,26 +707,24 @@
       `;
       publicFeedList.appendChild(postDiv);
 
-      // Event Tombol Like
       postDiv.querySelector('.btn-like').addEventListener('click', async () => {
         const postRef = doc(db, "posts", postId);
         await updateDoc(postRef, { likes: increment(1) });
+        showToast("❤️ Menyukai postingan");
       });
 
-      // Event Kirim Komentar
       postDiv.querySelector('.btn-send-comment').addEventListener('click', () => sendComment(postId));
       postDiv.querySelector(`#input-comment-${postId}`).addEventListener('keypress', (e) => {
         if(e.key === 'Enter') sendComment(postId);
       });
 
-      // Load Komentar Post
       loadCommentsForPost(postId);
     });
 
     setupLightbox();
   });
 
-  // ====== 3. FITUR KOMENTAR & BALASAN ======
+  // ====== 5. FITUR KOMENTAR & BALASAN ======
   async function sendComment(postId) {
     const inputEl = document.getElementById(`input-comment-${postId}`);
     const sendBtn = inputEl.nextElementSibling;
@@ -478,6 +750,7 @@
       inputEl.value = "";
       delete sendBtn.dataset.parentId;
       inputEl.placeholder = "Tulis komentar...";
+      showToast("💬 Komentar terkirim");
     } catch (err) {
       alert("Gagal mengirim komentar: " + err.message);
     }
@@ -545,7 +818,16 @@
     return mainDiv;
   }
 
-  // ====== LIGHTBOX & WAKTU ======
+  // ====== 6. POPUP PETA GOOGLE MAPS ======
+  const mapModal = document.getElementById('mapModal');
+  const openMapModalBtn = document.getElementById('openMapModalBtn');
+  const closeMapModalBtn = document.getElementById('closeMapModalBtn');
+
+  openMapModalBtn.addEventListener('click', () => mapModal.style.display = 'flex');
+  closeMapModalBtn.addEventListener('click', () => mapModal.style.display = 'none');
+  mapModal.addEventListener('click', (e) => { if (e.target === mapModal) mapModal.style.display = 'none'; });
+
+  // ====== 7. LIGHTBOX & UTILITAS ======
   const lightbox = document.getElementById('lightbox');
   const lightboxContent = document.getElementById('lightboxContent');
   const lightboxClose = document.getElementById('lightboxClose');
@@ -583,7 +865,7 @@
     return Math.floor(diff/86400) + " hari lalu";
   };
 
-  // ====== TEMA & PIN ADMIN ======
+  // ====== 8. TEMA & PIN ADMIN ======
   const dropdown = document.getElementById('themeDropdown');
   const themeBtn = document.getElementById('themeBtn');
   themeBtn.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
