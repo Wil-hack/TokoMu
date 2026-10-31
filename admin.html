@@ -18,72 +18,78 @@
     background:radial-gradient(ellipse 50% 35% at 50% -10%,var(--champagne-glow),transparent 70%),
     radial-gradient(ellipse 35% 25% at 100% 100%,rgba(212,188,138,.05),transparent 70%);}
 
-  header{position:sticky;top:0;z-index:100;background:rgba(10,9,8,.82);backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
-  .brand{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;letter-spacing:1px;
+  header{
+    position:sticky; top:0; z-index:100; background:rgba(10,9,8,.95); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .brand{font-family:'Playfair Display',serif; font-size:20px; font-weight:700; letter-spacing:1px;
     background:linear-gradient(100deg,var(--champagne-soft),var(--champagne));
-    -webkit-background-clip:text;background-clip:text;color:transparent;}
-  .brand span{display:block;font-family:'Inter';font-size:9px;letter-spacing:5px;color:var(--muted);
-    -webkit-text-fill-color:var(--muted);margin-top:2px;text-transform:uppercase;}
-  .header-actions{display:flex;align-items:center;gap:14px;}
-  .badge-admin{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne-soft);
-    border:1px solid var(--border);padding:6px 14px;border-radius:999px;background:rgba(212,188,138,.06);}
-  .header-actions a{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.5px;transition:.3s;}
+    -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .brand span{display:inline-block; font-family:'Inter'; font-size:9px; letter-spacing:3px; color:var(--muted);
+    -webkit-text-fill-color:var(--muted); margin-left:6px; text-transform:uppercase; vertical-align:middle;}
+  .header-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .badge-admin{font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--champagne-soft);
+    border:1px solid var(--border); padding:4px 10px; border-radius:999px; background:rgba(212,188,138,.06); white-space:nowrap;}
+  .header-actions a{color:var(--muted); text-decoration:none; font-size:12px; letter-spacing:.5px; transition:.3s; white-space:nowrap;}
   .header-actions a:hover{color:var(--champagne-soft);}
 
-  .layout{max-width:1180px;margin:0 auto;padding:32px 24px 60px;display:grid;
-    grid-template-columns:1fr 340px;gap:28px;align-items:start;}
-  .feed-col{display:flex;flex-direction:column;gap:24px;}
+  .layout{max-width:1180px;margin:0 auto;padding:24px 16px 60px;display:grid;
+    grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+  .feed-col{display:flex;flex-direction:column;gap:20px;}
 
   .composer{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
-    border-radius:20px;padding:22px 24px;transition:border-color .35s; margin-bottom:24px;}
+    border-radius:18px;padding:18px 20px;transition:border-color .35s;}
   .composer:focus-within{border-color:rgba(212,188,138,.4);}
-  .composer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-  .composer-user{display:flex;align-items:center;gap:14px;}
-  .composer-user .avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  .composer-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .composer-user .avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;
     background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);display:flex;align-items:center;justify-content:center;
-    font-family:'Playfair Display',serif;font-weight:700;color:#0a0908;font-size:19px;}
-  .composer-user .who{font-size:14px;font-weight:600;}
-  .composer-user .who span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
+    font-family:'Playfair Display',serif;font-weight:700;color:#0a0908;font-size:16px;}
+  .composer-user .who{font-size:13.5px;font-weight:600;}
+  .composer-user .who span{display:block;font-size:11px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
 
   .composer textarea, .composer input[type="text"]{width:100%;background:var(--bg-2);border:1px solid var(--border);
-    border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13.5px;outline:none;margin-bottom:10px;}
-  .composer textarea{resize:none;min-height:70px;}
+    border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;margin-bottom:10px;}
+  .composer textarea{resize:none;min-height:65px;}
 
-  .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
-  .btn-upload{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);
-    border:1px solid var(--border-soft);color:var(--champagne-soft);border-radius:12px;
-    padding:11px 18px;font-family:'Inter';font-weight:500;font-size:12.5px;letter-spacing:.5px;
-    cursor:pointer;transition:.3s;}
+  .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:4px;}
+  .btn-upload{display:inline-flex;align-items:center;gap:6px;background:var(--bg-2);
+    border:1px solid var(--border-soft);color:var(--champagne-soft);border-radius:10px;
+    padding:10px 14px;font-family:'Inter';font-weight:500;font-size:12px;cursor:pointer;transition:.3s;}
   .btn-upload:hover{border-color:rgba(212,188,138,.45);background:rgba(212,188,138,.06);}
 
   .btn-publish{background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));
-    color:#0a0908;border:none;border-radius:12px;padding:11px 26px;font-family:'Inter';
-    font-weight:600;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.3s;}
+    color:#0a0908;border:none;border-radius:10px;padding:10px 20px;font-family:'Inter';
+    font-weight:600;font-size:12px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.3s;}
+  .btn-publish:hover{filter:brightness(1.1);}
 
-  .post{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border-soft);
-    border-radius:20px;overflow:hidden;transition:.4s;margin-bottom:20px;}
-  .post-head{display:flex;align-items:center;gap:13px;padding:20px 22px 14px;}
-  .post-head .avatar{width:42px;height:42px;font-size:17px;background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);
-    border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0a0908;font-weight:700;
-    font-family:'Playfair Display',serif;flex-shrink:0;}
-  .post-head .name{font-size:14.5px;font-weight:600;}
-  .post-head .menu{margin-left:auto;display:flex;gap:6px;}
-  .post-head .menu button{background:transparent;border:1px solid var(--border-soft);color:var(--muted);
-    width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:13px;transition:.25s;}
-  .post-head .menu button.del:hover{border-color:rgba(201,107,90,.5);color:var(--danger);}
+  .section-heading{font-family:'Playfair Display',serif; font-size:18px; font-weight:600; margin-top:10px; margin-bottom:2px; color:var(--text);}
+  
+  .product-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:12px;}
+  .product-item-card{background:linear-gradient(165deg,var(--card),var(--card-2)); border:1px solid var(--border); border-radius:14px; padding:12px; display:flex; flex-direction:column;}
+  .product-item-card img{width:100%; height:110px; object-fit:cover; border-radius:8px; margin-bottom:8px;}
+  .product-item-card .prod-name{font-weight:600; font-size:13px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .product-item-card .prod-price{color:var(--champagne-soft); font-size:12px; font-weight:500; margin-bottom:8px;}
 
-  .side-col{position:sticky;top:90px;display:flex;flex-direction:column;gap:20px;}
+  .post-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border-soft);
+    border-radius:16px;overflow:hidden;margin-bottom:14px;padding:16px;}
+  .post-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+  .post-top span{font-size:13px; font-weight:600; color:var(--champagne-soft);}
+  .btn-del-post{background:transparent; border:1px solid var(--border-soft); color:var(--danger); width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:12px; transition:.2s;}
+  .btn-del-post:hover{background:rgba(201,107,90,.15); border-color:var(--danger);}
+
+  .side-col{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px;}
   .side-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
-    border-radius:18px;padding:20px 22px;}
-  .side-card h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:4px;}
-  .side-card .sub{font-size:11.5px;color:var(--muted);letter-spacing:.5px;margin-bottom:16px;}
+    border-radius:16px;padding:18px;}
+  .side-card h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;margin-bottom:2px;}
+  .side-card .sub{font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:12px;}
 
-  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
     background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));color:#0a0908;
-    padding:12px 26px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.5px;
+    padding:10px 22px;border-radius:999px;font-size:12.5px;font-weight:600;
     opacity:0;pointer-events:none;transition:.4s;z-index:200;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media(max-width:900px){.layout{grid-template-columns:1fr;}.side-col{position:static;}}
 </style>
 </head>
 <body>
@@ -104,32 +110,40 @@
       <div class="composer-head">
         <div class="composer-user">
           <div class="avatar">K</div>
-          <div class="who"><span>Tambah Menu Katalog Baru</span><span>Akan tampil di bagian katalog depan</span></div>
+          <div class="who">
+            <span>Tambah Menu Katalog Baru</span>
+            <span>Tampil di halaman depan pelanggan</span>
+          </div>
         </div>
       </div>
       <input type="text" id="prodTitle" placeholder="Nama Menu (Contoh: Serabi Kuah Durian)">
-      <textarea id="prodDesc" placeholder="Deskripsi Menu (Contoh: Serabi lembut ditambah parutan durian asli...)"></textarea>
+      <textarea id="prodDesc" placeholder="Deskripsi Singkat (Contoh: Serabi lembut dengan kuah durian asli...)"></textarea>
       <input type="text" id="prodPrice" placeholder="Harga (Contoh: Rp 18.000)">
       
       <div class="composer-tools">
         <label class="btn-upload" for="prodFileInput">📷 Pilih Foto Menu</label>
         <input type="file" id="prodFileInput" accept="image/*" style="display:none;">
-        <button class="btn-publish" id="saveProductBtn">Simpan Ke Katalog</button>
+        <button class="btn-publish" id="saveProductBtn">Simpan Katalog</button>
       </div>
     </div>
 
-    <!-- DAFTAR KATALOG DARI FIRESTORE -->
-    <h2 style="font-family:'Playfair Display'; font-size:20px;">Daftar Katalog Produk</h2>
-    <div id="adminProductList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px;"></div>
+    <!-- DAFTAR KATALOG -->
+    <h2 class="section-heading">Daftar Katalog Produk</h2>
+    <div id="adminProductList" class="product-grid">
+      <div style="font-size:12px; color:var(--muted);">Memuat katalog...</div>
+    </div>
 
-    <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
+    <hr style="border:none; border-top:1px solid var(--border); margin:10px 0;">
 
     <!-- 2. FORM KABAR TOKO / FEED -->
     <div class="composer">
       <div class="composer-head">
         <div class="composer-user">
           <div class="avatar">S</div>
-          <div class="who"><span>Buat Kabar Toko Baru</span><span>Posting ke Feed</span></div>
+          <div class="who">
+            <span>Buat Kabar Toko / Feed</span>
+            <span>Bagikan info terbaru ke pengunjung</span>
+          </div>
         </div>
       </div>
       <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
@@ -138,26 +152,28 @@
       <div class="composer-tools">
         <label class="btn-upload" for="fileInput">🖼️ Foto / Video Feed</label>
         <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none;">
-        <button class="btn-publish" id="publishBtn">Publikasikan Feed</button>
+        <button class="btn-publish" id="publishBtn">Publikasikan</button>
       </div>
     </div>
 
-    <h2 style="font-family:'Playfair Display'; font-size:20px;">Postingan Feed Toko</h2>
-    <div id="postList"></div>
+    <h2 class="section-heading">Postingan Feed Toko</h2>
+    <div id="postList">
+      <div style="font-size:12px; color:var(--muted);">Memuat postingan...</div>
+    </div>
   </div>
 
   <div class="side-col">
-    <!-- Ringkasan -->
+    <!-- Ringkasan Statistik -->
     <div class="side-card">
-      <h3>Ringkasan</h3>
-      <p class="sub">Statistik toko Anda</p>
-      <div style="display:flex;flex-direction:column;gap:14px;">
+      <h3>Ringkasan Toko</h3>
+      <p class="sub">Statistik data saat ini</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total produk</span>
+          <span style="color:var(--muted);">Total Produk Katalog</span>
           <strong style="color:var(--champagne-soft);" id="statProducts">0</strong>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total kabar toko</span>
+          <span style="color:var(--muted);">Total Kabar Toko</span>
           <strong style="color:var(--champagne-soft);" id="statPosts">0</strong>
         </div>
       </div>
@@ -203,7 +219,7 @@
     return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
   }
 
-  // ====== A. MANAGEMENT KATALOG PRODUK ======
+  // ====== A. KELOLA KATALOG PRODUK ======
   const saveProductBtn = document.getElementById('saveProductBtn');
   const prodFileInput = document.getElementById('prodFileInput');
 
@@ -245,7 +261,7 @@
       alert("Gagal: " + err.message);
     } finally {
       saveProductBtn.disabled = false;
-      saveProductBtn.textContent = "Simpan Ke Katalog";
+      saveProductBtn.textContent = "Simpan Katalog";
     }
   });
 
@@ -253,33 +269,37 @@
   onSnapshot(qProds, (snap) => {
     const adminProductList = document.getElementById('adminProductList');
     document.getElementById('statProducts').textContent = snap.size;
-    adminProductList.innerHTML = '';
     
+    if(snap.empty) {
+      adminProductList.innerHTML = '<div style="font-size:12px; color:var(--muted);">Belum ada produk katalog.</div>';
+      return;
+    }
+
+    adminProductList.innerHTML = '';
     snap.forEach((docSnap) => {
       const p = docSnap.data();
       const div = document.createElement('div');
-      div.className = 'side-card';
-      div.style.padding = '12px';
+      div.className = 'product-item-card';
       div.innerHTML = `
-        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80'}" style="width:100%; height:100px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
-        <div style="font-weight:600; font-size:13px;">${p.title}</div>
-        <div style="color:var(--champagne-soft); font-size:12px;">${p.price}</div>
-        <button class="del-prod" data-id="${docSnap.id}" style="background:var(--danger); border:none; color:#fff; width:100%; padding:6px; border-radius:6px; margin-top:8px; cursor:pointer; font-size:11px;">Hapus Menu</button>
+        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80'}" alt="Menu">
+        <div class="prod-name">${p.title}</div>
+        <div class="prod-price">${p.price}</div>
+        <button class="del-prod" data-id="${docSnap.id}" style="background:rgba(201,107,90,.15); border:1px solid rgba(201,107,90,.3); color:var(--danger); width:100%; padding:6px; border-radius:6px; margin-top:auto; cursor:pointer; font-size:11px; transition:.2s;">Hapus Menu</button>
       `;
       adminProductList.appendChild(div);
     });
 
     adminProductList.querySelectorAll('.del-prod').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if(confirm('Hapus menu ini?')) {
+        if(confirm('Hapus menu ini dari katalog?')) {
           await deleteDoc(doc(db, "products", btn.dataset.id));
-          showToast('Menu dihapus');
+          showToast('Menu katalog dihapus');
         }
       });
     });
   });
 
-  // ====== B. MANAGEMENT FEED TOKO ======
+  // ====== B. KELOLA FEED TOKO ======
   const publishBtn = document.getElementById('publishBtn');
   const fileInput = document.getElementById('fileInput');
 
@@ -288,10 +308,10 @@
     const location = document.getElementById('locationInput').value.trim();
     const files = Array.from(fileInput.files);
 
-    if(!caption && files.length === 0) return alert("Isi pesan atau pilih file foto!");
+    if(!caption && files.length === 0) return alert("Isi caption atau pilih file foto/video terlebih dahulu!");
 
     publishBtn.disabled = true;
-    publishBtn.textContent = "Posting...";
+    publishBtn.textContent = "Memproses...";
 
     try {
       let mediaUrls = [];
@@ -311,12 +331,12 @@
       document.getElementById('caption').value = '';
       document.getElementById('locationInput').value = '';
       fileInput.value = '';
-      showToast("✅ Feed Dipublikasikan!");
+      showToast("✅ Kabar Toko Dipublikasikan!");
     } catch(err) {
       alert("Gagal: " + err.message);
     } finally {
       publishBtn.disabled = false;
-      publishBtn.textContent = "Publikasikan Feed";
+      publishBtn.textContent = "Publikasikan";
     }
   });
 
@@ -324,30 +344,32 @@
   onSnapshot(qPosts, (snap) => {
     const postList = document.getElementById('postList');
     document.getElementById('statPosts').textContent = snap.size;
+
+    if(snap.empty) {
+      postList.innerHTML = '<div style="font-size:12px; color:var(--muted);">Belum ada postingan kabar toko.</div>';
+      return;
+    }
+
     postList.innerHTML = '';
-    
     snap.forEach((docSnap) => {
       const d = docSnap.data();
       const div = document.createElement('div');
-      div.className = 'post';
+      div.className = 'post-card';
       div.innerHTML = `
-        <div class="post-head">
-          <div class="avatar">S</div>
-          <div><div class="name">Serabimu</div></div>
-          <div class="menu">
-            <button class="del" data-id="${docSnap.id}">✕</button>
-          </div>
+        <div class="post-top">
+          <span>Serabimu — Kabar Toko</span>
+          <button class="btn-del-post" data-id="${docSnap.id}" title="Hapus">✕</button>
         </div>
-        <p style="padding:0 20px 12px; font-size:13px;">${d.caption || ''}</p>
+        <p style="font-size:13px; font-weight:300; color:var(--text); opacity:.9;">${d.caption || '(Tanpa teks)'}</p>
       `;
       postList.appendChild(div);
     });
 
-    postList.querySelectorAll('.del').forEach(btn => {
+    postList.querySelectorAll('.btn-del-post').forEach(btn => {
       btn.addEventListener('click', async () => {
         if(confirm('Hapus postingan ini?')) {
           await deleteDoc(doc(db, "posts", btn.dataset.id));
-          showToast('Feed dihapus');
+          showToast('Postingan dihapus');
         }
       });
     });
