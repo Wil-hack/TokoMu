@@ -36,7 +36,7 @@
   .feed-col{display:flex;flex-direction:column;gap:24px;}
 
   .composer{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
-    border-radius:20px;padding:22px 24px;transition:border-color .35s;}
+    border-radius:20px;padding:22px 24px;transition:border-color .35s; margin-bottom:24px;}
   .composer:focus-within{border-color:rgba(212,188,138,.4);}
   .composer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
   .composer-user{display:flex;align-items:center;gap:14px;}
@@ -46,19 +46,9 @@
   .composer-user .who{font-size:14px;font-weight:600;}
   .composer-user .who span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
 
-  .composer textarea{width:100%;background:transparent;border:none;outline:none;color:var(--text);
-    font-family:'Inter';font-size:15px;font-weight:300;resize:none;min-height:70px;padding:6px 2px;}
-  .composer textarea::placeholder{color:#5f5a52;}
-  .composer-divider{height:1px;background:var(--border);margin:10px 0 16px;}
-
-  /* Input Lokasi & Tombol GPS */
-  .map-section{margin-bottom:16px;}
-  .map-section label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;}
-  .map-row{display:flex;gap:8px;}
-  .map-section input{flex:1;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;}
-  .map-section input:focus{border-color:var(--champagne-soft);}
-  .btn-gps{background:var(--champagne);color:#0a0908;border:none;border-radius:10px;padding:0 14px;font-weight:600;font-size:12px;cursor:pointer;white-space:nowrap;transition:.2s;}
-  .btn-gps:hover{filter:brightness(1.1);}
+  .composer textarea, .composer input[type="text"]{width:100%;background:var(--bg-2);border:1px solid var(--border);
+    border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13.5px;outline:none;margin-bottom:10px;}
+  .composer textarea{resize:none;min-height:70px;}
 
   .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
   .btn-upload{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);
@@ -66,77 +56,34 @@
     padding:11px 18px;font-family:'Inter';font-weight:500;font-size:12.5px;letter-spacing:.5px;
     cursor:pointer;transition:.3s;}
   .btn-upload:hover{border-color:rgba(212,188,138,.45);background:rgba(212,188,138,.06);}
-  #fileInput{display:none;}
 
-  .btn-action-group{display:flex;gap:8px;}
   .btn-publish{background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));
     color:#0a0908;border:none;border-radius:12px;padding:11px 26px;font-family:'Inter';
     font-weight:600;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.3s;}
-  .btn-publish:hover{filter:brightness(1.1);transform:translateY(-1px);}
-  .btn-cancel-edit{background:var(--bg-2);color:var(--muted);border:1px solid var(--border);border-radius:12px;padding:11px 16px;font-size:12px;cursor:pointer;display:none;}
-  
-  .preview-container{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
-  .preview-item{width:90px;height:90px;border-radius:10px;overflow:hidden;border:1px solid var(--border);position:relative;background:#000;}
-  .preview-item img, .preview-item video{width:100%;height:100%;object-fit:cover;}
-  .preview-item .remove-media{position:absolute;top:4px;right:4px;background:rgba(10,9,8,0.8);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-
-  .feed-title{display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
-  .feed-title h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;}
-  .feed-title span{font-size:12px;color:var(--muted);letter-spacing:.5px;}
 
   .post{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border-soft);
     border-radius:20px;overflow:hidden;transition:.4s;margin-bottom:20px;}
-  .post:hover{border-color:rgba(212,188,138,.25);}
   .post-head{display:flex;align-items:center;gap:13px;padding:20px 22px 14px;}
   .post-head .avatar{width:42px;height:42px;font-size:17px;background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);
     border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0a0908;font-weight:700;
     font-family:'Playfair Display',serif;flex-shrink:0;}
   .post-head .name{font-size:14.5px;font-weight:600;}
-  .post-head .time{font-size:11.5px;color:var(--muted);letter-spacing:.4px;}
   .post-head .menu{margin-left:auto;display:flex;gap:6px;}
   .post-head .menu button{background:transparent;border:1px solid var(--border-soft);color:var(--muted);
     width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:13px;transition:.25s;}
-  .post-head .menu button:hover{border-color:rgba(212,188,138,.4);color:var(--champagne-soft);}
   .post-head .menu button.del:hover{border-color:rgba(201,107,90,.5);color:var(--danger);}
-  .post .caption{padding:0 22px 16px;font-size:14.5px;font-weight:300;color:#e8e2d8;}
-  .post-location{padding:0 22px 12px;font-size:12px;color:var(--champagne-soft);display:flex;align-items:center;gap:6px;}
-
-  .post-media-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:4px;border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);background:#000;}
-  .post-media-grid img, .post-media-grid video{width:100%;height:220px;object-fit:cover;display:block;}
 
   .side-col{position:sticky;top:90px;display:flex;flex-direction:column;gap:20px;}
   .side-card{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
     border-radius:18px;padding:20px 22px;}
   .side-card h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:4px;}
   .side-card .sub{font-size:11.5px;color:var(--muted);letter-spacing:.5px;margin-bottom:16px;}
-  
-  .comment-item{padding:12px 0;border-bottom:1px solid var(--border-soft);}
-  .comment-item:last-child{border-bottom:none;padding-bottom:0;}
-  .comment-item .c-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-  .comment-item .avatar{width:32px;height:32px;font-size:13px;border-radius:50%;
-    background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);display:flex;align-items:center;
-    justify-content:center;color:#0a0908;font-weight:700;font-family:'Playfair Display',serif;flex-shrink:0;}
-  .comment-item .c-name{font-size:12.5px;font-weight:600;color:var(--champagne-soft);}
-  .comment-item .c-time{font-size:10.5px;color:var(--muted);margin-left:auto;}
-  .comment-item .c-text{font-size:13px;font-weight:300;color:#d8d2c8;line-height:1.5;}
-  .comment-item .c-actions{display:flex;gap:8px;margin-top:8px;}
-  .comment-item .c-actions button{background:transparent;border:1px solid var(--border-soft);color:var(--muted);
-    font-size:11px;letter-spacing:.5px;padding:4px 12px;border-radius:999px;cursor:pointer;transition:.25s;}
-  .comment-item .c-actions button:hover{border-color:rgba(212,188,138,.4);color:var(--champagne-soft);}
-  .comment-item .c-actions button.del:hover{border-color:rgba(201,107,90,.5);color:var(--danger);}
-
-  .empty-state{text-align:center;padding:30px 10px;color:var(--muted);font-size:12.5px;letter-spacing:.5px;}
 
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
     background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));color:#0a0908;
     padding:12px 26px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.5px;
-    opacity:0;pointer-events:none;transition:.4s;z-index:200;box-shadow:0 10px 40px -10px rgba(212,188,138,.4);}
+    opacity:0;pointer-events:none;transition:.4s;z-index:200;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  @media(max-width:900px){.layout{grid-template-columns:1fr;}.side-col{position:static;}}
-  @media(max-width:600px){header{padding:14px 18px;}.brand{font-size:20px;}.badge-admin{display:none;}
-    .layout{padding:20px 16px 40px;}.composer{padding:18px;}.composer-tools{flex-direction:column;align-items:stretch;}
-    .btn-action-group{width:100%;} .btn-publish,.btn-cancel-edit{flex:1;text-align:center;} }
 </style>
 </head>
 <body>
@@ -151,83 +98,67 @@
 
 <div class="layout">
   <div class="feed-col">
-    <!-- Buat / Edit Postingan -->
+    
+    <!-- 1. FORM KELOLA KATALOG MENU -->
+    <div class="composer">
+      <div class="composer-head">
+        <div class="composer-user">
+          <div class="avatar">K</div>
+          <div class="who"><span>Tambah Menu Katalog Baru</span><span>Akan tampil di bagian katalog depan</span></div>
+        </div>
+      </div>
+      <input type="text" id="prodTitle" placeholder="Nama Menu (Contoh: Serabi Kuah Durian)">
+      <textarea id="prodDesc" placeholder="Deskripsi Menu (Contoh: Serabi lembut ditambah parutan durian asli...)"></textarea>
+      <input type="text" id="prodPrice" placeholder="Harga (Contoh: Rp 18.000)">
+      
+      <div class="composer-tools">
+        <label class="btn-upload" for="prodFileInput">📷 Pilih Foto Menu</label>
+        <input type="file" id="prodFileInput" accept="image/*" style="display:none;">
+        <button class="btn-publish" id="saveProductBtn">Simpan Ke Katalog</button>
+      </div>
+    </div>
+
+    <!-- DAFTAR KATALOG DARI FIRESTORE -->
+    <h2 style="font-family:'Playfair Display'; font-size:20px;">Daftar Katalog Produk</h2>
+    <div id="adminProductList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px;"></div>
+
+    <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
+
+    <!-- 2. FORM KABAR TOKO / FEED -->
     <div class="composer">
       <div class="composer-head">
         <div class="composer-user">
           <div class="avatar">S</div>
-          <div class="who"><span id="formTitle">Buat Postingan Baru</span><span id="formSubtitle">Posting sebagai admin</span></div>
+          <div class="who"><span>Buat Kabar Toko Baru</span><span>Posting ke Feed</span></div>
         </div>
       </div>
       <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
-      <div class="composer-divider"></div>
-
-      <!-- Input Lokasi & Tombol GPS -->
-      <div class="map-section">
-        <label>📍 Lokasi Jualan / Tag Tempat:</label>
-        <div class="map-row">
-          <input type="text" id="locationInput" placeholder="Contoh: Lapangan Nguling, Pasuruan">
-          <button type="button" id="btnGetGPS" class="btn-gps">📡 Share Loc GPS</button>
-        </div>
-      </div>
+      <input type="text" id="locationInput" placeholder="📍 Lokasi (Contoh: Lapangan Nguling, Pasuruan)">
 
       <div class="composer-tools">
-        <label class="btn-upload" for="fileInput">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-          </svg>
-          Pilih Foto / Video Baru
-        </label>
-        <input type="file" id="fileInput" accept="image/*,video/*" multiple>
-        
-        <div class="btn-action-group">
-          <button class="btn-cancel-edit" id="cancelEditBtn">Batal</button>
-          <button class="btn-publish" id="publishBtn">Publikasikan</button>
-        </div>
+        <label class="btn-upload" for="fileInput">🖼️ Foto / Video Feed</label>
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none;">
+        <button class="btn-publish" id="publishBtn">Publikasikan Feed</button>
       </div>
-      <div class="preview-container" id="previewContainer" style="display:none;"></div>
     </div>
 
-    <div class="feed-title">
-      <h2>Postingan Anda</h2>
-      <span id="postCount">0 postingan</span>
-    </div>
-
+    <h2 style="font-family:'Playfair Display'; font-size:20px;">Postingan Feed Toko</h2>
     <div id="postList"></div>
   </div>
 
   <div class="side-col">
-    <div class="side-card">
-      <h3>Jam Operasional</h3>
-      <p class="sub">Atur status toko otomatis</p>
-      <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
-        <label style="font-size:12px; color:var(--muted);">Buka Jam:
-          <input type="time" id="openTime" value="08:00" style="width:100%; margin-top:4px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); outline:none;">
-        </label>
-        <label style="font-size:12px; color:var(--muted);">Tutup Jam:
-          <input type="time" id="closeTime" value="21:00" style="width:100%; margin-top:4px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); outline:none;">
-        </label>
-        <button id="saveTimeBtn" style="background:var(--champagne); color:#0a0908; border:none; border-radius:8px; padding:10px; font-weight:600; cursor:pointer; margin-top:6px; transition:.2s;">Simpan Jam Toko</button>
-      </div>
-    </div>
-
-    <div class="side-card">
-      <h3>Moderasi Ulasan</h3>
-      <p class="sub">Komentar terbaru dari pelanggan</p>
-      <div id="commentList"><div class="empty-state">Memuat ulasan...</div></div>
-    </div>
-
+    <!-- Ringkasan -->
     <div class="side-card">
       <h3>Ringkasan</h3>
       <p class="sub">Statistik toko Anda</p>
-      <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
         <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total postingan</span>
-          <strong style="color:var(--champagne-soft);" id="statPosts">0</strong>
+          <span style="color:var(--muted);">Total produk</span>
+          <strong style="color:var(--champagne-soft);" id="statProducts">0</strong>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;">
-          <span style="color:var(--muted);">Total ulasan</span>
-          <strong style="color:var(--champagne-soft);" id="statComments">0</strong>
+          <span style="color:var(--muted);">Total kabar toko</span>
+          <strong style="color:var(--champagne-soft);" id="statPosts">0</strong>
         </div>
       </div>
     </div>
@@ -241,8 +172,7 @@
   const CLOUDINARY_UPLOAD_PRESET = "Serabimu";
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, updateDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
@@ -256,92 +186,12 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const fileInput = document.getElementById('fileInput');
-  const previewContainer = document.getElementById('previewContainer');
-  const publishBtn = document.getElementById('publishBtn');
-  const cancelEditBtn = document.getElementById('cancelEditBtn');
-  const captionEl = document.getElementById('caption');
-  const locationInput = document.getElementById('locationInput');
-  const btnGetGPS = document.getElementById('btnGetGPS');
-  const postList = document.getElementById('postList');
-  const commentList = document.getElementById('commentList');
   const toast = document.getElementById('toast');
-  const formTitle = document.getElementById('formTitle');
-  const formSubtitle = document.getElementById('formSubtitle');
-
-  let selectedFiles = [];
-  let editingPostId = null;
-  let existingMediaUrls = [];
-
-  // Fitur Ambil Lokasi GPS Otomatis
-  btnGetGPS.addEventListener('click', () => {
-    if (!navigator.geolocation) {
-      showToast('❌ Browser/HP Anda tidak mendukung GPS', true);
-      return;
-    }
-    btnGetGPS.textContent = '⏳ Mendeteksi...';
-    btnGetGPS.disabled = true;
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        locationInput.value = `${lat},${lng}`;
-        btnGetGPS.textContent = '✅ Berhasil';
-        btnGetGPS.disabled = false;
-        showToast('✅ Lokasi GPS berhasil dikunci');
-        setTimeout(() => { btnGetGPS.textContent = '📡 Share Loc GPS'; }, 2000);
-      },
-      (err) => {
-        showToast('❌ Gagal mengambil GPS. Pastikan izin aktif.', true);
-        btnGetGPS.textContent = '📡 Share Loc GPS';
-        btnGetGPS.disabled = false;
-      },
-      { enableHighAccuracy: true }
-    );
-  });
-
-  fileInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach(file => selectedFiles.push(file));
-    renderPreviews();
-  });
-
-  function renderPreviews() {
-    previewContainer.innerHTML = '';
-    if(selectedFiles.length === 0 && existingMediaUrls.length === 0){
-      previewContainer.style.display = 'none';
-      return;
-    }
-    previewContainer.style.display = 'flex';
-
-    existingMediaUrls.forEach((m, index) => {
-      const div = document.createElement('div');
-      div.className = 'preview-item';
-      div.innerHTML = m.type === 'video' ? `<video src="${m.url}"></video><button class="remove-old" data-index="${index}">✕</button>` : `<img src="${m.url}"><button class="remove-old" data-index="${index}">✕</button>`;
-      previewContainer.appendChild(div);
-    });
-
-    selectedFiles.forEach((file, index) => {
-      const reader = new FileReader();
-      const div = document.createElement('div');
-      div.className = 'preview-item';
-      reader.onload = (ev) => {
-        div.innerHTML = file.type.startsWith('video/') ? `<video src="${ev.target.result}"></video><button class="remove-new" data-index="${index}">✕</button>` : `<img src="${ev.target.result}"><button class="remove-new" data-index="${index}">✕</button>`;
-      };
-      reader.readAsDataURL(file);
-      previewContainer.appendChild(div);
-    });
-
-    setTimeout(() => {
-      previewContainer.querySelectorAll('.remove-old').forEach(btn => {
-        btn.onclick = (e) => { existingMediaUrls.splice(e.target.dataset.index, 1); renderPreviews(); };
-      });
-      previewContainer.querySelectorAll('.remove-new').forEach(btn => {
-        btn.onclick = (e) => { selectedFiles.splice(e.target.dataset.index, 1); renderPreviews(); };
-      });
-    }, 100);
-  }
+  const showToast = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  };
 
   async function uploadToCloudinary(file){
     const formData = new FormData();
@@ -353,185 +203,155 @@
     return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
   }
 
-  publishBtn.addEventListener('click', async () => {
-    const caption = captionEl.value.trim();
-    const location = locationInput.value.trim();
-    if(!caption && selectedFiles.length === 0 && existingMediaUrls.length === 0){
-      showToast('Isi caption atau foto/video dulu', true);
+  // ====== A. MANAGEMENT KATALOG PRODUK ======
+  const saveProductBtn = document.getElementById('saveProductBtn');
+  const prodFileInput = document.getElementById('prodFileInput');
+
+  saveProductBtn.addEventListener('click', async () => {
+    const title = document.getElementById('prodTitle').value.trim();
+    const desc = document.getElementById('prodDesc').value.trim();
+    const price = document.getElementById('prodPrice').value.trim();
+    const file = prodFileInput.files[0];
+
+    if(!title || !price) {
+      alert("Nama menu & harga wajib diisi!");
       return;
     }
 
+    saveProductBtn.disabled = true;
+    saveProductBtn.textContent = "Menyimpan...";
+
+    try {
+      let imageUrl = "";
+      if(file) {
+        const uploaded = await uploadToCloudinary(file);
+        imageUrl = uploaded.url;
+      }
+
+      await addDoc(collection(db, "products"), {
+        title: title,
+        description: desc,
+        price: price,
+        imageUrl: imageUrl,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById('prodTitle').value = '';
+      document.getElementById('prodDesc').value = '';
+      document.getElementById('prodPrice').value = '';
+      prodFileInput.value = '';
+      showToast("✅ Menu Katalog Disimpan!");
+    } catch(err) {
+      alert("Gagal: " + err.message);
+    } finally {
+      saveProductBtn.disabled = false;
+      saveProductBtn.textContent = "Simpan Ke Katalog";
+    }
+  });
+
+  const qProds = query(collection(db, "products"), orderBy("createdAt", "desc"));
+  onSnapshot(qProds, (snap) => {
+    const adminProductList = document.getElementById('adminProductList');
+    document.getElementById('statProducts').textContent = snap.size;
+    adminProductList.innerHTML = '';
+    
+    snap.forEach((docSnap) => {
+      const p = docSnap.data();
+      const div = document.createElement('div');
+      div.className = 'side-card';
+      div.style.padding = '12px';
+      div.innerHTML = `
+        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80'}" style="width:100%; height:100px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
+        <div style="font-weight:600; font-size:13px;">${p.title}</div>
+        <div style="color:var(--champagne-soft); font-size:12px;">${p.price}</div>
+        <button class="del-prod" data-id="${docSnap.id}" style="background:var(--danger); border:none; color:#fff; width:100%; padding:6px; border-radius:6px; margin-top:8px; cursor:pointer; font-size:11px;">Hapus Menu</button>
+      `;
+      adminProductList.appendChild(div);
+    });
+
+    adminProductList.querySelectorAll('.del-prod').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if(confirm('Hapus menu ini?')) {
+          await deleteDoc(doc(db, "products", btn.dataset.id));
+          showToast('Menu dihapus');
+        }
+      });
+    });
+  });
+
+  // ====== B. MANAGEMENT FEED TOKO ======
+  const publishBtn = document.getElementById('publishBtn');
+  const fileInput = document.getElementById('fileInput');
+
+  publishBtn.addEventListener('click', async () => {
+    const caption = document.getElementById('caption').value.trim();
+    const location = document.getElementById('locationInput').value.trim();
+    const files = Array.from(fileInput.files);
+
+    if(!caption && files.length === 0) return alert("Isi pesan atau pilih file foto!");
+
     publishBtn.disabled = true;
-    publishBtn.textContent = 'Menyimpan...';
-    try{
-      let mediaUrls = [...existingMediaUrls];
-      for(const file of selectedFiles){
+    publishBtn.textContent = "Posting...";
+
+    try {
+      let mediaUrls = [];
+      for(const file of files) {
         const uploaded = await uploadToCloudinary(file);
         mediaUrls.push(uploaded);
       }
 
-      if(editingPostId){
-        await updateDoc(doc(db, "posts", editingPostId), { caption, location, mediaUrls });
-        showToast('✅ Postingan berhasil diperbarui');
-        resetForm();
-      } else {
-        await addDoc(collection(db, "posts"), { caption, location, mediaUrls, createdAt: serverTimestamp() });
-        showToast('✅ Postingan berhasil dipublikasikan');
-        resetForm();
-      }
-    } catch(err){
-      showToast('❌ ' + err.message, true);
+      await addDoc(collection(db, "posts"), {
+        caption: caption,
+        location: location,
+        mediaUrls: mediaUrls,
+        likes: 0,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById('caption').value = '';
+      document.getElementById('locationInput').value = '';
+      fileInput.value = '';
+      showToast("✅ Feed Dipublikasikan!");
+    } catch(err) {
+      alert("Gagal: " + err.message);
     } finally {
       publishBtn.disabled = false;
-      publishBtn.textContent = 'Publikasikan';
+      publishBtn.textContent = "Publikasikan Feed";
     }
   });
 
-  function resetForm(){
-    captionEl.value = '';
-    locationInput.value = '';
-    selectedFiles = [];
-    existingMediaUrls = [];
-    editingPostId = null;
-    renderPreviews();
-    formTitle.textContent = 'Buat Postingan Baru';
-    formSubtitle.textContent = 'Posting sebagai admin';
-    publishBtn.textContent = 'Publikasikan';
-    cancelEditBtn.style.display = 'none';
-  }
-
-  cancelEditBtn.onclick = resetForm;
-
-  const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-  onSnapshot(postsQuery, (snap) => {
-    postList.innerHTML = "";
-    document.getElementById('postCount').textContent = snap.size + " postingan";
+  const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+  onSnapshot(qPosts, (snap) => {
+    const postList = document.getElementById('postList');
     document.getElementById('statPosts').textContent = snap.size;
-    if(snap.empty){
-      postList.innerHTML = '<div class="empty-state">Belum ada postingan.</div>';
-      return;
-    }
+    postList.innerHTML = '';
+    
     snap.forEach((docSnap) => {
       const d = docSnap.data();
-      let mediaHtml = '';
-      if(d.mediaUrls && d.mediaUrls.length > 0){
-        mediaHtml = `<div class="post-media-grid">`;
-        d.mediaUrls.forEach(m => {
-          if(m.type === 'video') mediaHtml += `<video src="${m.url}" controls></video>`;
-          else mediaHtml += `<img src="${m.url}" alt="Post">`;
-        });
-        mediaHtml += `</div>`;
-      }
-      const el = document.createElement('div');
-      el.className = 'post';
-      el.innerHTML = `
+      const div = document.createElement('div');
+      div.className = 'post';
+      div.innerHTML = `
         <div class="post-head">
           <div class="avatar">S</div>
-          <div><div class="name">Serabimu</div><div class="time">${timeAgo(d.createdAt)}</div></div>
+          <div><div class="name">Serabimu</div></div>
           <div class="menu">
-            <button class="edit" data-id="${docSnap.id}" title="Edit">✏️</button>
-            <button class="del" data-id="${docSnap.id}" title="Hapus">✕</button>
+            <button class="del" data-id="${docSnap.id}">✕</button>
           </div>
         </div>
-        <p class="caption">${d.caption || ''}</p>
-        ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
-        ${mediaHtml}
+        <p style="padding:0 20px 12px; font-size:13px;">${d.caption || ''}</p>
       `;
-      postList.appendChild(el);
+      postList.appendChild(div);
     });
 
-    postList.querySelectorAll('.menu .edit').forEach(btn => {
+    postList.querySelectorAll('.del').forEach(btn => {
       btn.addEventListener('click', async () => {
-        const id = btn.dataset.id;
-        const docRef = doc(db, "posts", id);
-        const docSnap = await getDoc(docRef);
-        if(docSnap.exists()){
-          const data = docSnap.data();
-          editingPostId = id;
-          captionEl.value = data.caption || '';
-          locationInput.value = data.location || '';
-          existingMediaUrls = data.mediaUrls || [];
-          renderPreviews();
-          formTitle.textContent = 'Edit Postingan';
-          formSubtitle.textContent = 'Perbarui informasi postingan';
-          publishBtn.textContent = 'Simpan Perubahan';
-          cancelEditBtn.style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    });
-
-    postList.querySelectorAll('.menu .del').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if(confirm('Hapus postingan ini?')){
+        if(confirm('Hapus postingan ini?')) {
           await deleteDoc(doc(db, "posts", btn.dataset.id));
-          showToast('Postingan dihapus');
+          showToast('Feed dihapus');
         }
       });
     });
   });
-
-  const saveTimeBtn = document.getElementById('saveTimeBtn');
-  const openTimeEl = document.getElementById('openTime');
-  const closeTimeEl = document.getElementById('closeTime');
-  const storeSettingsRef = doc(db, "settings", "store_hours");
-
-  getDoc(storeSettingsRef).then((docSnap) => {
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if(data.open) openTimeEl.value = data.open;
-      if(data.close) closeTimeEl.value = data.close;
-    }
-  });
-
-  saveTimeBtn.addEventListener('click', async () => {
-    try {
-      await setDoc(storeSettingsRef, { open: openTimeEl.value, close: closeTimeEl.value });
-      showToast('✅ Jam operasional disimpan');
-    } catch(err) {
-      showToast('❌ Gagal: ' + err.message, true);
-    }
-  });
-
-  const commentsQuery = query(collection(db, "comments"), orderBy("createdAt", "desc"));
-  onSnapshot(commentsQuery, (snap) => {
-    document.getElementById('statComments').textContent = snap.size;
-    if(snap.empty){ commentList.innerHTML = '<div class="empty-state">Belum ada ulasan.</div>'; return; }
-    commentList.innerHTML = "";
-    snap.forEach((c) => {
-      const d = c.data();
-      const div = document.createElement('div');
-      div.className = 'comment-item';
-      div.innerHTML = `
-        <div class="c-top"><div class="avatar">${(d.name||'A')[0].toUpperCase()}</div><span class="c-name">${d.name || 'Anonim'}</span><span class="c-time">${timeAgo(d.createdAt)}</span></div>
-        <div class="c-text">${d.text}</div>
-        <div class="c-actions"><button class="del" data-id="${c.id}">Hapus</button></div>
-      `;
-      commentList.appendChild(div);
-    });
-    commentList.querySelectorAll('.del').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if(confirm('Hapus ulasan?')){ await deleteDoc(doc(db, "comments", btn.dataset.id)); showToast('Ulasan dihapus'); }
-      });
-    });
-  });
-
-  const timeAgo = (ts) => {
-    if(!ts) return "baru saja";
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    const diff = Math.floor((Date.now() - d.getTime())/1000);
-    if(diff < 60) return "baru saja";
-    if(diff < 3600) return Math.floor(diff/60) + " menit lalu";
-    if(diff < 86400) return Math.floor(diff/3600) + " jam lalu";
-    return Math.floor(diff/86400) + " hari lalu";
-  };
-
-  const showToast = (msg, isError) => {
-    toast.textContent = msg;
-    toast.style.background = isError ? 'linear-gradient(100deg,#c96b5a,#e08a7a)' : 'linear-gradient(100deg,var(--champagne),var(--champagne-soft))';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2600);
-  };
 </script>
 
 </body>
