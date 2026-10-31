@@ -6,7 +6,6 @@
 <title>Serabimu — Kuliner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ================= VARIABEL TEMA ================= */
   :root{
     --font-title:'Playfair Display',serif;
     --font-body:'Inter',sans-serif;
@@ -58,7 +57,6 @@
     background:radial-gradient(ellipse 60% 40% at 50% -10%, var(--glow), transparent 70%);
   }
 
-  /* HEADER RAPI */
   header{
     position:sticky; top:0; z-index:100;
     background:color-mix(in srgb, var(--bg) 90%, transparent);
@@ -85,7 +83,6 @@
   }
   nav a:hover{color:var(--accent-soft);}
 
-  /* Menu Tema */
   .theme-dropdown{ position:relative; }
   .theme-btn{
     background:transparent; border:1px solid var(--border); color:var(--muted);
@@ -121,7 +118,6 @@
   .swatch[data-c="ivory"]{ background:linear-gradient(135deg,#faf6ef 50%,#b8912f 50%); }
   .swatch[data-c="purple"]{ background:linear-gradient(135deg,#0e0714 50%,#a34fde 50%); }
 
-  /* HERO */
   .hero{text-align:center;padding:50px 20px 30px;}
   .hero .eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
   .hero h1{
@@ -132,7 +128,6 @@
   }
   .hero p{color:var(--muted);max-width:440px;margin:0 auto;font-weight:300;font-size:14px;}
 
-  /* KATALOG GESER */
   .catalog-wrap{max-width:100%;margin:10px 0 40px;padding:0 0 10px;}
   .section-title{text-align:center;margin-bottom:20px;padding:0 20px;}
   .section-title h2{font-family:var(--font-title);font-size:24px;font-weight:600;color:var(--text);}
@@ -165,7 +160,6 @@
   }
   .btn-buy:hover{filter:brightness(1.1);transform:scale(1.03);}
 
-  /* FEED & INTERAKSI */
   .feed-wrap{max-width:640px;margin:0 auto;padding:0 20px 50px;}
   .feed{display:flex;flex-direction:column;gap:24px;}
   .post{
@@ -181,8 +175,26 @@
   }
   .post-head .name{font-weight:600;font-size:14px;color:var(--text);}
   .post-head .time{font-size:11px;color:var(--muted);}
-  .post .caption{padding:0 20px 16px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
-  .post .photo{width:100%;display:block;max-height:460px;object-fit:cover;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .post .caption{padding:0 20px 12px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
+  .post-location{padding:0 20px 14px;font-size:12px;color:var(--accent-soft);display:flex;align-items:center;gap:6px;}
+
+  /* Media Grid di Postingan Pengunjung (Bisa diklik untuk Lightbox) */
+  .post-media-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:4px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#000;}
+  .post-media-grid img, .post-media-grid video{width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;transition:.2s;}
+  .post-media-grid img:hover{opacity:.9;}
+
+  /* Lightbox Overlay Fullscreen */
+  #lightbox{
+    position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #lightbox img, #lightbox video{max-width:90%; max-height:90vh; object-fit:contain; border-radius:8px;}
+  #lightboxClose{
+    position:absolute; top:20px; right:25px; background:rgba(255,255,255,0.2); color:#fff;
+    border:none; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:.2s;
+  }
+  #lightboxClose:hover{background:rgba(255,255,255,0.4);}
 
   .post-actions{
     padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
@@ -309,64 +321,27 @@
   </div>
 </div>
 
-<!-- FEED & KOMENTAR -->
+<!-- FEED DINAMIS DARI ADMIN -->
 <div class="feed-wrap" id="feed">
   <div class="section-title" style="margin-bottom: 24px;">
     <h2>Kabar Toko</h2>
     <p>Cita rasa istimewa buatan tangan hari ini</p>
   </div>
 
-  <div class="feed">
-    <div class="post">
-      <div class="post-head">
-        <div class="avatar">S</div>
-        <div>
-          <div class="name">Serabimu</div>
-          <div class="time">2 jam lalu</div>
-        </div>
-      </div>
-      <p class="caption">Adonan pertama baru saja matang di tungku tradisional. Harum santan dan pandan siap menghangatkan suasana santai sore Anda.</p>
-      <img class="photo" src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=80" alt="Koleksi">
-      
-      <div class="post-actions">
-        <button class="btn-like" id="btn-like">
-          ❤️ <span id="like-text">Suka</span>
-        </button>
-        <span id="like-count">0 Suka</span>
-      </div>
-
-      <div class="comments">
-        <div class="c-head">Ulasan Penikmat Rasa</div>
-        
-        <div id="auth-box" class="auth-box">
-          <button id="btn-login-google" class="btn-google">
-            <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-            Login Google untuk Mengulas
-          </button>
-        </div>
-
-        <form id="comment-form" class="comment-form" style="display: none;">
-          <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">
-            Masuk sebagai: <b id="user-display-name" style="color: var(--text);"></b> (<a href="#" id="btn-logout" style="color: var(--accent-soft);">Keluar</a>)
-          </div>
-          <div style="display: flex; gap: 8px; width: 100%;">
-            <input type="text" id="comment-text" placeholder="Tulis ulasan Anda..." required>
-            <button type="submit">Kirim</button>
-          </div>
-        </form>
-
-        <div class="comment-list" id="comments-list" style="margin-top: 12px;">
-          <div style="font-size: 12px; color: var(--muted);">Memuat ulasan...</div>
-        </div>
-      </div>
-    </div>
+  <div class="feed" id="publicFeedList">
+    <div style="font-size: 13px; color: var(--muted); text-align: center;">Memuat postingan...</div>
   </div>
+</div>
+
+<!-- LIGHTBOX MODAL FULLSCREEN -->
+<div id="lightbox">
+  <button id="lightboxClose">✕</button>
+  <div id="lightboxContent"></div>
 </div>
 
 <footer id="kontak">
   <div class="brand">Serabimu</div>
   <p>© 2026 Serabimu — Semua hak dilindungi</p>
-  <!-- Tombol Akses Admin Tersembunyi di Footer -->
   <button id="adminLoginTrigger" style="background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:11px; letter-spacing:1px; margin-top:4px; opacity:0.6; transition:.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">🔒 Admin Panel</button>
 </footer>
 
@@ -389,126 +364,114 @@
   import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "API_KEY_ANDA",
-    authDomain: "PROJECT_ID_ANDA.firebaseapp.com",
-    projectId: "PROJECT_ID_ANDA",
-    storageBucket: "PROJECT_ID_ANDA.appspot.com",
-    messagingSenderId: "SENDER_ID_ANDA",
-    appId: "APP_ID_ANDA"
+    apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
+    authDomain: "serabimu-96990.firebaseapp.com",
+    projectId: "serabimu-96990",
+    storageBucket: "serabimu-96990.firebasestorage.app",
+    messagingSenderId: "888492450453",
+    appId: "1:888492450453:web:eacb698dfa8f483f78719c"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  const provider = new GoogleAuthProvider();
 
-  let currentUser = null;
+  // ====== TAMPILKAN POSTINGAN DARI FIRESTORE KE PENGUNJUNG ======
+  const publicFeedList = document.getElementById('publicFeedList');
+  const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
-  const authBox = document.getElementById('auth-box');
-  const commentForm = document.getElementById('comment-form');
-  const userDisplayName = document.getElementById('user-display-name');
-
-  document.getElementById('btn-login-google').onclick = () => signInWithPopup(auth, provider);
-  document.getElementById('btn-logout').onclick = (e) => { e.preventDefault(); signOut(auth); };
-
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    if (user) {
-      authBox.style.display = 'none';
-      commentForm.style.display = 'block';
-      userDisplayName.innerText = user.displayName || user.email;
-    } else {
-      authBox.style.display = 'block';
-      commentForm.style.display = 'none';
-    }
-  });
-
-  const likeBtn = document.getElementById('btn-like');
-  const likeCountSpan = document.getElementById('like-count');
-  const likeDocRef = doc(db, "stats", "post_likes");
-
-  getDoc(likeDocRef).then((docSnap) => {
-    if (!docSnap.exists()) {
-      setDoc(likeDocRef, { count: 0 });
-    }
-  });
-
-  onSnapshot(likeDocRef, (docSnap) => {
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      likeCountSpan.innerText = `${data.count || 0} Suka`;
-    }
-  });
-
-  if (localStorage.getItem("serabimu_liked") === "true") {
-    likeBtn.classList.add('liked');
-    document.getElementById('like-text').innerText = "Disukai";
-  }
-
-  likeBtn.onclick = async () => {
-    if (localStorage.getItem("serabimu_liked") === "true") {
-      alert("Anda sudah menyukai postingan ini.");
-      return;
-    }
-
-    try {
-      await updateDoc(likeDocRef, {
-        count: increment(1)
-      });
-      localStorage.setItem("serabimu_liked", "true");
-      likeBtn.classList.add('liked');
-      document.getElementById('like-text').innerText = "Disukai";
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  commentForm.onsubmit = async (e) => {
-    e.preventDefault();
-    const text = document.getElementById('comment-text').value;
-    if (!text.trim()) return;
-
-    await addDoc(collection(db, "comments"), {
-      name: currentUser.displayName || "Pengunjung",
-      avatar: currentUser.photoURL || "",
-      text: text,
-      createdAt: serverTimestamp(),
-      customTime: "Baru saja"
-    });
-    document.getElementById('comment-text').value = '';
-  };
-
-  const commentsList = document.getElementById('comments-list');
-  const q = query(collection(db, "comments"), orderBy("createdAt", "desc"));
-
-  onSnapshot(q, (snapshot) => {
-    commentsList.innerHTML = '';
+  onSnapshot(qPosts, (snapshot) => {
+    publicFeedList.innerHTML = '';
     if (snapshot.empty) {
-      commentsList.innerHTML = '<div style="font-size: 12px; color: var(--muted);">Belum ada ulasan.</div>';
+      publicFeedList.innerHTML = '<div style="font-size: 13px; color: var(--muted); text-align: center;">Belum ada kabar toko saat ini.</div>';
       return;
     }
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      const initial = data.name ? data.name.charAt(0).toUpperCase() : 'U';
-      const avatarHTML = data.avatar 
-        ? `<img src="${data.avatar}" class="avatar-img">`
-        : `<div class="avatar">${initial}</div>`;
 
-      commentsList.insertAdjacentHTML('beforeend', `
-        <div class="comment">
-          ${avatarHTML}
-          <div class="bubble">
-            <div class="cname">${data.name} <span style="font-weight:normal; font-size:11px; color:var(--muted);">• ${data.customTime || 'Baru saja'}</span></div>
-            <div class="ctext">${data.text}</div>
+    snapshot.forEach((docSnap) => {
+      const d = docSnap.data();
+      let mediaHtml = '';
+      if(d.mediaUrls && d.mediaUrls.length > 0){
+        mediaHtml = `<div class="post-media-grid">`;
+        d.mediaUrls.forEach(m => {
+          if(m.type === 'video') {
+            mediaHtml += `<video src="${m.url}" controls class="zoomable-media"></video>`;
+          } else {
+            mediaHtml += `<img src="${m.url}" alt="Foto Postingan" class="zoomable-media">`;
+          }
+        });
+        mediaHtml += `</div>`;
+      }
+
+      const postDiv = document.createElement('div');
+      postDiv.className = 'post';
+      postDiv.innerHTML = `
+        <div class="post-head">
+          <div class="avatar">S</div>
+          <div>
+            <div class="name">Serabimu</div>
+            <div class="time">${timeAgo(d.createdAt)}</div>
           </div>
         </div>
-      `);
+        <p class="caption">${d.caption || ''}</p>
+        ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
+        ${mediaHtml}
+      `;
+      publicFeedList.appendChild(postDiv);
     });
-  });
-</script>
 
-<script>
-  /* Script Ganti Tema */
+    // Aktifkan Fitur Lightbox Klik Gambar/Video
+    setupLightbox();
+  });
+
+  // ====== LIGHTBOX LOGIC ======
+  const lightbox = document.getElementById('lightbox');
+  const lightboxContent = document.getElementById('lightboxContent');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  function setupLightbox() {
+    document.querySelectorAll('.zoomable-media').forEach(media => {
+      media.addEventListener('click', (e) => {
+        lightboxContent.innerHTML = '';
+        if(e.target.tagName === 'IMG'){
+          const img = document.createElement('img');
+          img.src = e.target.src;
+          lightboxContent.appendChild(img);
+        } else if(e.target.tagName === 'VIDEO'){
+          const video = document.createElement('video');
+          video.src = e.target.src;
+          video.controls = true;
+          video.autoplay = true;
+          lightboxContent.appendChild(video);
+        }
+        lightbox.style.display = 'flex';
+      });
+    });
+  }
+
+  lightboxClose.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightboxContent.innerHTML = '';
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if(e.target === lightbox){
+      lightbox.style.display = 'none';
+      lightboxContent.innerHTML = '';
+    }
+  });
+
+  // ====== UTILITAS WAKTU ======
+  const timeAgo = (ts) => {
+    if(!ts) return "baru saja";
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const diff = Math.floor((Date.now() - d.getTime())/1000);
+    if(diff < 60) return "baru saja";
+    if(diff < 3600) return Math.floor(diff/60) + " menit lalu";
+    if(diff < 86400) return Math.floor(diff/3600) + " jam lalu";
+    return Math.floor(diff/86400) + " hari lalu";
+  };
+
+  // ====== SCRIPT TEMA & PIN ADMIN (7454lalapan) ======
   const dropdown = document.getElementById('themeDropdown');
   const themeBtn = document.getElementById('themeBtn');
   
@@ -530,8 +493,7 @@
     });
   });
 
-  /* Script Keamanan PIN Admin */
-  const ADMIN_PIN = "7454lalapan"; // PIN Admin Diperbarui
+  const ADMIN_PIN = "7454lalapan";
   const adminModal = document.getElementById('adminModal');
   const adminLoginTrigger = document.getElementById('adminLoginTrigger');
   const submitPinBtn = document.getElementById('submitPinBtn');
