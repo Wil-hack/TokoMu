@@ -176,9 +176,8 @@
   .post-head .name{font-weight:600;font-size:14px;color:var(--text);}
   .post-head .time{font-size:11px;color:var(--muted);}
   .post .caption{padding:0 20px 12px;font-size:14px;font-weight:300;color:var(--text);opacity:.92;}
-  .post-location{padding:0 20px 14px;font-size:12px;color:var(--accent-soft);display:flex;align-items:center;gap:6px;}
 
-  /* Media Grid di Postingan Pengunjung (Bisa diklik untuk Lightbox) */
+  /* Media Grid di Postingan Pengunjung */
   .post-media-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:4px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#000;}
   .post-media-grid img, .post-media-grid video{width:100%;height:220px;object-fit:cover;display:block;cursor:pointer;transition:.2s;}
   .post-media-grid img:hover{opacity:.9;}
@@ -195,52 +194,6 @@
     display:flex; align-items:center; justify-content:center; transition:.2s;
   }
   #lightboxClose:hover{background:rgba(255,255,255,0.4);}
-
-  .post-actions{
-    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted);
-  }
-  .btn-like{
-    background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
-    padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px;
-    display: inline-flex; align-items: center; gap: 6px; transition: .2s; font-weight: 500;
-  }
-  .btn-like:hover{ background: var(--border); color: var(--accent-soft); }
-  .btn-like.liked{ color: #ff4757; border-color: rgba(255,71,87,.3); }
-
-  .comments{padding:16px 20px 20px;background:color-mix(in srgb, var(--bg) 60%, transparent);}
-  .comments .c-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;font-weight:500;}
-  
-  .comment{display:flex;gap:10px;margin-bottom:12px;}
-  .comment .avatar{width:32px;height:32px;font-size:13px;}
-  .comment .avatar-img {width:32px; height:32px; border-radius:50%; object-fit:cover;}
-  .comment .bubble{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;flex:1;}
-  .comment .cname{font-size:12px;font-weight:600;color:var(--accent-soft);}
-  .comment .ctext{font-size:13px;font-weight:300;color:var(--text);opacity:.88;margin-top:2px;}
-
-  .auth-box{ margin-bottom: 12px; }
-  .btn-google{
-    background: #fff; color: #333; border: 1px solid var(--border);
-    border-radius: 999px; padding: 8px 16px; font-family: var(--font-body);
-    font-size: 12px; font-weight: 500; cursor: pointer; display: inline-flex;
-    align-items: center; gap: 8px; transition: .3s;
-  }
-  .btn-google:hover{ background: var(--bg-2); border-color: var(--accent-soft); color: var(--accent-soft); }
-
-  .comment-form{display:flex;gap:8px;margin-top:10px;}
-  .comment-form input{
-    flex:1;background:var(--bg-2);border:1px solid var(--border);
-    border-radius:999px;padding:10px 16px;color:var(--text);
-    font-family:var(--font-body);font-size:13px;outline:none;transition:.35s;
-  }
-  .comment-form input:focus{border-color:var(--accent-soft);box-shadow:0 0 0 2px var(--glow);}
-  .comment-form button{
-    background:linear-gradient(100deg,var(--accent),var(--accent-soft));
-    color:var(--bg);border:none;border-radius:999px;padding:0 20px;
-    font-family:var(--font-body);font-weight:600;font-size:11.5px;
-    letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:.35s;
-  }
-  .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03);}
 
   footer{
     text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:20px;
@@ -360,8 +313,8 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
@@ -373,10 +326,8 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // ====== TAMPILKAN POSTINGAN DARI FIRESTORE KE PENGUNJUNG ======
   const publicFeedList = document.getElementById('publicFeedList');
   const qPosts = query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
@@ -402,6 +353,30 @@
         mediaHtml += `</div>`;
       }
 
+      // Format lokasi menjadi tombol tautan rute Google Maps yang interaktif
+      let locationHtml = '';
+      if(d.location) {
+        const isCoordinates = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(d.location.trim());
+        let mapsUrl = '';
+        let displayLocText = '';
+
+        if (isCoordinates) {
+          mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(d.location.trim())}`;
+          displayLocText = '📍 Petunjuk Rute Google Maps';
+        } else {
+          mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.location)}`;
+          displayLocText = `📍 ${d.location}`;
+        }
+
+        locationHtml = `
+          <div style="padding: 0 20px 14px;">
+            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; color: var(--accent-soft); text-decoration: none; font-weight: 500; font-size: 12.5px; background: color-mix(in srgb, var(--accent) 15%, transparent); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .2s;">
+              ${displayLocText} ↗
+            </a>
+          </div>
+        `;
+      }
+
       const postDiv = document.createElement('div');
       postDiv.className = 'post';
       postDiv.innerHTML = `
@@ -413,17 +388,15 @@
           </div>
         </div>
         <p class="caption">${d.caption || ''}</p>
-        ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
+        ${locationHtml}
         ${mediaHtml}
       `;
       publicFeedList.appendChild(postDiv);
     });
 
-    // Aktifkan Fitur Lightbox Klik Gambar/Video
     setupLightbox();
   });
 
-  // ====== LIGHTBOX LOGIC ======
   const lightbox = document.getElementById('lightbox');
   const lightboxContent = document.getElementById('lightboxContent');
   const lightboxClose = document.getElementById('lightboxClose');
@@ -460,7 +433,6 @@
     }
   });
 
-  // ====== UTILITAS WAKTU ======
   const timeAgo = (ts) => {
     if(!ts) return "baru saja";
     const d = ts.toDate ? ts.toDate() : new Date(ts);
@@ -471,7 +443,6 @@
     return Math.floor(diff/86400) + " hari lalu";
   };
 
-  // ====== SCRIPT TEMA & PIN ADMIN (7454lalapan) ======
   const dropdown = document.getElementById('themeDropdown');
   const themeBtn = document.getElementById('themeBtn');
   
