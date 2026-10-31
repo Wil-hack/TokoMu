@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Serabimu Kuliner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- Leaflet CSS untuk Peta Interaktif -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
     --bg:#0a0908; --bg-2:#0f0e0c; --card:#161412; --card-2:#1c1a17;
@@ -40,24 +38,24 @@
   .composer{background:linear-gradient(165deg,var(--card),var(--card-2));border:1px solid var(--border);
     border-radius:20px;padding:22px 24px;transition:border-color .35s;}
   .composer:focus-within{border-color:rgba(212,188,138,.4);}
-  .composer-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-  .composer-head .avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  .composer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .composer-user{display:flex;align-items:center;gap:14px;}
+  .composer-user .avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;
     background:linear-gradient(135deg,var(--champagne-soft),#8a6d3f);display:flex;align-items:center;justify-content:center;
-    font-family:'Playfair Display',serif;font-weight:700;color:#0a0908;font-size:19px;
-    box-shadow:0 0 0 1px rgba(212,188,138,.35),0 0 18px -4px var(--champagne-glow);}
-  .composer-head .who{font-size:14px;font-weight:600;}
-  .composer-head .who span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
+    font-family:'Playfair Display',serif;font-weight:700;color:#0a0908;font-size:19px;}
+  .composer-user .who{font-size:14px;font-weight:600;}
+  .composer-user .who span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.5px;}
 
   .composer textarea{width:100%;background:transparent;border:none;outline:none;color:var(--text);
     font-family:'Inter';font-size:15px;font-weight:300;resize:none;min-height:70px;padding:6px 2px;}
   .composer textarea::placeholder{color:#5f5a52;}
   .composer-divider{height:1px;background:var(--border);margin:10px 0 16px;}
 
-  /* Bagian Peta Pemilihan Lokasi */
-  .map-picker-section{margin-bottom:16px;}
-  .map-picker-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;}
-  #map{width:100%;height:180px;border-radius:12px;border:1px solid var(--border);margin-bottom:8px;}
-  .location-info{font-size:11.5px;color:var(--champagne-soft);background:var(--bg-2);padding:6px 10px;border-radius:6px;border:1px solid var(--border-soft);}
+  /* Input Google Maps Lokasi */
+  .map-section{margin-bottom:16px;}
+  .map-section label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;}
+  .map-section input{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Inter';font-size:13px;outline:none;}
+  .map-section input:focus{border-color:var(--champagne-soft);}
 
   .composer-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
   .btn-upload{display:inline-flex;align-items:center;gap:8px;background:var(--bg-2);
@@ -67,12 +65,13 @@
   .btn-upload:hover{border-color:rgba(212,188,138,.45);background:rgba(212,188,138,.06);}
   #fileInput{display:none;}
 
+  .btn-action-group{display:flex;gap:8px;}
   .btn-publish{background:linear-gradient(100deg,var(--champagne),var(--champagne-soft));
     color:#0a0908;border:none;border-radius:12px;padding:11px 26px;font-family:'Inter';
     font-weight:600;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.3s;}
   .btn-publish:hover{filter:brightness(1.1);transform:translateY(-1px);}
-  .btn-publish:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-
+  .btn-cancel-edit{background:var(--bg-2);color:var(--muted);border:1px solid var(--border);border-radius:12px;padding:11px 16px;font-size:12px;cursor:pointer;display:none;}
+  
   .preview-container{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
   .preview-item{width:90px;height:90px;border-radius:10px;overflow:hidden;border:1px solid var(--border);position:relative;background:#000;}
   .preview-item img, .preview-item video{width:100%;height:100%;object-fit:cover;}
@@ -134,7 +133,7 @@
   @media(max-width:900px){.layout{grid-template-columns:1fr;}.side-col{position:static;}}
   @media(max-width:600px){header{padding:14px 18px;}.brand{font-size:20px;}.badge-admin{display:none;}
     .layout{padding:20px 16px 40px;}.composer{padding:18px;}.composer-tools{flex-direction:column;align-items:stretch;}
-    .btn-publish{width:100%;}}
+    .btn-action-group{width:100%;} .btn-publish,.btn-cancel-edit{flex:1;text-align:center;} }
 </style>
 </head>
 <body>
@@ -149,20 +148,21 @@
 
 <div class="layout">
   <div class="feed-col">
-    <!-- Buat Postingan -->
+    <!-- Buat / Edit Postingan -->
     <div class="composer">
       <div class="composer-head">
-        <div class="avatar">S</div>
-        <div class="who">Serabimu<span>Posting sebagai admin</span></div>
+        <div class="composer-user">
+          <div class="avatar">S</div>
+          <div class="who"><span id="formTitle">Buat Postingan Baru</span><span id="formSubtitle">Posting sebagai admin</span></div>
+        </div>
       </div>
       <textarea id="caption" placeholder="Apa yang ingin Anda bagikan hari ini?"></textarea>
       <div class="composer-divider"></div>
 
-      <!-- Peta Pilih Lokasi -->
-      <div class="map-picker-section">
-        <span class="map-picker-label">📍 Pin Lokasi (Geser peta atau klik pada titik lokasi):</span>
-        <div id="map"></div>
-        <div class="location-info" id="locationInfo">Lokasi terpilih: Lapangan Nguling, Pasuruan</div>
+      <!-- Input Lokasi Google Maps -->
+      <div class="map-section">
+        <label>📍 Lokasi Google Maps (Tulis nama tempat atau link Google Maps):</label>
+        <input type="text" id="locationInput" placeholder="Contoh: Lapangan Nguling, Pasuruan">
       </div>
 
       <div class="composer-tools">
@@ -170,10 +170,14 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
           </svg>
-          Pilih Foto / Video (Bisa Banyak)
+          Pilih Foto / Video Baru
         </label>
         <input type="file" id="fileInput" accept="image/*,video/*" multiple>
-        <button class="btn-publish" id="publishBtn">Publikasikan</button>
+        
+        <div class="btn-action-group">
+          <button class="btn-cancel-edit" id="cancelEditBtn">Batal</button>
+          <button class="btn-publish" id="publishBtn">Publikasikan</button>
+        </div>
       </div>
       <div class="preview-container" id="previewContainer" style="display:none;"></div>
     </div>
@@ -209,7 +213,7 @@
       <div id="commentList"><div class="empty-state">Memuat ulasan...</div></div>
     </div>
 
-    <!-- Statistik -->
+    <!-- Ringkasan -->
     <div class="side-card">
       <h3>Ringkasan</h3>
       <p class="sub">Statistik toko Anda</p>
@@ -229,14 +233,12 @@
 
 <div class="toast" id="toast">✅ Berhasil</div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
   const CLOUDINARY_CLOUD_NAME = "ywxfumtm";
   const CLOUDINARY_UPLOAD_PRESET = "Serabimu";
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc }
+  import { getFirestore, collection, addDoc, updateDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -251,61 +253,21 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ====== INISIALISASI PETA INTERAKTIF (Leaflet) ======
-  // Koordinat awal diset di sekitar Nguling, Pasuruan (-7.65, 113.03)
-  let selectedLat = -7.6543;
-  let selectedLng = 113.0312;
-  let selectedLocationName = "Lapangan Nguling, Pasuruan";
-
-  const map = L.map('map').setView([selectedLat, selectedLng], 14);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
-  }).addTo(map);
-
-  let marker = L.marker([selectedLat, selectedLng], {draggable: true}).addTo(map);
-
-  // Fungsi update info saat marker digeser atau peta diklik
-  function updateLocationData(lat, lng) {
-    selectedLat = lat;
-    selectedLng = lng;
-    // Menggunakan reverse geocoding sederhana via Nominatim API agar otomatis mendeteksi nama daerah/kota
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
-      .then(res => res.json())
-      .then(data => {
-        if(data && data.display_name){
-          const parts = data.display_name.split(',');
-          selectedLocationName = parts.slice(0, 3).join(',').trim();
-        } else {
-          selectedLocationName = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
-        }
-        document.getElementById('locationInfo').textContent = `Lokasi terpilih: ${selectedLocationName}`;
-      }).catch(() => {
-        selectedLocationName = `Lokasi Koordinat (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-        document.getElementById('locationInfo').textContent = `Lokasi terpilih: ${selectedLocationName}`;
-      });
-  }
-
-  map.on('click', (e) => {
-    marker.setLatLng(e.latlng);
-    updateLocationData(e.latlng.lat, e.latlng.lng);
-  });
-
-  marker.on('dragend', (e) => {
-    const pos = marker.getLatLng();
-    updateLocationData(pos.lat, pos.lng);
-  });
-
-  // ====== FORM UPLOAD & PUBLISH ======
   const fileInput = document.getElementById('fileInput');
   const previewContainer = document.getElementById('previewContainer');
   const publishBtn = document.getElementById('publishBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
   const captionEl = document.getElementById('caption');
+  const locationInput = document.getElementById('locationInput');
   const postList = document.getElementById('postList');
   const commentList = document.getElementById('commentList');
   const toast = document.getElementById('toast');
-  
+  const formTitle = document.getElementById('formTitle');
+  const formSubtitle = document.getElementById('formSubtitle');
+
   let selectedFiles = [];
+  let editingPostId = null; // Menyimpan ID jika sedang mode edit
+  let existingMediaUrls = []; // Menyimpan media lama saat edit
 
   fileInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
@@ -315,76 +277,90 @@
 
   function renderPreviews() {
     previewContainer.innerHTML = '';
-    if(selectedFiles.length === 0){
+    if(selectedFiles.length === 0 && existingMediaUrls.length === 0){
       previewContainer.style.display = 'none';
       return;
     }
     previewContainer.style.display = 'flex';
 
+    // Tampilkan media lama jika sedang edit
+    existingMediaUrls.forEach((m, index) => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = m.type === 'video' ? `<video src="${m.url}"></video><button class="remove-old" data-index="${index}">✕</button>` : `<img src="${m.url}"><button class="remove-old" data-index="${index}">✕</button>`;
+      previewContainer.appendChild(div);
+    });
+
+    // Tampilkan media baru yang dipilih
     selectedFiles.forEach((file, index) => {
       const reader = new FileReader();
       const div = document.createElement('div');
       div.className = 'preview-item';
-
       reader.onload = (ev) => {
-        if(file.type.startsWith('video/')){
-          div.innerHTML = `<video src="${ev.target.result}"></video><button class="remove-media" data-index="${index}">✕</button>`;
-        } else {
-          div.innerHTML = `<img src="${ev.target.result}" alt="Preview"><button class="remove-media" data-index="${index}">✕</button>`;
-        }
+        div.innerHTML = file.type.startsWith('video/') ? `<video src="${ev.target.result}"></video><button class="remove-new" data-index="${index}">✕</button>` : `<img src="${ev.target.result}"><button class="remove-new" data-index="${index}">✕</button>`;
       };
       reader.readAsDataURL(file);
       previewContainer.appendChild(div);
     });
 
-    previewContainer.querySelectorAll('.remove-media').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        selectedFiles.splice(parseInt(e.target.dataset.index), 1);
-        renderPreviews();
+    setTimeout(() => {
+      previewContainer.querySelectorAll('.remove-old').forEach(btn => {
+        btn.onclick = (e) => { existingMediaUrls.splice(e.target.dataset.index, 1); renderPreviews(); };
       });
-    });
+      previewContainer.querySelectorAll('.remove-new').forEach(btn => {
+        btn.onclick = (e) => { selectedFiles.splice(e.target.dataset.index, 1); renderPreviews(); };
+      });
+    }, 100);
   }
 
   async function uploadToCloudinary(file){
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
-      method: 'POST',
-      body: formData
-    });
-    if(!res.ok) throw new Error('Upload ke Cloudinary gagal');
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, { method: 'POST', body: formData });
+    if(!res.ok) throw new Error('Upload gagal');
     const data = await res.json();
     return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
   }
 
+  // Tombol Publikasikan / Simpan Perubahan
   publishBtn.addEventListener('click', async () => {
     const caption = captionEl.value.trim();
-    if(!caption && selectedFiles.length === 0){
-      showToast('Isi caption atau pilih foto/video dulu', true);
+    const location = locationInput.value.trim();
+    if(!caption && selectedFiles.length === 0 && existingMediaUrls.length === 0){
+      showToast('Isi caption atau foto/video dulu', true);
       return;
     }
+
     publishBtn.disabled = true;
-    publishBtn.textContent = 'Mengunggah...';
+    publishBtn.textContent = 'Menyimpan...';
     try{
-      let mediaUrls = [];
+      let mediaUrls = [...existingMediaUrls];
       for(const file of selectedFiles){
         const uploaded = await uploadToCloudinary(file);
         mediaUrls.push(uploaded);
       }
 
-      await addDoc(collection(db, "posts"), {
-        caption: caption,
-        mediaUrls: mediaUrls,
-        location: selectedLocationName,
-        createdAt: serverTimestamp()
-      });
-      captionEl.value = '';
-      selectedFiles = [];
-      renderPreviews();
-      fileInput.value = '';
-      showToast('✅ Postingan & lokasi berhasil dipublikasikan');
+      if(editingPostId){
+        // Mode Update / Edit
+        await updateDoc(doc(db, "posts", editingPostId), {
+          caption: caption,
+          location: location,
+          mediaUrls: mediaUrls
+        });
+        showToast('✅ Postingan berhasil diperbarui');
+        resetForm();
+      } else {
+        // Mode Buat Baru
+        await addDoc(collection(db, "posts"), {
+          caption: caption,
+          location: location,
+          mediaUrls: mediaUrls,
+          createdAt: serverTimestamp()
+        });
+        showToast('✅ Postingan berhasil dipublikasikan');
+        resetForm();
+      }
     } catch(err){
       showToast('❌ ' + err.message, true);
     } finally {
@@ -393,29 +369,22 @@
     }
   });
 
-  // Jam Operasional & Realtime Listeners
-  const saveTimeBtn = document.getElementById('saveTimeBtn');
-  const openTimeEl = document.getElementById('openTime');
-  const closeTimeEl = document.getElementById('closeTime');
-  const storeSettingsRef = doc(db, "settings", "store_hours");
+  function resetForm(){
+    captionEl.value = '';
+    locationInput.value = '';
+    selectedFiles = [];
+    existingMediaUrls = [];
+    editingPostId = null;
+    renderPreviews();
+    formTitle.textContent = 'Buat Postingan Baru';
+    formSubtitle.textContent = 'Posting sebagai admin';
+    publishBtn.textContent = 'Publikasikan';
+    cancelEditBtn.style.display = 'none';
+  }
 
-  getDoc(storeSettingsRef).then((docSnap) => {
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if(data.open) openTimeEl.value = data.open;
-      if(data.close) closeTimeEl.value = data.close;
-    }
-  });
+  cancelEditBtn.onclick = resetForm;
 
-  saveTimeBtn.addEventListener('click', async () => {
-    try {
-      await setDoc(storeSettingsRef, { open: openTimeEl.value, close: closeTimeEl.value });
-      showToast('✅ Jam operasional disimpan');
-    } catch(err) {
-      showToast('❌ Gagal: ' + err.message, true);
-    }
-  });
-
+  // Render Postingan di Admin (Dilengkapi Tombol Edit & Hapus)
   const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
   onSnapshot(postsQuery, (snap) => {
     postList.innerHTML = "";
@@ -442,7 +411,10 @@
         <div class="post-head">
           <div class="avatar">S</div>
           <div><div class="name">Serabimu</div><div class="time">${timeAgo(d.createdAt)}</div></div>
-          <div class="menu"><button class="del" data-id="${docSnap.id}">✕</button></div>
+          <div class="menu">
+            <button class="edit" data-id="${docSnap.id}" title="Edit">✏️</button>
+            <button class="del" data-id="${docSnap.id}" title="Hapus">✕</button>
+          </div>
         </div>
         <p class="caption">${d.caption || ''}</p>
         ${d.location ? `<div class="post-location">📍 ${d.location}</div>` : ''}
@@ -451,6 +423,29 @@
       postList.appendChild(el);
     });
 
+    // Event Klik Tombol Edit
+    postList.querySelectorAll('.menu .edit').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const docRef = doc(db, "posts", id);
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()){
+          const data = docSnap.data();
+          editingPostId = id;
+          captionEl.value = data.caption || '';
+          locationInput.value = data.location || '';
+          existingMediaUrls = data.mediaUrls || [];
+          renderPreviews();
+          formTitle.textContent = 'Edit Postingan';
+          formSubtitle.textContent = 'Perbarui informasi postingan';
+          publishBtn.textContent = 'Simpan Perubahan';
+          cancelEditBtn.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Event Klik Tombol Hapus
     postList.querySelectorAll('.menu .del').forEach(btn => {
       btn.addEventListener('click', async () => {
         if(confirm('Hapus postingan ini?')){
@@ -459,6 +454,29 @@
         }
       });
     });
+  });
+
+  // Jam Operasional & Komentar
+  const saveTimeBtn = document.getElementById('saveTimeBtn');
+  const openTimeEl = document.getElementById('openTime');
+  const closeTimeEl = document.getElementById('closeTime');
+  const storeSettingsRef = doc(db, "settings", "store_hours");
+
+  getDoc(storeSettingsRef).then((docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if(data.open) openTimeEl.value = data.open;
+      if(data.close) closeTimeEl.value = data.close;
+    }
+  });
+
+  saveTimeBtn.addEventListener('click', async () => {
+    try {
+      await setDoc(storeSettingsRef, { open: openTimeEl.value, close: closeTimeEl.value });
+      showToast('✅ Jam operasional disimpan');
+    } catch(err) {
+      showToast('❌ Gagal: ' + err.message, true);
+    }
   });
 
   const commentsQuery = query(collection(db, "comments"), orderBy("createdAt", "desc"));
