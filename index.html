@@ -12,6 +12,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+<!-- ===== LEAFLET MAP CSS & JS ===== -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://firestore.googleapis.com">
@@ -389,10 +393,23 @@ footer p{color:var(--muted);font-size:11px;letter-spacing:1.2px;text-transform:u
           <option>Take-away</option>
           <option>Delivery</option>
         </select>
+        
+        <!-- AREA DELIVERY (PETA & SHARE LOC) -->
         <div id="addressField" style="display:none">
-          <label for="coAddress">Alamat *</label>
-          <textarea id="coAddress" name="address" rows="2" placeholder="Alamat lengkap pengiriman..."></textarea>
+          <label for="coAddress">Alamat Lengkap *</label>
+          <textarea id="coAddress" name="address" rows="2" placeholder="Nama jalan, RT/RW, warna pagar, patokan..."></textarea>
+          
+          <label style="margin-top: 10px; display: block;">Tandai Lokasi di Peta (Geser & Klik) *</label>
+          <div id="map-picker" style="height: 180px; border-radius: 10px; margin-bottom: 14px; border: 1px solid var(--border); position: relative; z-index: 1;"></div>
+          <input type="hidden" id="coLatLng" name="latlng">
+
+          <label for="coMapsLink" style="color: var(--soft);">📍 Link Share Lokasi (Google Maps) *</label>
+          <input type="url" id="coMapsLink" name="mapsLink" placeholder="Contoh: https://maps.app.goo.gl/...">
+          <div style="font-size: 11px; color: var(--muted); margin-top: -8px; margin-bottom: 14px;">
+            Buka Google Maps di HP -> Cari rumah -> Share -> Copy Link -> Paste di sini.
+          </div>
         </div>
+
         <label for="coNotes">Catatan</label>
         <textarea id="coNotes" name="notes" rows="2" placeholder="Contoh: tanpa gula, pedas level 3..."></textarea>
         <div class="summary" id="checkoutSummary"></div>
@@ -761,9 +778,12 @@ window.addEventListener('storage', e => {
   if(e.key === 'serabimu_cart') { cart = JSON.parse(e.newValue || '[]'); renderCart(); }
 });
 
-/* ===== CHECKOUT ===== */
+/* ===== CHECKOUT & MAPS ===== */
 const checkoutModal = $('#checkoutModal');
 let checkoutItems = [];
+let map;
+let marker;
+let currentLatLng = null;
 
 function openCheckout(items) {
   checkoutItems = items;
@@ -772,6 +792,13 @@ function openCheckout(items) {
     + `<div class="row total"><span>Total</span><span>${fmt(items.reduce((s,i)=>s+i.price*i.qty,0))}</span></div>`;
   $('#coName').value = localStorage.getItem('serabimu_name') || '';
   $('#coPhone').value = localStorage.getItem('serabimu_phone') || '';
+  
+  // Reset map state each time modal opens
+  if(map) {
+    if(marker) { map.removeLayer(marker); marker = null; }
+    currentLatLng = null;
+  }
+  
   checkoutModal.classList.add('open');
 }
 function closeCheckout() { checkoutModal.classList.remove('open'); }
@@ -782,9 +809,39 @@ $('#checkoutBtn').addEventListener('click', () => {
 });
 $('#checkoutClose').addEventListener('click', closeCheckout);
 checkoutModal.addEventListener('click', e => { if(e.target === checkoutModal) closeCheckout(); });
+
+// Inisialisasi Peta Saat Pilih Delivery
 $('#coType').addEventListener('change', e => {
-  $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none';
+  const isDelivery = e.target.value === 'Delivery';
+  $('#addressField').style.display = isDelivery ? 'block' : 'none';
+  
+  if(isDelivery && !map) {
+    // Koordinat awal (Silakan ganti dengan koordinat toko Anda, ini contoh Pasuruan)
+    map = L.map('map-picker').setView([-7.6469, 112.9071], 15); 
+    
+    // Tampilan Satelit (Esri World Imagery)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri'
+    }).addTo(map);
+
+    // Event saat peta diklik
+    map.on('click', function(e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+      currentLatLng = `${lat},${lng}`;
+      
+      if (marker) {
+        marker.setLatLng(e.latlng);
+      } else {
+        marker = L.marker(e.latlng).addTo(map);
+      }
+    });
+    
+    // Perbaiki rendering peta di dalam modal
+    setTimeout(() => map.invalidateSize(), 300);
+  }
 });
+
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
   const fd = new FormData(e.target);
@@ -793,18 +850,46 @@ $('#checkoutForm').addEventListener('submit', e => {
   const type = fd.get('type');
   const address = (fd.get('address')||'').trim();
   const notes = (fd.get('notes')||'').trim();
+  const mapsLink = (fd.get('mapsLink')||'').trim(); 
+
   if(!name || !phone) { toast('Nama & HP wajib diisi', true); return; }
-  if(type === 'Delivery' && !address) { toast('Alamat wajib untuk delivery', true); return; }
+  
+  if(type === 'Delivery') {
+    if(!address) { toast('Alamat wajib untuk delivery', true); return; }
+    if(!currentLatLng && !mapsLink) { toast('Harap tandai peta ATAU isi link Share Lokasi!', true); return; }
+  }
+
   localStorage.setItem('serabimu_name', name);
   localStorage.setItem('serabimu_phone', phone);
+  
+  let subtotal = checkoutItems.reduce((s,i)=>s+i.price*i.qty,0);
+  
   let msg = '*Pesanan Baru — Serabimu*\n\n';
   msg += `👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${type}\n`;
-  if(type === 'Delivery') msg += `📍 Alamat: ${address}\n`;
+  
+  if(type === 'Delivery') {
+    msg += `📍 Alamat: ${address}\n`;
+    if(mapsLink) msg += `🗺️ Link Share Loc: ${mapsLink}\n`;
+    if(currentLatLng) msg += `📌 Titik Peta: https://www.google.com/maps?q=${currentLatLng}\n`;
+  }
+  
   if(notes) msg += `📝 Catatan: ${notes}\n`;
+  
   msg += '\n*Detail Pesanan:*\n';
   checkoutItems.forEach((it,i) => { msg += `${i+1}. ${it.title} × ${it.qty} = ${fmt(it.price * it.qty)}\n`; });
-  msg += `\n*Total: ${fmt(checkoutItems.reduce((s,i)=>s+i.price*i.qty,0))}*\n\nMohon konfirmasi. Terima kasih 🙏`;
+  
+  msg += `\nSubtotal Makanan: ${fmt(subtotal)}\n`;
+  msg += `_(Ongkir akan diinfokan oleh Admin setelah cek titik Maps)_\n`;
+  msg += `\nMohon konfirmasi. Terima kasih 🙏`;
+
   window.open(`https://wa.me/${storeWa}?text=${encodeURIComponent(msg)}`, '_blank');
+  
+  // Reset Form & Map
+  e.target.reset();
+  $('#addressField').style.display = 'none';
+  if(marker) { map.removeLayer(marker); marker = null; }
+  currentLatLng = null;
+  
   closeCheckout();
   toast('Membuka WhatsApp...');
 });
@@ -994,7 +1079,7 @@ function verifyPin() {
   const pin = $('#adminPinInput').value.trim();
   if(pin === '7454lalapan') {
     localStorage.setItem('isAdmin', 'true'); 
-    // alert('PIN Benar! Membuka Admin...'); // Bisa dihapus jika sudah lancar
+    // alert('PIN Benar! Membuka Admin...'); 
     window.location.replace('admin.html'); 
   } else {
     alert('PIN SALAH! Yang Anda ketik: ' + pin);
