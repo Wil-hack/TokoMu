@@ -149,7 +149,29 @@ a.post-location:hover{text-decoration:underline}
 @keyframes pop{50%{transform:scale(1.18)}}
 .btn-share{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:999px;cursor:pointer;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;transition:.25s;font-family:var(--font-body)}
 .btn-share:hover{color:var(--soft);border-color:var(--soft)}
-.comments{padding:16px 22px 20px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+
+/* CSS TOGGLE KOMENTAR */
+.btn-toggle-comments {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 11.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: .2s;
+  font-family: var(--font-body);
+}
+.btn-toggle-comments:hover {
+  background: var(--bg2);
+  color: var(--soft);
+}
+
+.comments{padding:16px 22px 20px;background:color-mix(in srgb,var(--bg) 55%,transparent); display:none;} 
+.comments.show{display:block;} 
 .comments .c-head{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-bottom:14px;font-weight:600}
 .comment{margin-bottom:10px}
 .comment-row{display:flex;gap:10px;align-items:flex-start}
@@ -165,11 +187,19 @@ a.post-location:hover{text-decoration:underline}
 .reply-chip.show{display:inline-flex}
 .reply-chip button{background:none;border:none;color:inherit;cursor:pointer;font-size:13px;padding:0;opacity:.7}
 .reply-chip button:hover{opacity:1}
-.comment-form{display:flex;gap:8px;margin-top:12px}
-.comment-form input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:999px;padding:10px 16px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:.3s;min-width:0}
-.comment-form input:focus{border-color:var(--soft);box-shadow:0 0 0 3px var(--glow)}
+
+/* CSS FORM KOMENTAR BARU (DENGAN INPUT NAMA) */
+.comment-name-wrap { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.comment-name-wrap label { font-size: 11px; color: var(--muted); }
+.comment-name-input { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; color: var(--text); font-family: var(--font-body); font-size: 11.5px; outline: none; transition: .3s; }
+.comment-name-input:focus { border-color: var(--soft); }
+
+.comment-form{display:flex;gap:8px;}
+.comment-form input[type="text"]{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:999px;padding:10px 16px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:.3s;min-width:0}
+.comment-form input[type="text"]:focus{border-color:var(--soft);box-shadow:0 0 0 3px var(--glow)}
 .comment-form button{background:var(--grad);color:var(--bg);border:none;border-radius:999px;padding:0 18px;font-family:var(--font-body);font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;transition:.3s}
 .comment-form button:hover{filter:brightness(1.1);transform:scale(1.03)}
+
 .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:500;opacity:0;visibility:hidden;transition:.35s}
 .cart-overlay.open{opacity:1;visibility:visible}
 .cart-drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,92vw);background:var(--bg);border-left:1px solid var(--border);z-index:501;transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.5)}
@@ -463,7 +493,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* ===== KONFIGURASI TOKO ===== */
-const DEFAULT_WA = '6285737447844'; // +62 857-3744-7844
+const DEFAULT_WA = '6285737447844'; 
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -982,18 +1012,39 @@ onSnapshot(qPosts, snap => {
         <div class="action-group">
           <button class="btn-like ${liked?'liked':''}" data-id="${esc(postId)}">${liked?'❤️':'🤍'} <span class="like-count">${d.likes||0}</span> Suka</button>
         </div>
-        <span style="font-size:11.5px;color:var(--muted)">💬 <span id="ccount-${esc(postId)}">0</span> ulasan</span>
+        <!-- TOMBOL TOGGLE KOMENTAR -->
+        <button class="btn-toggle-comments" data-target="comments-box-${esc(postId)}">
+          💬 <span id="ccount-${esc(postId)}">0</span> ulasan
+        </button>
       </div>
-      <div class="comments">
+      <!-- WRAPPER KOMENTAR (DEFAULT SEMBUNYI) -->
+      <div class="comments" id="comments-box-${esc(postId)}">
         <div class="c-head">Ulasan & Diskusi</div>
         <div class="comment-list" id="comments-${esc(postId)}"><div style="font-size:11px;color:var(--muted)">Memuat...</div></div>
         <div class="reply-chip" id="replychip-${esc(postId)}"><span>Membalas <strong id="replyname-${esc(postId)}"></strong></span><button data-id="${esc(postId)}">✕</button></div>
+        
+        <!-- FORM DENGAN INPUT NAMA -->
+        <div class="comment-name-wrap">
+           <label>Nama:</label>
+           <input type="text" class="comment-name-input" id="name-${esc(postId)}" value="${esc(localStorage.getItem('serabimu_user_name') || '')}" placeholder="Ketik nama Anda..." maxlength="30">
+        </div>
         <form class="comment-form" data-id="${esc(postId)}">
           <input type="text" placeholder="Tulis komentar..." id="input-comment-${esc(postId)}" maxlength="500">
           <button type="submit">Kirim</button>
         </form>
       </div>`;
     publicFeedList.appendChild(el);
+
+    // Event Listener Toggle Komentar
+    el.querySelector('.btn-toggle-comments').addEventListener('click', function() {
+      const targetId = this.dataset.target;
+      const commentBox = document.getElementById(targetId);
+      if (commentBox.classList.contains('show')) {
+        commentBox.classList.remove('show');
+      } else {
+        commentBox.classList.add('show');
+      }
+    });
 
     const likeBtn = el.querySelector('.btn-like');
     likeBtn.addEventListener('click', async () => {
@@ -1014,21 +1065,26 @@ onSnapshot(qPosts, snap => {
     el.querySelector('.reply-chip button').addEventListener('click', () => {
       replyState.delete(postId);
       el.querySelector('.reply-chip').classList.remove('show');
-      el.querySelector('input').placeholder = 'Tulis komentar...';
+      el.querySelector('input[type="text"]').placeholder = 'Tulis komentar...';
     });
     
-    // PERBAIKAN: Bagian submit komentar
+    // LOGIKA SUBMIT KOMENTAR BARU
     el.querySelector('.comment-form').addEventListener('submit', async e => {
       e.preventDefault();
-      const input = el.querySelector('input');
-      const text = input.value.trim();
+      const textInput = el.querySelector(`#input-comment-${postId}`);
+      const nameInput = el.querySelector(`#name-${postId}`);
+      
+      const text = textInput.value.trim();
+      let nameVal = nameInput.value.trim();
+      
       if(!text) return;
       
-      let userName = localStorage.getItem('serabimu_user_name');
-      if(!userName) { 
-          userName = prompt('Nama Anda untuk berkomentar:') || 'Pelanggan Setia'; 
-          localStorage.setItem('serabimu_user_name', userName); 
+      if(!nameVal) {
+          nameVal = 'Pelanggan Setia'; 
+          nameInput.value = nameVal;
       }
+      
+      localStorage.setItem('serabimu_user_name', nameVal); // Simpan nama agar next time otomatis terisi
       
       const parent = replyState.get(postId);
       
@@ -1036,14 +1092,14 @@ onSnapshot(qPosts, snap => {
         await addDoc(collection(db, 'comments'), { 
             postId, 
             parentId: parent ? parent.commentId : '', 
-            name: userName, 
+            name: nameVal, 
             text, 
             createdAt: serverTimestamp() 
         });
-        input.value = '';
+        textInput.value = '';
         replyState.delete(postId);
         el.querySelector('.reply-chip').classList.remove('show');
-        input.placeholder = 'Tulis komentar...';
+        textInput.placeholder = 'Tulis komentar...';
         toast('Komentar terkirim!');
       } catch(err) { 
         toast('Gagal kirim: ' + err.message, true); 
@@ -1055,7 +1111,6 @@ onSnapshot(qPosts, snap => {
   });
 }, err => { publicFeedList.innerHTML = `<div class="empty-state">Gagal memuat feed</div>`; console.error(err); });
 
-// PERBAIKAN: Bagian load komentar (Index dihapus)
 function loadCommentsForPost(postId) {
   if(commentUnsubs.has(postId)) return;
   const container = document.getElementById(`comments-${postId}`);
