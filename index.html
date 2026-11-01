@@ -399,15 +399,17 @@ footer p{color:var(--muted);font-size:11px;letter-spacing:1.2px;text-transform:u
           <label for="coAddress">Alamat Lengkap *</label>
           <textarea id="coAddress" name="address" rows="2" placeholder="Nama jalan, RT/RW, warna pagar, patokan..."></textarea>
           
-          <label style="margin-top: 10px; display: block;">Tandai Lokasi di Peta (Geser & Klik) *</label>
-          <div id="map-picker" style="height: 180px; border-radius: 10px; margin-bottom: 14px; border: 1px solid var(--border); position: relative; z-index: 1;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 6px;">
+            <label style="margin-bottom: 0;">Titik Lokasi Anda *</label>
+            <button type="button" id="btnGetLocation" style="background:var(--accent); color:var(--bg); border:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">📍 Ambil Lokasi</button>
+          </div>
+          
+          <div id="map-picker" style="height: 180px; border-radius: 10px; margin-bottom: 6px; border: 1px solid var(--border); position: relative; z-index: 1;"></div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 14px;">Geser peta atau klik titik rumah Anda jika lokasi otomatis kurang tepat.</div>
           <input type="hidden" id="coLatLng" name="latlng">
 
-          <label for="coMapsLink" style="color: var(--soft);">📍 Link Share Lokasi (Google Maps) *</label>
-          <input type="url" id="coMapsLink" name="mapsLink" placeholder="Contoh: https://maps.app.goo.gl/...">
-          <div style="font-size: 11px; color: var(--muted); margin-top: -8px; margin-bottom: 14px;">
-            Buka Google Maps di HP -> Cari rumah -> Share -> Copy Link -> Paste di sini.
-          </div>
+          <label for="coMapsLink" style="color: var(--soft);">📍 Link Share Lokasi (Opsional)</label>
+          <input type="url" id="coMapsLink" name="mapsLink" placeholder="Bisa tempel link Google Maps di sini...">
         </div>
 
         <label for="coNotes">Catatan</label>
@@ -793,7 +795,6 @@ function openCheckout(items) {
   $('#coName').value = localStorage.getItem('serabimu_name') || '';
   $('#coPhone').value = localStorage.getItem('serabimu_phone') || '';
   
-  // Reset map state each time modal opens
   if(map) {
     if(marker) { map.removeLayer(marker); marker = null; }
     currentLatLng = null;
@@ -810,21 +811,61 @@ $('#checkoutBtn').addEventListener('click', () => {
 $('#checkoutClose').addEventListener('click', closeCheckout);
 checkoutModal.addEventListener('click', e => { if(e.target === checkoutModal) closeCheckout(); });
 
+// FUNGSI OTOMATIS AMBIL LOKASI
+function getAutoLocation() {
+  if (!navigator.geolocation) {
+    toast('Browser Anda tidak mendukung fitur lokasi otomatis.', true);
+    return;
+  }
+  
+  const btn = $('#btnGetLocation');
+  btn.textContent = '⏳ Mencari...';
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      currentLatLng = `${lat},${lng}`;
+
+      if (map) {
+        map.setView([lat, lng], 17); // Zoom lebih dekat
+        if (marker) {
+          marker.setLatLng([lat, lng]);
+        } else {
+          marker = L.marker([lat, lng]).addTo(map);
+        }
+      }
+      
+      btn.textContent = '📍 Ambil Lokasi';
+      toast('Lokasi berhasil didapatkan!');
+    },
+    (error) => {
+      btn.textContent = '📍 Ambil Lokasi';
+      let msg = 'Gagal mendapatkan lokasi. ';
+      if (error.code === 1) msg += 'Izinkan akses lokasi di browser Anda.';
+      else if (error.code === 2) msg += 'Sinyal GPS lemah.';
+      else if (error.code === 3) msg += 'Waktu habis.';
+      toast(msg, true);
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
+
 // Inisialisasi Peta Saat Pilih Delivery
 $('#coType').addEventListener('change', e => {
   const isDelivery = e.target.value === 'Delivery';
   $('#addressField').style.display = isDelivery ? 'block' : 'none';
   
-  if(isDelivery && !map) {
-    // Koordinat awal (Silakan ganti dengan koordinat toko Anda, ini contoh Pasuruan)
+  if (isDelivery && !map) {
+    // Koordinat awal default
     map = L.map('map-picker').setView([-7.6469, 112.9071], 15); 
     
-    // Tampilan Satelit (Esri World Imagery)
+    // Tampilan Satelit (Esri)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles © Esri'
     }).addTo(map);
 
-    // Event saat peta diklik
+    // Event klik manual
     map.on('click', function(e) {
       const lat = e.latlng.lat;
       const lng = e.latlng.lng;
@@ -837,10 +878,15 @@ $('#coType').addEventListener('change', e => {
       }
     });
     
-    // Perbaiki rendering peta di dalam modal
     setTimeout(() => map.invalidateSize(), 300);
+    
+    // Otomatis cari lokasi saat pertama kali pilih Delivery
+    getAutoLocation();
   }
 });
+
+// Tombol Ambil Lokasi (Manual Trigger)
+$('#btnGetLocation').addEventListener('click', getAutoLocation);
 
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -856,7 +902,7 @@ $('#checkoutForm').addEventListener('submit', e => {
   
   if(type === 'Delivery') {
     if(!address) { toast('Alamat wajib untuk delivery', true); return; }
-    if(!currentLatLng && !mapsLink) { toast('Harap tandai peta ATAU isi link Share Lokasi!', true); return; }
+    if(!currentLatLng && !mapsLink) { toast('Harap izinkan akses lokasi atau isi link Share Lokasi!', true); return; }
   }
 
   localStorage.setItem('serabimu_name', name);
@@ -869,8 +915,8 @@ $('#checkoutForm').addEventListener('submit', e => {
   
   if(type === 'Delivery') {
     msg += `📍 Alamat: ${address}\n`;
-    if(mapsLink) msg += `🗺️ Link Share Loc: ${mapsLink}\n`;
     if(currentLatLng) msg += `📌 Titik Peta: https://www.google.com/maps?q=${currentLatLng}\n`;
+    if(mapsLink) msg += `🗺️ Link Share Loc: ${mapsLink}\n`;
   }
   
   if(notes) msg += `📝 Catatan: ${notes}\n`;
@@ -1079,7 +1125,6 @@ function verifyPin() {
   const pin = $('#adminPinInput').value.trim();
   if(pin === '7454lalapan') {
     localStorage.setItem('isAdmin', 'true'); 
-    // alert('PIN Benar! Membuka Admin...'); 
     window.location.replace('admin.html'); 
   } else {
     alert('PIN SALAH! Yang Anda ketik: ' + pin);
