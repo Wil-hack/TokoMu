@@ -858,7 +858,7 @@ function getAutoLocation() {
       currentLatLng = `${lat},${lng}`;
 
       if (map) {
-        map.setView([lat, lng], 17); // Zoom lebih dekat
+        map.setView([lat, lng], 17); 
         if (marker) {
           marker.setLatLng([lat, lng]);
         } else {
@@ -887,35 +887,23 @@ $('#coType').addEventListener('change', e => {
   $('#addressField').style.display = isDelivery ? 'block' : 'none';
   
   if (isDelivery && !map) {
-    // Koordinat awal default
     map = L.map('map-picker').setView([-7.6469, 112.9071], 15); 
-    
-    // Tampilan Satelit (Esri)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles © Esri'
     }).addTo(map);
 
-    // Event klik manual
     map.on('click', function(e) {
       const lat = e.latlng.lat;
       const lng = e.latlng.lng;
       currentLatLng = `${lat},${lng}`;
-      
-      if (marker) {
-        marker.setLatLng(e.latlng);
-      } else {
-        marker = L.marker(e.latlng).addTo(map);
-      }
+      if (marker) { marker.setLatLng(e.latlng); } else { marker = L.marker(e.latlng).addTo(map); }
     });
     
     setTimeout(() => map.invalidateSize(), 300);
-    
-    // Otomatis cari lokasi saat pertama kali pilih Delivery
     getAutoLocation();
   }
 });
 
-// Tombol Ambil Lokasi (Manual Trigger)
 $('#btnGetLocation').addEventListener('click', getAutoLocation);
 
 $('#checkoutForm').addEventListener('submit', e => {
@@ -960,12 +948,10 @@ $('#checkoutForm').addEventListener('submit', e => {
 
   window.open(`https://wa.me/${storeWa}?text=${encodeURIComponent(msg)}`, '_blank');
   
-  // Reset Form & Map
   e.target.reset();
   $('#addressField').style.display = 'none';
   if(marker) { map.removeLayer(marker); marker = null; }
   currentLatLng = null;
-  
   closeCheckout();
   toast('Membuka WhatsApp...');
 });
@@ -998,6 +984,13 @@ onSnapshot(qPosts, snap => {
     }
     const locHtml = d.location
       ? `<a class="post-location" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.location)}" target="_blank" rel="noopener">📍 ${esc(d.location)}</a>` : '';
+    
+    // LOGIKA DEFAULT NAMA JIKA ADMIN
+    let defaultName = localStorage.getItem('serabimu_user_name') || '';
+    if (localStorage.getItem('isAdmin') === 'true') {
+        defaultName = 'Admin Serabimu';
+    }
+
     const el = document.createElement('div');
     el.className = 'post';
     el.innerHTML = `
@@ -1012,12 +1005,10 @@ onSnapshot(qPosts, snap => {
         <div class="action-group">
           <button class="btn-like ${liked?'liked':''}" data-id="${esc(postId)}">${liked?'❤️':'🤍'} <span class="like-count">${d.likes||0}</span> Suka</button>
         </div>
-        <!-- TOMBOL TOGGLE KOMENTAR -->
         <button class="btn-toggle-comments" data-target="comments-box-${esc(postId)}">
           💬 <span id="ccount-${esc(postId)}">0</span> ulasan
         </button>
       </div>
-      <!-- WRAPPER KOMENTAR (DEFAULT SEMBUNYI) -->
       <div class="comments" id="comments-box-${esc(postId)}">
         <div class="c-head">Ulasan & Diskusi</div>
         <div class="comment-list" id="comments-${esc(postId)}"><div style="font-size:11px;color:var(--muted)">Memuat...</div></div>
@@ -1026,7 +1017,7 @@ onSnapshot(qPosts, snap => {
         <!-- FORM DENGAN INPUT NAMA -->
         <div class="comment-name-wrap">
            <label>Nama:</label>
-           <input type="text" class="comment-name-input" id="name-${esc(postId)}" value="${esc(localStorage.getItem('serabimu_user_name') || '')}" placeholder="Ketik nama Anda..." maxlength="30">
+           <input type="text" class="comment-name-input" id="name-${esc(postId)}" value="${esc(defaultName)}" placeholder="Ketik nama Anda..." maxlength="30">
         </div>
         <form class="comment-form" data-id="${esc(postId)}">
           <input type="text" placeholder="Tulis komentar..." id="input-comment-${esc(postId)}" maxlength="500">
@@ -1035,15 +1026,10 @@ onSnapshot(qPosts, snap => {
       </div>`;
     publicFeedList.appendChild(el);
 
-    // Event Listener Toggle Komentar
     el.querySelector('.btn-toggle-comments').addEventListener('click', function() {
       const targetId = this.dataset.target;
       const commentBox = document.getElementById(targetId);
-      if (commentBox.classList.contains('show')) {
-        commentBox.classList.remove('show');
-      } else {
-        commentBox.classList.add('show');
-      }
+      if (commentBox.classList.contains('show')) { commentBox.classList.remove('show'); } else { commentBox.classList.add('show'); }
     });
 
     const likeBtn = el.querySelector('.btn-like');
@@ -1068,7 +1054,6 @@ onSnapshot(qPosts, snap => {
       el.querySelector('input[type="text"]').placeholder = 'Tulis komentar...';
     });
     
-    // LOGIKA SUBMIT KOMENTAR BARU
     el.querySelector('.comment-form').addEventListener('submit', async e => {
       e.preventDefault();
       const textInput = el.querySelector(`#input-comment-${postId}`);
@@ -1078,13 +1063,9 @@ onSnapshot(qPosts, snap => {
       let nameVal = nameInput.value.trim();
       
       if(!text) return;
+      if(!nameVal) { nameVal = 'Pelanggan Setia'; nameInput.value = nameVal; }
       
-      if(!nameVal) {
-          nameVal = 'Pelanggan Setia'; 
-          nameInput.value = nameVal;
-      }
-      
-      localStorage.setItem('serabimu_user_name', nameVal); // Simpan nama agar next time otomatis terisi
+      localStorage.setItem('serabimu_user_name', nameVal);
       
       const parent = replyState.get(postId);
       
@@ -1164,15 +1145,24 @@ function renderCommentTree(comment, map, postId) {
       </div>
     </div>
     <div class="comment-replies"></div>`;
+    
   div.querySelector('.btn-reply-trigger').addEventListener('click', () => {
     replyState.set(postId, { commentId: comment.id, name: comment.name });
     const chip = document.getElementById(`replychip-${postId}`);
     const nm = document.getElementById(`replyname-${postId}`);
     const inp = document.getElementById(`input-comment-${postId}`);
+    const nameInp = document.getElementById(`name-${postId}`);
+    
     if(chip) chip.classList.add('show');
     if(nm) nm.textContent = comment.name;
     if(inp) { inp.placeholder = `Membalas ${comment.name}...`; inp.focus(); }
+    
+    // OTOMATIS ISI NAMA ADMIN SAAT KLIK BALAS
+    if (localStorage.getItem('isAdmin') === 'true' && nameInp) {
+        nameInp.value = 'Admin Serabimu';
+    }
   });
+  
   const repContainer = div.querySelector('.comment-replies');
   Object.values(map).filter(c => c.parentId === comment.id).forEach(r => repContainer.appendChild(renderCommentTree(r, map, postId)));
   return div;
