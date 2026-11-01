@@ -474,7 +474,7 @@ const toast = (msg, isErr) => {
   t.classList.toggle('error', !!isErr);
   t.classList.add('show');
   clearTimeout(t._tid);
-  t._tid = setTimeout(() => t.classList.remove('show'), 2600);
+  t._tid = setTimeout(() => t.classList.remove('show'), 3500);
 };
 const timeAgo = ts => {
   if(!ts) return 'baru saja';
@@ -1016,42 +1016,86 @@ onSnapshot(qPosts, snap => {
       el.querySelector('.reply-chip').classList.remove('show');
       el.querySelector('input').placeholder = 'Tulis komentar...';
     });
+    
+    // PERBAIKAN: Bagian submit komentar
     el.querySelector('.comment-form').addEventListener('submit', async e => {
       e.preventDefault();
       const input = el.querySelector('input');
       const text = input.value.trim();
       if(!text) return;
+      
       let userName = localStorage.getItem('serabimu_user_name');
-      if(!userName) { userName = prompt('Nama Anda untuk berkomentar:') || 'Pelanggan Setia'; localStorage.setItem('serabimu_user_name', userName); }
+      if(!userName) { 
+          userName = prompt('Nama Anda untuk berkomentar:') || 'Pelanggan Setia'; 
+          localStorage.setItem('serabimu_user_name', userName); 
+      }
+      
       const parent = replyState.get(postId);
+      
       try {
-        await addDoc(collection(db, 'comments'), { postId, parentId: parent ? parent.commentId : '', name: userName, text, createdAt: serverTimestamp() });
+        await addDoc(collection(db, 'comments'), { 
+            postId, 
+            parentId: parent ? parent.commentId : '', 
+            name: userName, 
+            text, 
+            createdAt: serverTimestamp() 
+        });
         input.value = '';
         replyState.delete(postId);
         el.querySelector('.reply-chip').classList.remove('show');
         input.placeholder = 'Tulis komentar...';
-      } catch(err) { toast('Gagal kirim: ' + err.message, true); }
+        toast('Komentar terkirim!');
+      } catch(err) { 
+        toast('Gagal kirim: ' + err.message, true); 
+        console.error("Gagal kirim komentar:", err);
+      }
     });
+    
     loadCommentsForPost(postId);
   });
 }, err => { publicFeedList.innerHTML = `<div class="empty-state">Gagal memuat feed</div>`; console.error(err); });
 
+// PERBAIKAN: Bagian load komentar (Index dihapus)
 function loadCommentsForPost(postId) {
   if(commentUnsubs.has(postId)) return;
   const container = document.getElementById(`comments-${postId}`);
   if(!container) return;
-  const qC = query(collection(db, 'comments'), where('postId','==',postId), orderBy('createdAt','asc'));
+  
+  const qC = query(collection(db, 'comments'), where('postId','==',postId));
+  
   const unsub = onSnapshot(qC, snap => {
     const countEl = document.getElementById(`ccount-${postId}`);
     if(countEl) countEl.textContent = snap.size;
-    if(snap.empty) { container.innerHTML = `<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Belum ada komentar.</div>`; return; }
+    
+    if(snap.empty) { 
+        container.innerHTML = `<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Belum ada komentar.</div>`; 
+        return; 
+    }
+    
     const map = {}; const roots = [];
-    snap.forEach(ds => { const c = { id: ds.id, ...ds.data() }; map[c.id] = c; if(!c.parentId) roots.push(c); });
+    const allComments = [];
+    snap.forEach(ds => { allComments.push({ id: ds.id, ...ds.data() }); });
+    
+    allComments.sort((a, b) => {
+        const timeA = a.createdAt ? (a.createdAt.toMillis ? a.createdAt.toMillis() : 0) : 0;
+        const timeB = b.createdAt ? (b.createdAt.toMillis ? b.createdAt.toMillis() : 0) : 0;
+        return timeA - timeB;
+    });
+    
+    allComments.forEach(c => {
+        map[c.id] = c;
+        if(!c.parentId) roots.push(c);
+    });
+    
     container.innerHTML = '';
     roots.forEach(rc => container.appendChild(renderCommentTree(rc, map, postId)));
-  }, err => { container.innerHTML = `<div style="font-size:12px;color:var(--muted)">Gagal memuat</div>`; console.error(err); });
+  }, err => { 
+    container.innerHTML = `<div style="font-size:12px;color:#ff4757">Gagal memuat: ${err.message}</div>`; 
+    console.error("Firestore Error:", err); 
+  });
   commentUnsubs.set(postId, unsub);
 }
+
 function renderCommentTree(comment, map, postId) {
   const div = document.createElement('div');
   div.className = 'comment';
