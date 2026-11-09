@@ -138,12 +138,13 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
 
-/* LAYOUT UNTUK DESKTOP VIEW */
+/* LAYOUT UNTUK DESKTOP / SITUS DESKTOP */
 @media (min-width: 769px) {
   body { padding-bottom: 0; }
   .app-sidebar {
     display: flex !important;
     width: 200px;
+    box-sizing: border-box !important;
     background: var(--glass-bg); backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
@@ -186,6 +187,11 @@ body::before {
   .app-main { flex: 1; min-width: 0; }
 }
 
+/* KHUSUS LAYAR TANGGUNG ATAU MODE DESKTOP HP */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-sidebar { width: 170px; padding: 12px 6px; }
+}
+
 /* LAYOUT UNTUK MOBILE VIEW */
 @media (max-width: 768px) {
   body { padding-bottom: 80px; }
@@ -211,6 +217,7 @@ body::before {
   display: flex; align-items: center; gap: 8px; padding: 9px 10px;
   color: var(--text); text-decoration: none; font-size: 12px; font-weight: 500;
   border-radius: var(--radius-md); transition: background .3s, border-color .3s; border: 1px solid transparent;
+  width: 100%; box-sizing: border-box; overflow: hidden;
 }
 .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
 .menu-item svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -370,7 +377,7 @@ body::before {
 
 .neu-input {
   width: 100%; background: var(--neu-bg); border: none; outline: none;
-  padding: 10px 14px; border-radius: 10px; color: var(--text); font-size: 14px; text-align: center; letter-spacing: 4px;
+  padding: 10px 14px; border-radius: 10px; color: var(--text); font-size: 14px; text-align: center; letter-spacing: 2px;
   box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
   margin-bottom: 14px;
 }
@@ -389,7 +396,7 @@ body::before {
 <body>
 
 <div class="app-layout">
-  <!-- SIDEBAR (OTOMATIS MUNCUL DI DESKTOP VIEW) -->
+  <!-- SIDEBAR -->
   <aside class="app-sidebar" id="sidebar">
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
@@ -475,7 +482,7 @@ body::before {
   </main>
 </div>
 
-<!-- BOTTOM NAVIGATION BAR (OTOMATIS MUNCUL DI MOBILE VIEW) -->
+<!-- BOTTOM NAVIGATION BAR (MOBILE) -->
 <nav class="mobile-bottom-nav">
   <a href="#katalog" class="nav-item active">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -564,7 +571,7 @@ body::before {
       <h3 style="font-family:var(--font-title); font-size:18px; color:var(--text); margin-bottom:3px;">Verify Your Identity</h3>
       <p style="font-size:11px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin untuk masuk ke dashboard.</p>
       
-      <input type="password" id="adminPinInput" class="neu-input" placeholder="••••" maxlength="6" autofocus>
+      <input type="password" id="adminPinInput" class="neu-input" placeholder="••••••••" autofocus>
       <button id="submitPinBtn" class="neu-btn">VERIFY ACCESS</button>
     </div>
   </div>
@@ -589,7 +596,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const DEFAULT_WA = '6285737447844';
-const ADMIN_PIN_OBF = 'bGFsYXBuZW5ha0o=';
+const ADMIN_PIN = '7454lalapan'; // PIN ADMIN BARU
 let storeWa = DEFAULT_WA;
 
 getDoc(doc(db, 'settings', 'store_hours')).then(snap => {
@@ -884,7 +891,7 @@ if($('#sidebarAdminTrigger')) $('#sidebarAdminTrigger').addEventListener('click'
 $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('open'));
 
 $('#submitPinBtn').addEventListener('click', () => {
-  if(adminPinInput.value === atob(ADMIN_PIN_OBF)) {
+  if(adminPinInput.value === ADMIN_PIN) {
     lockBox.classList.add('unlocked');
     toast('Akses Diterima! Membuka Admin...');
     localStorage.setItem('isAdmin', 'true');
