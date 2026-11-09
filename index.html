@@ -160,7 +160,6 @@ body::before {
   }
   .app-sidebar.collapsed { width: 65px; padding: 16px 8px; }
   
-  /* Transisi halus teks sidebar */
   .app-sidebar .brand-sub,
   .app-sidebar .brand-title,
   .app-sidebar .menu-item span {
@@ -888,7 +887,7 @@ $('#submitPinBtn').addEventListener('click', () => {
   if(adminPinInput.value === atob(ADMIN_PIN_OBF)) {
     lockBox.classList.add('unlocked');
     toast('Akses Diterima! Membuka Admin...');
-    sessionStorage.setItem('isAdmin', 'true');
+    localStorage.setItem('isAdmin', 'true');
     setTimeout(() => {
       window.location.href = 'admin.html';
     }, 750);
