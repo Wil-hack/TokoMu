@@ -87,7 +87,6 @@ textarea{resize:vertical;min-height:80px}
 </header>
 
 <div class="container">
-  <!-- TABS MENU -->
   <div class="tabs">
     <button class="tab-btn active" data-target="tab-katalog">🛍️ Katalog Produk</button>
     <button class="tab-btn" data-target="tab-feed">📰 Postingan Feed</button>
@@ -95,7 +94,6 @@ textarea{resize:vertical;min-height:80px}
     <button class="tab-btn" data-target="tab-ulasan">💬 Ulasan Pelanggan</button>
   </div>
 
-  <!-- TAB 1: KATALOG PRODUK -->
   <div id="tab-katalog" class="tab-pane active">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -108,7 +106,6 @@ textarea{resize:vertical;min-height:80px}
     </div>
   </div>
 
-  <!-- TAB 2: POSTINGAN FEED -->
   <div id="tab-feed" class="tab-pane">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -121,7 +118,6 @@ textarea{resize:vertical;min-height:80px}
     </div>
   </div>
 
-  <!-- TAB 3: PENGATURAN TOKO -->
   <div id="tab-setting" class="tab-pane">
     <div class="card">
       <h3>Jam Operasional & Kontak</h3>
@@ -143,7 +139,6 @@ textarea{resize:vertical;min-height:80px}
     </div>
   </div>
 
-  <!-- TAB 4: ULASAN -->
   <div id="tab-ulasan" class="tab-pane">
     <div class="card">
       <h3>Moderasi Ulasan</h3>
@@ -222,11 +217,9 @@ textarea{resize:vertical;min-height:80px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ==========================================
-// 1. CEK KEAMANAN (MENGGUNAKAN LOCALSTORAGE)
-// ==========================================
+// CEK KEAMANAN ADMIN VIA LOCALSTORAGE
 if(localStorage.getItem('isAdmin') !== 'true') {
   alert('Anda belum login sebagai admin.');
   window.location.replace('index.html');
@@ -257,13 +250,11 @@ const toast = (msg, isErr) => {
 };
 const fmt = n => 'Rp ' + (Number(n)||0).toLocaleString('id-ID');
 
-// 2. LOGOUT
 $('#logoutBtn').addEventListener('click', () => {
-  localStorage.removeItem('isAdmin'); // Hapus status login
+  localStorage.removeItem('isAdmin');
   window.location.href = 'index.html';
 });
 
-// 3. NAVIGASI TAB
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -273,7 +264,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// 4. UPLOAD CLOUDINARY
 async function uploadToCloudinary(file) {
   const formData = new FormData();
   formData.append('file', file);
@@ -284,9 +274,7 @@ async function uploadToCloudinary(file) {
   return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
 }
 
-/* =========================================
-   KELOLA PRODUK (KATALOG)
-   ========================================= */
+/* KELOLA PRODUK */
 const modalProduct = $('#modalProduct');
 const productForm = $('#productForm');
 
@@ -377,7 +365,6 @@ onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap
       </div>`;
     list.appendChild(el);
 
-    // Tombol Edit
     el.querySelector('.btn-edit').addEventListener('click', async () => {
       const docSnap = await getDoc(doc(db, 'products', d.id));
       if(docSnap.exists()) {
@@ -395,7 +382,6 @@ onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap
       }
     });
 
-    // Tombol Hapus
     el.querySelector('.btn-del').addEventListener('click', async () => {
       if(confirm('Hapus produk ini secara permanen?')) {
         await deleteDoc(doc(db, 'products', d.id));
@@ -405,9 +391,7 @@ onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap
   });
 });
 
-/* =========================================
-   KELOLA FEED (POSTINGAN)
-   ========================================= */
+/* KELOLA FEED */
 const modalPost = $('#modalPost');
 const postForm = $('#postForm');
 let postMediaTemp = [];
@@ -532,9 +516,7 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
   });
 });
 
-/* =========================================
-   PENGATURAN TOKO
-   ========================================= */
+/* PENGATURAN TOKO */
 const storeSettingsRef = doc(db, 'settings', 'store_hours');
 getDoc(storeSettingsRef).then(snap => {
   if(snap.exists()) {
@@ -562,9 +544,7 @@ $('#saveSettings').addEventListener('click', async () => {
   }
 });
 
-/* =========================================
-   MODERASI ULASAN (KOMENTAR)
-   ========================================= */
+/* MODERASI ULASAN */
 onSnapshot(query(collection(db, 'comments'), orderBy('createdAt', 'desc')), snap => {
   const list = $('#reviewList');
   if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada ulasan.</div>'; return; }
@@ -576,7 +556,7 @@ onSnapshot(query(collection(db, 'comments'), orderBy('createdAt', 'desc')), snap
     el.innerHTML = `
       <div class="list-info">
         <div class="list-title" style="color:var(--soft)">${c.name || 'Anonim'}</div>
-        <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${c.text}"</div>
+        <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${c.text}"`</div>
       </div>
       <div class="list-actions">
         <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
