@@ -210,7 +210,7 @@ textarea{resize:vertical;min-height:80px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 if(localStorage.getItem('isAdmin') !== 'true') {
   alert('Anda belum login sebagai admin.');
@@ -266,7 +266,6 @@ async function uploadToCloudinary(file) {
   return { url: data.secure_url, type: file.type.startsWith('video/') ? 'video' : 'image' };
 }
 
-/* KELOLA PRODUK DENGAN ANTI-STUCK TIMEOUT */
 const modalProduct = $('#modalProduct');
 const productForm = $('#productForm');
 
@@ -328,6 +327,7 @@ productForm.addEventListener('submit', async e => {
       toast('Produk ditambahkan!');
     }
     modalProduct.classList.remove('open');
+    loadAdminProducts();
   } catch(err) {
     toast(err.message, true);
   } finally {
@@ -337,11 +337,12 @@ productForm.addEventListener('submit', async e => {
   }
 });
 
-// Listener produk dengan penanganan error agar tidak loading abadi
-try {
-  onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap => {
-    const list = $('#productList');
-    if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada produk. Silakan tambah produk baru.</div>'; return; }
+// LOAD ADMIN PRODUCTS AMAN DARI LOADING ABADI
+async function loadAdminProducts() {
+  const list = $('#productList');
+  try {
+    const snap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
+    if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada produk.</div>'; return; }
     list.innerHTML = '';
     snap.forEach(d => {
       const p = d.data();
@@ -350,8 +351,8 @@ try {
       el.innerHTML = `
         <img src="${p.imageUrl || 'https://via.placeholder.com/60'}" class="list-img">
         <div class="list-info">
-          <div class="list-title">${p.title}</div>
-          <div class="list-sub">${fmt(p.price)} · ${p.category || 'Umum'}</div>
+          <div class="list-title">${esc(p.title)}</div>
+          <div class="list-sub">${fmt(p.price)} · ${esc(p.category || 'Umum')}</div>
         </div>
         <div class="list-actions">
           <button class="btn-icon btn-edit" data-id="${d.id}" title="Edit">✏️</button>
@@ -370,7 +371,7 @@ try {
           $('#pCat').value = data.category || '';
           $('#pImageUrl').value = data.imageUrl || '';
           $('#pImagePreview').src = data.imageUrl || '';
-          if(data.imageUrl) $('#pImagePreview').classList.add('show');
+          if(data.imageUrl) $('#pImagePreview'].classList.add('show');
           $('#productFormTitle').textContent = 'Edit Produk';
           modalProduct.classList.add('open');
         }
@@ -380,17 +381,38 @@ try {
         if(confirm('Hapus produk ini secara permanen?')) {
           await deleteDoc(doc(db, 'products', d.id));
           toast('Produk dihapus');
+          loadAdminProducts();
         }
       });
     });
-  }, err => {
-    $('#productList').innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat produk. Periksa koneksi/indeks Firestore.</div>`;
-  });
-} catch(e) {
-  $('#productList').innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Error inisialisasi database.</div>`;
+  } catch(e) {
+    try {
+      const fallbackSnap = await getDocs(collection(db, 'products'));
+      if(fallbackSnap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada produk.</div>'; return; }
+      list.innerHTML = '';
+      fallbackSnap.forEach(d => {
+        const p = d.data();
+        const el = document.createElement('div');
+        el.className = 'list-item';
+        el.innerHTML = `
+          <img src="${p.imageUrl || 'https://via.placeholder.com/60'}" class="list-img">
+          <div class="list-info">
+            <div class="list-title">${esc(p.title)}</div>
+            <div class="list-sub">${fmt(p.price)} · ${esc(p.category || 'Umum')}</div>
+          </div>
+          <div class="list-actions">
+            <button class="btn-icon btn-edit" data-id="${d.id}" title="Edit">✏️</button>
+            <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+          </div>`;
+        list.appendChild(el);
+      });
+    } catch(err) {
+      list.innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat produk.</div>`;
+    }
+  }
 }
+loadAdminProducts();
 
-/* KELOLA FEED */
 const modalPost = $('#modalPost');
 const postForm = $('#postForm');
 let postMediaTemp = [];
@@ -455,6 +477,7 @@ postForm.addEventListener('submit', async e => {
       toast('Postingan dipublikasikan!');
     }
     modalPost.classList.remove('open');
+    loadAdminPosts();
   } catch(err) {
     toast(err.message, true);
   } finally {
@@ -464,9 +487,10 @@ postForm.addEventListener('submit', async e => {
   }
 });
 
-try {
-  onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap => {
-    const list = $('#postList');
+async function loadAdminPosts() {
+  const list = $('#postList');
+  try {
+    const snap = await getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc')));
     if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada postingan.</div>'; return; }
     list.innerHTML = '';
     snap.forEach(d => {
@@ -475,8 +499,8 @@ try {
       el.className = 'list-item';
       el.innerHTML = `
         <div class="list-info">
-          <div class="list-title">${p.caption || '(Tanpa Teks)'}</div>
-          <div class="list-sub">${p.mediaUrls ? p.mediaUrls.length : 0} media · ${p.location || 'Tanpa lokasi'}</div>
+          <div class="list-title">${esc(p.caption || '(Tanpa Teks)')}</div>
+          <div class="list-sub">${p.mediaUrls ? p.mediaUrls.length : 0} media · ${esc(p.location || 'Tanpa lokasi')}</div>
         </div>
         <div class="list-actions">
           <button class="btn-icon btn-edit" data-id="${d.id}" title="Edit">✏️</button>
@@ -511,15 +535,36 @@ try {
         if(confirm('Hapus postingan ini?')) {
           await deleteDoc(doc(db, 'posts', d.id));
           toast('Postingan dihapus');
+          loadAdminPosts();
         }
       });
     });
-  }, err => {
-    $('#postList').innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat feed.</div>`;
-  });
-} catch(e) {}
+  } catch(e) {
+    try {
+      const fallbackSnap = await getDocs(collection(db, 'posts'));
+      if(fallbackSnap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada postingan.</div>'; return; }
+      list.innerHTML = '';
+      fallbackSnap.forEach(d => {
+        const p = d.data();
+        const el = document.createElement('div');
+        el.className = 'list-item';
+        el.innerHTML = `
+          <div class="list-info">
+            <div class="list-title">${esc(p.caption || '(Tanpa Teks)')}</div>
+            <div class="list-sub">${p.mediaUrls ? p.mediaUrls.length : 0} media</div>
+          </div>
+          <div class="list-actions">
+            <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+          </div>`;
+        list.appendChild(el);
+      });
+    } catch(err) {
+      list.innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat feed.</div>`;
+    }
+  }
+}
+loadAdminPosts();
 
-/* PENGATURAN TOKO */
 const storeSettingsRef = doc(db, 'settings', 'store_hours');
 getDoc(storeSettingsRef).then(snap => {
   if(snap.exists()) {
@@ -547,10 +592,10 @@ $('#saveSettings').addEventListener('click', async () => {
   }
 });
 
-/* MODERASI ULASAN */
-try {
-  onSnapshot(query(collection(db, 'comments'), orderBy('createdAt', 'desc')), snap => {
-    const list = $('#reviewList');
+async function loadAdminReviews() {
+  const list = $('#reviewList');
+  try {
+    const snap = await getDocs(query(collection(db, 'comments'), orderBy('createdAt', 'desc')));
     if(snap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada ulasan.</div>'; return; }
     list.innerHTML = '';
     snap.forEach(d => {
@@ -559,8 +604,8 @@ try {
       el.className = 'list-item';
       el.innerHTML = `
         <div class="list-info">
-          <div class="list-title" style="color:var(--soft)">${c.name || 'Anonim'}</div>
-          <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${c.text}"</div>
+          <div class="list-title" style="color:var(--soft)">${esc(c.name || 'Anonim')}</div>
+          <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${esc(c.text)}"</div>
         </div>
         <div class="list-actions">
           <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
@@ -571,13 +616,37 @@ try {
         if(confirm('Hapus ulasan ini?')) {
           await deleteDoc(doc(db, 'comments', d.id));
           toast('Ulasan dihapus');
+          loadAdminReviews();
         }
       });
     });
-  }, err => {
-    $('#reviewList').innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat ulasan.</div>`;
-  });
-} catch(e) {}
+  } catch(e) {
+    try {
+      const fallbackSnap = await getDocs(collection(db, 'comments'));
+      if(fallbackSnap.empty) { list.innerHTML = '<div class="list-sub" style="text-align:center;padding:20px">Belum ada ulasan.</div>'; return; }
+      list.innerHTML = '';
+      fallbackSnap.forEach(d => {
+        const c = d.data();
+        const el = document.createElement('div');
+        el.className = 'list-item';
+        el.innerHTML = `
+          <div class="list-info">
+            <div class="list-title" style="color:var(--soft)">${esc(c.name || 'Anonim')}</div>
+            <div class="list-sub" style="font-size:13px;color:var(--text);margin:4px 0">"${esc(c.text)}"</div>
+          </div>
+          <div class="list-actions">
+            <button class="btn-icon btn-del" data-id="${d.id}" title="Hapus" style="color:#ff4757">🗑️</button>
+          </div>`;
+        list.appendChild(el);
+      });
+    } catch(err) {
+      list.innerHTML = `<div class="list-sub" style="text-align:center;padding:20px;color:var(--danger)">Gagal memuat ulasan.</div>`;
+    }
+  }
+}
+loadAdminReviews();
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 </script>
 </body>
 </html>
