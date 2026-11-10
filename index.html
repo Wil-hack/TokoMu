@@ -148,7 +148,7 @@ body::before {
   width: 100%; 
 }
 
-/* === PERBAIKAN TOTAL SIDEBAR === */
+/* === PERBAIKAN SIDEBAR (TANPA ANIMASI / INSTAN) === */
 .app-sidebar {
   display: flex !important;
   flex-direction: column !important;
@@ -160,12 +160,15 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 0 60px 0; /* Padding atas-bawah saja */
+  padding: 16px 0 60px 0; 
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
   z-index: 100;
-  transition: width 0.3s ease, min-width 0.3s ease;
+  
+  /* KUNCI 1: Matikan transisi agar sidebar langsung mengecil seketika */
+  transition: none !important; 
+  
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden; 
 }
@@ -178,7 +181,7 @@ body::before {
 
 .app-sidebar.collapsed .brand-box,
 .app-sidebar.collapsed .menu-item span {
-  display: none !important;
+  display: none !important; /* Teks langsung hilang */
 }
 
 /* KONTEN SIDEBAR */
@@ -192,12 +195,12 @@ body::before {
   gap: 6px !important; 
   flex: 1 !important; 
   width: 100% !important;
-  padding: 0 10px; /* Padding di sini, bukan di container sidebar */
+  padding: 0 10px; 
 }
 
 /* ITEM MENU (KUNCI POSISI IKON) */
 .menu-item {
-  position: relative !important; /* KUNCI 1: Jadikan patokan posisi ikon */
+  position: relative !important; 
   display: flex !important;
   align-items: center !important;
   padding: 10px 12px !important;
@@ -225,7 +228,6 @@ body::before {
   transform: translate(-50%, -50%) !important;
   width: 18px !important;
   height: 18px !important;
-  transition: left 0.3s ease, transform 0.3s ease !important;
 }
 
 /* TEKS DIBERI JARAK */
@@ -237,7 +239,7 @@ body::before {
 /* KUNCI 3: SAAT SIDEBAR TERBUKA, IKON GESER KE KIRI */
 .app-sidebar:not(.collapsed) .menu-item svg {
   left: 12px !important;
-  transform: translate(0, -50%) !important; /* Kembalikan ke kiri */
+  transform: translate(0, -50%) !important; 
 }
 
 /* SAAT COLLAPSED, HAPUS PADDING MENU AGAR FULL TENGAH */
