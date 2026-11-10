@@ -38,7 +38,8 @@
 
 :root { --font-title: 'Playfair Display', serif; --font-body: 'Inter', sans-serif; --radius-lg: 18px; --radius-md: 12px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* KUNCI 1: Matikan efek biru/abu-abu bawaan browser saat layar diketuk */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
 body { background: var(--bg); color: var(--text); font-family: var(--font-body); line-height: 1.6; min-height: 100vh; overflow-x: hidden; position: relative; padding-bottom: 90px; width: 100%; }
 body::before { content: ''; position: fixed; inset: 0; background-image: var(--bg-mesh); background-color: var(--bg); background-size: 150% 150%; z-index: -99; pointer-events: none; filter: blur(40px); }
@@ -141,11 +142,15 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .card-footer { display: flex; flex-direction: column; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--glass-border); gap: 6px; }
 .card-price { font-weight: 700; color: var(--soft); font-size: 12px; }
 .card-btn-group { display: flex; gap: 4px; width: 100%; }
-.btn-glass-add, .btn-direct-order { flex: 1; text-align: center; padding: 5px 0; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+
+/* KUNCI 2: Efek HANYA pada tombolnya saja saat diklik */
+.btn-glass-add, .btn-direct-order { flex: 1; text-align: center; padding: 5px 0; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; transition: all 0.1s ease; }
 .btn-glass-add { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-.btn-glass-add:hover { background: rgba(56, 189, 248, 0.1); }
 .btn-direct-order { background: var(--accent); color: var(--btn-text); border: none; }
-.btn-direct-order:hover { filter: brightness(1.1); }
+
+/* Efek saat ditekan (Active): Hanya tombol yang menyala/mengecil */
+.btn-glass-add:active { background: rgba(56, 189, 248, 0.2); transform: scale(0.92); }
+.btn-direct-order:active { filter: brightness(1.3); box-shadow: 0 0 12px var(--accent); transform: scale(0.92); }
 
 /* FEED */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
@@ -159,6 +164,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .btn-like, .btn-comment { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 4px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 11px; transition: 0.2s; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 .btn-comment:hover { background: rgba(255,255,255,0.15); }
+.btn-like:active, .btn-comment:active { transform: scale(0.92); }
 
 /* KOMENTAR SECTION */
 .comments-section { display: none; padding: 12px 14px; border-top: 1px dashed var(--glass-border); background: rgba(0,0,0,0.15); }
@@ -169,6 +175,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .comment-input-wrap { display: flex; gap: 6px; }
 .comment-input { flex: 1; background: var(--bg); border: 1px solid var(--glass-border); padding: 6px 12px; border-radius: 99px; color: var(--text); font-size: 12px; outline: none; }
 .btn-send-comment { background: var(--accent); color: var(--btn-text); border: none; padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.btn-send-comment:active { transform: scale(0.92); }
 
 /* NAV MOBILE */
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted); text-decoration: none; font-size: 10px; font-weight: 500; transition: color .2s; }
@@ -536,7 +543,6 @@ function renderCatalog() {
     return;
   }
   
-  // TAMPILAN KARTU PRODUK BARU DENGAN 2 TOMBOL
   catalogGrid.innerHTML = items.map(p => {
     const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
     const avg = avgRating(p);
@@ -585,7 +591,6 @@ function renderCatalog() {
     });
   });
 
-  // TOMBOL KERANJANG
   catalogGrid.querySelectorAll('.btn-glass-add').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -594,7 +599,6 @@ function renderCatalog() {
     });
   });
 
-  // TOMBOL PESAN LANGSUNG
   catalogGrid.querySelectorAll('.btn-direct-order').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -611,7 +615,6 @@ function openProductModal(id) {
   const avg = avgRating(p);
   const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
   
-  // TAMPILAN DETAIL PRODUK DENGAN 2 TOMBOL
   productModalBody.innerHTML = `
     <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:160px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
     <h2 style="font-family:var(--font-title); font-size:17px; color:var(--text);">${esc(p.title || p.name)}</h2>
@@ -630,7 +633,6 @@ function openProductModal(id) {
 }
 $('#productModalClose').addEventListener('click', () => productModal.classList.remove('open'));
 
-// FUNGSI TAMBAH KE KERANJANG
 function addToCart(p) {
   const ex = cart.find(i => i.id === p.id);
   if(ex) ex.qty++;
@@ -640,7 +642,6 @@ function addToCart(p) {
   toast('Ditambahkan ke keranjang');
 }
 
-// FUNGSI PESAN LANGSUNG (WHATSAPP)
 function directOrder(p) {
   const price = typeof p.price === 'number' ? p.price : 0;
   const title = p.title || p.name || 'Produk';
