@@ -137,7 +137,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
 
-/* FIX PERMANEN UNTUK SIDEBAR & KONDISI COLLAPSED */
+/* LAYOUT SIDEBAR PRESISI */
 .app-sidebar {
   display: flex !important;
   width: 200px;
@@ -149,7 +149,7 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 10px;
+  padding: 16px 10px 60px 10px; /* Padding bawah disisakan untuk tombol panah */
   flex-direction: column !important;
   position: sticky;
   top: 16px;
@@ -164,7 +164,7 @@ body::before {
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 8px !important;
+  padding: 16px 6px 60px 6px !important;
 }
 
 .app-sidebar.collapsed .brand-sub,
@@ -212,7 +212,7 @@ body::before {
   .app-main { width: 100%; }
 }
 
-/* KUNCI MENU AGAR TETAP KE BAWAH SECARA RAPI */
+/* KONTEN SIDEBAR & MENU */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
@@ -255,13 +255,25 @@ body::before {
   display: block !important;
 }
 
+/* POSISI TOMBOL PANAH DI TENGAH BAWAH SIDEBAR */
 .sidebar-toggle-btn {
-  position: absolute; top: 12px; right: 8px; width: 24px; height: 24px;
-  background: rgba(255, 255, 255, 0.2); border: 1px solid var(--glass-border); border-radius: 50%;
-  color: var(--text); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 105;
+  position: absolute; 
+  bottom: 16px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 28px; 
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2); 
+  border: 1px solid var(--glass-border); 
+  border-radius: 50%;
+  color: var(--text); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  cursor: pointer; 
+  z-index: 105;
+  transition: transform 0.3s ease;
 }
-.app-sidebar.collapsed .sidebar-toggle-btn { right: 20px; }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
 /* TOPBAR */
@@ -427,9 +439,6 @@ body::before {
 <div class="app-layout">
   <!-- SIDEBAR -->
   <aside class="app-sidebar" id="sidebar">
-    <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
     <div class="brand-box">
       <div class="brand-title">Serabimu</div>
       <div class="brand-sub">Culinary Dashboard</div>
@@ -448,6 +457,9 @@ body::before {
         <span>Panel Admin</span>
       </a>
     </nav>
+    <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
   </aside>
 
   <!-- MAIN AREA -->
