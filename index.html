@@ -382,7 +382,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 <!-- FIREBASE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-// Tambahkan addDoc dan serverTimestamp untuk komentar
 import { getFirestore, collection, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -413,10 +412,8 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// FUNGSI FORMAT TANGGAL BARU
 function formatDate(timestamp) {
   if (!timestamp) return '';
-  // Firebase Timestamp punya property 'seconds'
   const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
   return date.toLocaleString('id-ID', { 
     day: 'numeric', month: 'short', year: 'numeric', 
@@ -498,10 +495,7 @@ async function loadProducts() {
     const snap = await getDocs(collection(db, 'products'));
     allProducts = [];
     snap.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() }));
-    
-    // Urutkan manual terbaru
     allProducts.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
     renderChips(); renderCatalog();
   } catch(e) {
     console.error("Gagal memuat produk:", e);
@@ -666,11 +660,9 @@ $('#checkoutForm').addEventListener('submit', e => {
   $('#checkoutModal').classList.remove('open');
 });
 
-// ================= LOAD FEED & KOMENTAR =================
 async function loadFeed() {
   const publicFeedList = $('#publicFeedList');
   try {
-    // 1. Ambil semua Postingan
     const postSnap = await getDocs(collection(db, 'posts'));
     if(postSnap.empty) {
        publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Belum ada kabar toko.</div>`;
@@ -678,9 +670,8 @@ async function loadFeed() {
     }
     let posts = [];
     postSnap.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
-    posts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); // Urutkan terbaru
+    posts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-    // 2. Ambil semua Komentar
     const commentSnap = await getDocs(collection(db, 'comments'));
     let allComments = [];
     commentSnap.forEach(doc => allComments.push({ id: doc.id, ...doc.data() }));
@@ -693,7 +684,6 @@ async function loadFeed() {
         mediaHtml = `<div class="post-media-grid">` + d.mediaUrls.map(m => m.type === 'video' ? `<video src="${esc(m.url)}" controls></video>` : `<img src="${esc(m.url)}" alt="Media">`).join('') + `</div>`;
       }
 
-      // Filter komentar khusus untuk postingan ini
       const postComments = allComments.filter(c => c.postId === postId).sort((a,b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
       const commentsHtml = postComments.map(c => `
         <div class="comment-item">
@@ -701,7 +691,6 @@ async function loadFeed() {
         </div>
       `).join('');
 
-      // Tampilkan Tanggal
       const dateStr = formatDate(d.createdAt);
 
       return `
@@ -734,7 +723,6 @@ async function loadFeed() {
         </div>`;
     }).join('');
 
-    // Event Listener Like
     publicFeedList.querySelectorAll('.btn-like').forEach(btn => {
       btn.addEventListener('click', async () => {
         const pid = btn.dataset.id;
@@ -746,7 +734,6 @@ async function loadFeed() {
       });
     });
 
-    // Event Listener Toggle Komentar
     publicFeedList.querySelectorAll('.btn-comment').forEach(btn => {
       btn.addEventListener('click', () => {
         const targetId = btn.dataset.target;
@@ -755,7 +742,6 @@ async function loadFeed() {
       });
     });
 
-    // Event Listener Kirim Komentar
     publicFeedList.querySelectorAll('.btn-send-comment').forEach(btn => {
       btn.addEventListener('click', async () => {
         const postId = btn.dataset.id;
@@ -767,13 +753,13 @@ async function loadFeed() {
         try {
           await addDoc(collection(db, 'comments'), {
             postId: postId,
-            name: 'Pengunjung', // Bisa diganti nama user jika ada login
+            name: 'Pengunjung',
             text: text,
             createdAt: serverTimestamp()
           });
           inputEl.value = '';
           toast('Komentar terkirim!');
-          loadFeed(); // Muat ulang feed untuk menampilkan komentar baru
+          loadFeed();
         } catch(e) {
           console.error(e);
           toast('Gagal mengirim komentar');
@@ -790,7 +776,6 @@ async function loadFeed() {
 }
 loadFeed();
 
-// ================= ADMIN LOGIN =================
 const adminModal = $('#adminModal');
 const lockBox = $('#lockBox');
 const adminPinInput = $('#adminPinInput');
