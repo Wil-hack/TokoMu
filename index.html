@@ -136,7 +136,7 @@ body::before {
 
 ::selection { background: var(--soft); color: #fff; }
 
-/* LAYOUT UTAMA (Diperbaiki agar tidak overflow ke kiri) */
+/* LAYOUT UTAMA */
 .app-layout { 
   display: flex; 
   min-height: 100vh; 
@@ -146,6 +146,7 @@ body::before {
   max-width: 1400px; 
   margin: 0 auto; 
   width: 100%; 
+  overflow-x: hidden; /* Cegah geser ke kanan */
 }
 
 /* LAYOUT SIDEBAR PRESISI */
@@ -175,23 +176,102 @@ body::before {
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 0 60px 0 !important; /* Padding kiri-kanan dihilangkan agar ikon punya ruang penuh */
+  padding: 16px 0 60px 0 !important;
 }
 
 .app-sidebar.collapsed .brand-sub,
-.app-sidebar.collapsed .brand-title,
+.app-sidebar.collapsed .brand-title {
+  display: none !important;
+}
+
 .app-sidebar.collapsed .menu-item span {
   display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
 }
 
 .app-sidebar.collapsed .menu-item {
   justify-content: center !important;
   padding: 10px 0 !important;
-  gap: 0 !important;
 }
 
+/* KONTEN SIDEBAR & MENU */
+.brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; width: 100%; overflow: hidden; }
+.brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
+
+.sidebar-menu { 
+  display: flex !important; 
+  flex-direction: column !important; 
+  gap: 6px !important; 
+  flex: 1 !important; 
+  width: 100% !important;
+}
+
+/* PERBAIKAN TOTAL PADA MENU ITEM */
+.menu-item {
+  position: relative !important; /* KUNCI UTAMA: Ikon akan dipaksa diam di tempat */
+  display: flex !important;
+  align-items: center !important;
+  padding: 10px 12px !important;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: background .3s;
+  border: 1px solid transparent;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
+
+/* IKON DIPAKSA MENEMPEL DI KIRI */
+.menu-item svg {
+  position: absolute !important;
+  left: 12px !important;
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+}
+
+/* TEKS DIBERI JARAK AGAR TIDAK MENABRAK IKON */
+.menu-item span {
+  margin-left: 28px !important;
+  display: block !important;
+}
+
+/* SAAT COLLAPSED, IKON DIPAKSA KE TENGAH KOTAK */
+.app-sidebar.collapsed .menu-item svg {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* POSISI TOMBOL PANAH */
+.sidebar-toggle-btn {
+  position: absolute; 
+  bottom: 16px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 30px; 
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2); 
+  border: 1px solid var(--glass-border); 
+  border-radius: 50%;
+  color: var(--text); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  cursor: pointer; 
+  z-index: 105;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.sidebar-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
+.app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
+
+/* SISA CSS LAINNYA (TIDAK BERUBAH) */
 .mobile-bottom-nav {
   display: flex;
   position: fixed;
@@ -219,78 +299,11 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  .app-sidebar { display: none !important; }
+  /* Jika ingin sidebar tetap muncul di HP, hapus baris display:none di bawah ini */
+  .app-sidebar { display: none !important; } 
   .app-main { width: 100%; }
 }
 
-/* KONTEN SIDEBAR & MENU */
-.brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
-.brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
-.brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
-
-.sidebar-menu { 
-  display: flex !important; 
-  flex-direction: column !important; 
-  gap: 6px !important; 
-  flex: 1 !important; 
-  width: 100% !important;
-}
-
-.menu-item {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 10px 12px !important;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: var(--radius-md);
-  transition: background .3s;
-  border: 1px solid transparent;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-}
-
-.menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
-
-.menu-item svg {
-  width: 18px !important;
-  height: 18px !important;
-  min-width: 18px !important;
-  min-height: 18px !important;
-  flex-shrink: 0 !important;
-  display: block !important;
-}
-
-/* POSISI TOMBOL PANAH DI TENGAH BAWAH SIDEBAR */
-.sidebar-toggle-btn {
-  position: absolute; 
-  bottom: 16px; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  width: 30px; 
-  height: 30px;
-  background: rgba(255, 255, 255, 0.2); 
-  border: 1px solid var(--glass-border); 
-  border-radius: 50%;
-  color: var(--text); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  cursor: pointer; 
-  z-index: 105;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-.sidebar-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-.app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
-
-/* TOPBAR */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
 .search-widget { position: relative; flex: 1; min-width: 180px; }
 .search-widget input {
