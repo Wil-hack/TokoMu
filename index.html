@@ -73,7 +73,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-/* === SIDEBAR (DIPERBAIKI TOTAL) === */
+/* === SIDEBAR (TOMOL PANAH DI ATAS) === */
 .app-sidebar {
   display: flex !important;
   flex-direction: column !important;
@@ -85,7 +85,7 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 10px 20px 10px; /* Padding bawah dikurangi karena tombol sudah di atas */
+  padding: 16px 10px 20px 10px; 
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
@@ -101,17 +101,15 @@ body::before {
   padding: 16px 0 20px 0 !important;
 }
 
-/* Sembunyikan teks menu saat ditutup */
 .app-sidebar.collapsed .brand-box, 
 .app-sidebar.collapsed .menu-item span {
   display: none !important;
 }
 
-/* Gunakan CSS Grid untuk memastikan ikon pas di tengah */
 .app-sidebar.collapsed .sidebar-menu {
   padding: 0 !important;
   align-items: center !important;
-  margin-top: 20px !important; /* Jarak dari tombol atas */
+  margin-top: 20px !important; 
 }
 
 .app-sidebar.collapsed .menu-item {
@@ -130,11 +128,10 @@ body::before {
   margin: 0 !important;
 }
 
-/* STYLE MENU NORMAL */
 .brand-box { 
   margin-bottom: 20px; 
   padding-left: 4px; 
-  padding-right: 35px; /* Beri ruang agar teks tidak menabrak tombol */
+  padding-right: 35px; 
   position: relative; 
   width: 100%; 
   overflow: hidden; 
@@ -177,11 +174,10 @@ body::before {
   display: block !important;
 }
 
-/* === TOMBOL PANAH (DIPINDAH KE ATAS KANAN) === */
 .sidebar-toggle-btn {
   position: absolute; 
-  top: 16px; /* Posisi di atas */
-  right: 12px; /* Posisi di kanan */
+  top: 16px; 
+  right: 12px; 
   width: 32px; 
   height: 32px;
   background: var(--accent); 
@@ -196,18 +192,15 @@ body::before {
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* Saat sidebar ditutup, pindahkan tombol tepat ke tengah atas */
 .app-sidebar.collapsed .sidebar-toggle-btn {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
 }
 
-/* Putar panah saat ditutup */
 .app-sidebar.collapsed .sidebar-toggle-btn svg { 
   transform: rotate(180deg); 
 }
-
 
 /* === TOPBAR & TEMA === */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
@@ -221,7 +214,6 @@ body::before {
 
 .topbar-right { display: flex; align-items: center; gap: 8px; }
 
-/* Tombol Tema Dropdown */
 .theme-dropdown-container { position: relative; }
 #themeToggleBtn { font-size: 16px; padding: 0; }
 .theme-menu {
@@ -238,7 +230,6 @@ body::before {
 .theme-option:hover { background: rgba(255,255,255,0.15); }
 .theme-option.active { background: var(--accent); color: var(--btn-text); }
 
-/* Badge & Tombol Lain */
 .status-badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px;
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
@@ -321,7 +312,7 @@ body::before {
 .card-price { font-weight: 700; color: var(--soft); font-size: 11.5px; }
 .btn-glass-add { background: var(--accent); color: var(--btn-text); border: none; padding: 4px 9px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; }
 
-/* FEED / KABAR TOKO */
+/* FEED */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .post-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px 6px; }
@@ -333,7 +324,7 @@ body::before {
 .btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 3px 9px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
-/* NAVIGASI BAWAH MOBILE */
+/* NAV MOBILE */
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted); text-decoration: none; font-size: 10px; font-weight: 500; transition: color .2s; }
 .nav-item.active, .nav-item:hover { color: var(--accent); }
 .nav-item svg { width: 20px; height: 20px; }
@@ -404,14 +395,12 @@ body::before {
 <body>
 
 <div class="app-layout">
-  <!-- SIDEBAR -->
   <aside class="app-sidebar" id="sidebar">
     <div class="brand-box">
       <div class="brand-title">Serabimu</div>
       <div class="brand-sub">Culinary Dashboard</div>
     </div>
     
-    <!-- TOMBOL PANAH DIPINDAH KE SINI (ATAS) -->
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
@@ -432,7 +421,6 @@ body::before {
     </nav>
   </aside>
 
-  <!-- MAIN AREA -->
   <main class="app-main">
     <div class="dashboard-topbar">
       <div class="search-widget">
@@ -441,7 +429,6 @@ body::before {
       </div>
       <div class="topbar-right">
         
-        <!-- TEMA DROPDOWN -->
         <div class="theme-dropdown-container">
           <button class="icon-btn" id="themeToggleBtn" aria-label="Pilih Tema">🎨</button>
           <div class="theme-menu" id="themeMenu">
@@ -495,7 +482,6 @@ body::before {
   </main>
 </div>
 
-<!-- BOTTOM NAVIGATION (Mobile) -->
 <nav class="mobile-bottom-nav">
   <a href="#katalog" class="nav-item active">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -515,7 +501,6 @@ body::before {
   </a>
 </nav>
 
-<!-- CART DRAWER -->
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -531,7 +516,6 @@ body::before {
   </div>
 </div>
 
-<!-- MODAL DETAIL PRODUK -->
 <div id="productModal" class="modal-overlay">
   <div class="modal-panel">
     <button id="productModalClose" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); border:none; color:#fff; width:26px; height:26px; border-radius:50%; cursor:pointer; z-index:2;">✕</button>
@@ -539,7 +523,6 @@ body::before {
   </div>
 </div>
 
-<!-- MODAL CHECKOUT -->
 <div id="checkoutModal" class="modal-overlay">
   <div class="modal-panel">
     <button id="checkoutClose" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:15px;">✕</button>
@@ -565,7 +548,6 @@ body::before {
   </div>
 </div>
 
-<!-- MODAL ADMIN -->
 <div id="adminModal" class="modal-overlay">
   <div class="modal-panel">
     <button id="cancelPinBtn" style="position:absolute; top:10px; right:10px; background:none; border:none; color:var(--text); cursor:pointer; font-size:15px; z-index:2;">✕</button>
@@ -587,14 +569,14 @@ body::before {
 
 <div id="toast"></div>
 
+<!-- FIREBASE SCRIPT (FIRESTORE VERSION) -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
   authDomain: "serabimu-96990.firebaseapp.com",
-  databaseURL: "https://serabimu-96990-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "serabimu-96990",
   storageBucket: "serabimu-96990.firebasestorage.app",
   messagingSenderId: "888492450453",
@@ -602,14 +584,15 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const rtdb = getDatabase(app);
+const db = getFirestore(app); // INISIALISASI FIRESTORE
 
 const DEFAULT_WA = '6285737447844';
 const ADMIN_PIN = '7454lalapan';
 let storeWa = DEFAULT_WA;
 
-get(child(ref(rtdb), 'settings/store_hours')).then(snap => {
-  if(snap.exists()) storeWa = snap.val().whatsapp || DEFAULT_WA;
+// Ambil WA dari dokumen 'settings/store_hours' (jika ada)
+getDoc(doc(db, 'settings', 'store_hours')).then(snap => {
+  if(snap.exists()) storeWa = snap.data().whatsapp || DEFAULT_WA;
 }).catch(()=>{});
 
 const $ = s => document.querySelector(s);
@@ -689,17 +672,17 @@ const isNew = p => p.createdAt && ((Date.now() - new Date(p.createdAt).getTime()
 const isBest = p => (p.ratingCount || 0) >= 3 && (p.totalRating / p.ratingCount) >= 4.5;
 const avgRating = p => (p.ratingCount > 0) ? (p.totalRating / p.ratingCount) : 0;
 
+// AMBIL DATA DARI FIRESTORE
 async function loadProducts() {
   try {
-    const snap = await get(child(ref(rtdb), 'products'));
-    if(snap.exists()) {
-      const val = snap.val();
-      allProducts = Object.keys(val).map(k => ({ id: k, ...val[k] }));
-    } else {
-      allProducts = [];
-    }
+    const querySnapshot = await getDocs(collection(db, 'products'));
+    allProducts = [];
+    querySnapshot.forEach((doc) => {
+      allProducts.push({ id: doc.id, ...doc.data() });
+    });
     renderChips(); renderCatalog();
   } catch(e) {
+    console.error("Gagal memuat produk:", e);
     catalogGrid.innerHTML = `<div style="color:var(--muted); font-size:12px; padding:10px;">Gagal memuat produk dari database.</div>`;
   }
 }
@@ -743,10 +726,10 @@ function renderCatalog() {
         <div class="card-img-wrap">
           ${badges.length ? `<div class="card-badges">${badges.join('')}</div>` : ''}
           <button class="wishlist-btn ${wished?'active':''}" data-wid="${esc(p.id)}">${wished?'❤️':'🤍'}</button>
-          <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" alt="${esc(p.title)}">
+          <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" alt="${esc(p.title || p.name)}">
         </div>
         <div class="card-body">
-          <div class="card-title">${esc(p.title)}</div>
+          <div class="card-title">${esc(p.title || p.name || 'Tanpa Nama')}</div>
           <div class="card-rating">${stars}</div>
           <div class="card-desc">${esc(p.description || '')}</div>
           <div class="card-footer">
@@ -791,7 +774,7 @@ function openProductModal(id) {
   const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
   productModalBody.innerHTML = `
     <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:160px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
-    <h2 style="font-family:var(--font-title); font-size:17px; color:var(--text);">${esc(p.title)}</h2>
+    <h2 style="font-family:var(--font-title); font-size:17px; color:var(--text);">${esc(p.title || p.name)}</h2>
     <div style="font-size:11px; color:var(--soft); margin-bottom:5px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:11.5px; color:var(--muted); margin-bottom:10px;">${esc(p.description||'')}</p>
     <div style="font-size:15px; font-weight:700; color:var(--soft); margin-bottom:10px;">${price}</div>
@@ -805,7 +788,7 @@ $('#productModalClose').addEventListener('click', () => productModal.classList.r
 function addToCart(p) {
   const ex = cart.find(i => i.id === p.id);
   if(ex) ex.qty++;
-  else cart.push({ id: p.id, title: p.title, price: typeof p.price === 'number' ? p.price : 0, imageUrl: p.imageUrl || '', qty: 1 });
+  else cart.push({ id: p.id, title: p.title || p.name || 'Produk', price: typeof p.price === 'number' ? p.price : 0, imageUrl: p.imageUrl || '', qty: 1 });
   localStorage.setItem('serabimu_cart', JSON.stringify(cart));
   renderCart();
   toast('Ditambahkan ke keranjang');
@@ -861,13 +844,22 @@ $('#checkoutForm').addEventListener('submit', e => {
   $('#checkoutModal').classList.remove('open');
 });
 
+// AMBIL DATA FEED DARI FIRESTORE
 async function loadFeed() {
   const publicFeedList = $('#publicFeedList');
   try {
-    const snap = await get(child(ref(rtdb), 'posts'));
-    if(!snap.exists()) { publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Belum ada kabar toko.</div>`; return; }
-    const val = snap.val();
-    const posts = Object.keys(val).map(k => ({ id: k, ...val[k] })).reverse();
+    const querySnapshot = await getDocs(collection(db, 'posts'));
+    if(querySnapshot.empty) {
+       publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Belum ada kabar toko.</div>`;
+       return;
+    }
+    let posts = [];
+    querySnapshot.forEach((doc) => {
+      posts.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Urutkan berdasarkan createdAt (jika ada), atau terbalikkan array
+    posts.reverse();
 
     publicFeedList.innerHTML = posts.map(d => {
       const postId = d.id;
@@ -900,6 +892,7 @@ async function loadFeed() {
       });
     });
   } catch(e) {
+    console.error("Gagal memuat feed:", e);
     publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Gagal memuat kabar toko.</div>`;
   }
 }
