@@ -137,27 +137,28 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
 
-/* PERBAIKAN STABILITAS SIDEBAR & NAVIGASI BAWAH */
+/* KUNCI TATA LETAK SIDEBAR AGAR TIDAK BERANTAKAN DI HP DESKTOP VIEW */
 .app-sidebar {
-  display: flex;
-  width: 210px;
-  min-width: 210px;
+  display: flex !important;
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
   background: var(--glass-bg);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 12px;
+  padding: 16px 10px;
   flex-direction: column;
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
   z-index: 100;
-  transition: width 0.3s ease, padding 0.3s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden;
 }
-.app-sidebar.collapsed { width: 70px; min-width: 70px; padding: 16px 8px; }
 
 .mobile-bottom-nav {
   display: flex;
@@ -190,24 +191,35 @@ body::before {
   .app-main { width: 100%; }
 }
 
-/* KONTEN SIDEBAR AMAN */
+/* SIDEBAR KONTEN & IKON LOCK */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
 .sidebar-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .menu-item {
-  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-  color: var(--text); text-decoration: none; font-size: 12px; font-weight: 500;
-  border-radius: var(--radius-md); transition: background .3s; border: 1px solid transparent;
-  width: 100%; box-sizing: border-box; white-space: nowrap; overflow: hidden;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: background .3s;
+  border: 1px solid transparent;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
-.menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-.app-sidebar.collapsed .brand-sub,
-.app-sidebar.collapsed .brand-title,
-.app-sidebar.collapsed .menu-item span { opacity: 0; visibility: hidden; width: 0; }
-.app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; }
+.menu-item svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  flex-shrink: 0 !important;
+}
 
 .sidebar-toggle-btn {
   position: absolute; top: 12px; right: 8px; width: 24px; height: 24px;
@@ -215,10 +227,8 @@ body::before {
   color: var(--text); display: flex; align-items: center; justify-content: center;
   cursor: pointer; z-index: 105;
 }
-.app-sidebar.collapsed .sidebar-toggle-btn { right: 22px; }
-.app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
-/* TOPBAR & KOMPONEN LAINNYA */
+/* TOPBAR */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
 .search-widget { position: relative; flex: 1; min-width: 180px; }
 .search-widget input {
@@ -562,7 +572,7 @@ body::before {
 
 <div id="toast"></div>
 
-<!-- FIREBASE SCRIPT (Mendukung Realtime Database & Fallback) -->
+<!-- FIREBASE SCRIPT (Realtime Database SDK) -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -595,12 +605,6 @@ const toast = msg => {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 };
-
-const sidebar = $('#sidebar');
-const sidebarToggle = $('#sidebarToggle');
-if (sidebarToggle && sidebar) {
-  sidebarToggle.addEventListener('click', () => { sidebar.classList.toggle('collapsed'); });
-}
 
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -647,7 +651,6 @@ const isNew = p => p.createdAt && ((Date.now() - new Date(p.createdAt).getTime()
 const isBest = p => (p.ratingCount || 0) >= 3 && (p.totalRating / p.ratingCount) >= 4.5;
 const avgRating = p => (p.ratingCount > 0) ? (p.totalRating / p.ratingCount) : 0;
 
-// AMAN DARI LOADING ABADI (Menggunakan Realtime Database)
 async function loadProducts() {
   try {
     const snap = await get(child(ref(rtdb), 'products'));
@@ -856,10 +859,6 @@ async function loadFeed() {
         likedPosts.add(pid);
         localStorage.setItem('serabimu_liked', JSON.stringify([...likedPosts]));
         btn.classList.add('liked');
-        // Update likes di RTDB
-        const postRef = ref(rtdb, `posts/${pid}/likes`);
-        const currentLikes = (posts.find(p => p.id === pid)?.likes || 0) + 1;
-        // Opsional: set(postRef, currentLikes)
       });
     });
   } catch(e) {
