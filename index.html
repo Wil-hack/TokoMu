@@ -136,9 +136,16 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .card-title { font-family: var(--font-title); font-size: 13.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
 .card-rating { font-size: 9.5px; color: var(--soft); margin-bottom: 3px; min-height: 14px; }
 .card-desc { color: var(--muted); font-size: 10px; margin-bottom: 6px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 5px; border-top: 1px solid var(--glass-border); }
-.card-price { font-weight: 700; color: var(--soft); font-size: 11.5px; }
-.btn-glass-add { background: var(--accent); color: var(--btn-text); border: none; padding: 4px 9px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; }
+
+/* UPDATE: FOOTER CARD UNTUK 2 TOMBOL */
+.card-footer { display: flex; flex-direction: column; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--glass-border); gap: 6px; }
+.card-price { font-weight: 700; color: var(--soft); font-size: 12px; }
+.card-btn-group { display: flex; gap: 4px; width: 100%; }
+.btn-glass-add, .btn-direct-order { flex: 1; text-align: center; padding: 5px 0; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.btn-glass-add { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-glass-add:hover { background: rgba(56, 189, 248, 0.1); }
+.btn-direct-order { background: var(--accent); color: var(--btn-text); border: none; }
+.btn-direct-order:hover { filter: brightness(1.1); }
 
 /* FEED */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
@@ -528,6 +535,8 @@ function renderCatalog() {
     catalogGrid.innerHTML = `<div style="color:var(--muted); font-size:12px; padding:10px;">Tidak ada produk ditemukan.</div>`;
     return;
   }
+  
+  // TAMPILAN KARTU PRODUK BARU DENGAN 2 TOMBOL
   catalogGrid.innerHTML = items.map(p => {
     const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
     const avg = avgRating(p);
@@ -550,7 +559,10 @@ function renderCatalog() {
           <div class="card-desc">${esc(p.description || '')}</div>
           <div class="card-footer">
             <span class="card-price">${price}</span>
-            <button class="btn-glass-add" data-pid="${esc(p.id)}">+ Pesan</button>
+            <div class="card-btn-group">
+              <button class="btn-glass-add" data-pid="${esc(p.id)}">+ Keranjang</button>
+              <button class="btn-direct-order" data-pid="${esc(p.id)}">Pesan</button>
+            </div>
           </div>
         </div>
       </div>`;
@@ -573,11 +585,21 @@ function renderCatalog() {
     });
   });
 
+  // TOMBOL KERANJANG
   catalogGrid.querySelectorAll('.btn-glass-add').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const p = allProducts.find(x => x.id === btn.dataset.pid);
       if(p) addToCart(p);
+    });
+  });
+
+  // TOMBOL PESAN LANGSUNG
+  catalogGrid.querySelectorAll('.btn-direct-order').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const p = allProducts.find(x => x.id === btn.dataset.pid);
+      if(p) directOrder(p);
     });
   });
 }
@@ -588,19 +610,27 @@ function openProductModal(id) {
   const p = allProducts.find(x => x.id === id); if(!p) return;
   const avg = avgRating(p);
   const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
+  
+  // TAMPILAN DETAIL PRODUK DENGAN 2 TOMBOL
   productModalBody.innerHTML = `
     <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:160px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
     <h2 style="font-family:var(--font-title); font-size:17px; color:var(--text);">${esc(p.title || p.name)}</h2>
     <div style="font-size:11px; color:var(--soft); margin-bottom:5px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:11.5px; color:var(--muted); margin-bottom:10px;">${esc(p.description||'')}</p>
     <div style="font-size:15px; font-weight:700; color:var(--soft); margin-bottom:10px;">${price}</div>
-    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
+    <div style="display:flex; gap:10px;">
+      <button id="pmAddCart" style="flex:1; background:transparent; border:1px solid var(--accent); color:var(--accent); padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
+      <button id="pmDirectOrder" style="flex:1; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">Pesan Langsung</button>
+    </div>
   `;
   productModal.classList.add('open');
+  
   productModalBody.querySelector('#pmAddCart').addEventListener('click', () => { addToCart(p); productModal.classList.remove('open'); });
+  productModalBody.querySelector('#pmDirectOrder').addEventListener('click', () => { directOrder(p); productModal.classList.remove('open'); });
 }
 $('#productModalClose').addEventListener('click', () => productModal.classList.remove('open'));
 
+// FUNGSI TAMBAH KE KERANJANG
 function addToCart(p) {
   const ex = cart.find(i => i.id === p.id);
   if(ex) ex.qty++;
@@ -608,6 +638,14 @@ function addToCart(p) {
   localStorage.setItem('serabimu_cart', JSON.stringify(cart));
   renderCart();
   toast('Ditambahkan ke keranjang');
+}
+
+// FUNGSI PESAN LANGSUNG (WHATSAPP)
+function directOrder(p) {
+  const price = typeof p.price === 'number' ? p.price : 0;
+  const title = p.title || p.name || 'Produk';
+  let msg = `*Pesanan Langsung — Serabimu*\n\nHalo, saya ingin memesan langsung:\n\n🛒 *${title}*\nJumlah: 1\nTotal: ${fmt(price)}\n\nMohon info ketersediaan dan pembayarannya. Terima kasih!`;
+  window.open(`https://wa.me/${storeWa}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 const cartDrawer = $('#cartDrawer'), cartOverlay = $('#cartOverlay'), cartBody = $('#cartBody'), cartTotal = $('#cartTotal');
