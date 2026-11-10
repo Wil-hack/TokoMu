@@ -148,7 +148,7 @@ body::before {
   width: 100%; 
 }
 
-/* === PERBAIKAN SIDEBAR (TANPA ANIMASI / INSTAN) === */
+/* === PERBAIKAN TOTAL SIDEBAR (GRID SYSTEM) === */
 .app-sidebar {
   display: flex !important;
   flex-direction: column !important;
@@ -160,32 +160,56 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 0 60px 0; 
+  padding: 16px 10px 60px 10px;
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
   z-index: 100;
-  
-  /* KUNCI 1: Matikan transisi agar sidebar langsung mengecil seketika */
-  transition: none !important; 
-  
+  transition: none !important; /* Hilangkan animasi geser */
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden; 
 }
 
-/* KONDISI SAAT SIDEBAR DITUTUP (COLLAPSED) */
+/* KONDISI SAAT DITUTUP */
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
+  padding: 16px 0 60px 0 !important; /* Kunci padding 0 */
 }
 
-.app-sidebar.collapsed .brand-box,
+.app-sidebar.collapsed .brand-box {
+  display: none !important;
+}
+
+/* Sembunyikan teks menu */
 .app-sidebar.collapsed .menu-item span {
-  display: none !important; /* Teks langsung hilang */
+  display: none !important;
 }
 
-/* KONTEN SIDEBAR */
-.brand-box { margin-bottom: 20px; padding-left: 20px; position: relative; width: 100%; overflow: hidden; }
+/* KUNCI MUTLAK: Gunakan CSS Grid untuk menengahkan ikon */
+.app-sidebar.collapsed .sidebar-menu {
+  padding: 0 !important;
+  align-items: center !important; /* Paksa isi menu ke tengah */
+}
+
+.app-sidebar.collapsed .menu-item {
+  display: grid !important;
+  place-items: center !important; /* Ikon otomatis di tengah kotak */
+  width: 45px !important; /* Ukuran kotak menu */
+  height: 45px !important;
+  margin: 0 auto !important; /* Pastikan kotak berada di tengah sidebar */
+  padding: 0 !important;
+}
+
+.app-sidebar.collapsed .menu-item svg {
+  width: 18px !important;
+  height: 18px !important;
+  position: static !important; /* Hapus position absolute jika ada */
+  margin: 0 !important;
+}
+
+/* === STYLE NORMAL (SAAT TERBUKA) === */
+.brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; width: 100%; overflow: hidden; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
 
@@ -195,14 +219,12 @@ body::before {
   gap: 6px !important; 
   flex: 1 !important; 
   width: 100% !important;
-  padding: 0 10px; 
 }
 
-/* ITEM MENU (KUNCI POSISI IKON) */
 .menu-item {
-  position: relative !important; 
   display: flex !important;
   align-items: center !important;
+  gap: 10px !important; 
   padding: 10px 12px !important;
   color: var(--text);
   text-decoration: none;
@@ -213,41 +235,17 @@ body::before {
   border: 1px solid transparent;
   width: 100% !important;
   box-sizing: border-box !important;
-  height: 40px;
   white-space: nowrap !important;
   overflow: hidden !important;
 }
 
 .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
 
-/* KUNCI 2: IKON DIPAKSA DI TENGAH SECARA DEFAULT */
 .menu-item svg {
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
   width: 18px !important;
   height: 18px !important;
-}
-
-/* TEKS DIBERI JARAK */
-.menu-item span {
-  margin-left: 26px !important;
+  flex-shrink: 0 !important; 
   display: block !important;
-}
-
-/* KUNCI 3: SAAT SIDEBAR TERBUKA, IKON GESER KE KIRI */
-.app-sidebar:not(.collapsed) .menu-item svg {
-  left: 12px !important;
-  transform: translate(0, -50%) !important; 
-}
-
-/* SAAT COLLAPSED, HAPUS PADDING MENU AGAR FULL TENGAH */
-.app-sidebar.collapsed .sidebar-menu {
-  padding: 0 !important;
-}
-.app-sidebar.collapsed .menu-item {
-  padding: 10px 0 !important;
 }
 
 /* POSISI TOMBOL PANAH */
@@ -271,7 +269,7 @@ body::before {
 }
 .sidebar-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
-/* === END PERBAIKAN SIDEBAR === */
+/* === END SIDEBAR === */
 
 
 /* SISA CSS LAINNYA */
