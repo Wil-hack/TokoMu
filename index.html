@@ -146,23 +146,21 @@ body::before {
   max-width: 1400px; 
   margin: 0 auto; 
   width: 100%; 
-  overflow-x: hidden; /* Cegah geser ke kanan */
 }
 
-/* LAYOUT SIDEBAR PRESISI */
+/* LAYOUT SIDEBAR PRESISI (FLEXBOX MURNI) */
 .app-sidebar {
   display: flex !important;
+  flex-direction: column !important;
   width: 200px;
   min-width: 200px;
   flex-shrink: 0 !important;
-  box-sizing: border-box !important;
   background: var(--glass-bg);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 16px 10px 60px 10px;
-  flex-direction: column !important;
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
@@ -172,28 +170,26 @@ body::before {
   overflow: hidden; 
 }
 
-/* KONDISI SAAT SIDEBAR DITUTUP / COLLAPSED */
+/* KONDISI SAAT SIDEBAR DITUTUP (COLLAPSED) */
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 0 60px 0 !important;
+  padding: 16px 0 60px 0 !important; /* Padding samping dihapus agar ruang 65px penuh */
 }
 
-.app-sidebar.collapsed .brand-sub,
-.app-sidebar.collapsed .brand-title {
-  display: none !important;
-}
-
+/* Sembunyikan teks & brand box saat collapsed */
+.app-sidebar.collapsed .brand-box,
 .app-sidebar.collapsed .menu-item span {
   display: none !important;
 }
 
+/* KUNCI UTAMA: Gunakan Flexbox untuk menengahkan ikon */
 .app-sidebar.collapsed .menu-item {
   justify-content: center !important;
-  padding: 10px 0 !important;
+  padding: 10px 0 !important; /* Hapus padding kiri-kanan pada tombol menu */
+  gap: 0 !important;
 }
 
-/* KONTEN SIDEBAR & MENU */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; width: 100%; overflow: hidden; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
@@ -206,11 +202,11 @@ body::before {
   width: 100% !important;
 }
 
-/* PERBAIKAN TOTAL PADA MENU ITEM */
+/* ITEM MENU (TANPA POSITION ABSOLUTE) */
 .menu-item {
-  position: relative !important; /* KUNCI UTAMA: Ikon akan dipaksa diam di tempat */
   display: flex !important;
   align-items: center !important;
+  gap: 10px !important; /* Jarak antara ikon dan teks */
   padding: 10px 12px !important;
   color: var(--text);
   text-decoration: none;
@@ -227,26 +223,12 @@ body::before {
 
 .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
 
-/* IKON DIPAKSA MENEMPEL DI KIRI */
+/* IKON */
 .menu-item svg {
-  position: absolute !important;
-  left: 12px !important;
   width: 18px !important;
   height: 18px !important;
-  flex-shrink: 0 !important;
+  flex-shrink: 0 !important; /* Mencegah ikon mengecil */
   display: block !important;
-}
-
-/* TEKS DIBERI JARAK AGAR TIDAK MENABRAK IKON */
-.menu-item span {
-  margin-left: 28px !important;
-  display: block !important;
-}
-
-/* SAAT COLLAPSED, IKON DIPAKSA KE TENGAH KOTAK */
-.app-sidebar.collapsed .menu-item svg {
-  left: 50% !important;
-  transform: translateX(-50%) !important;
 }
 
 /* POSISI TOMBOL PANAH */
@@ -271,7 +253,7 @@ body::before {
 .sidebar-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
-/* SISA CSS LAINNYA (TIDAK BERUBAH) */
+/* SISA CSS LAINNYA */
 .mobile-bottom-nav {
   display: flex;
   position: fixed;
@@ -299,7 +281,6 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  /* Jika ingin sidebar tetap muncul di HP, hapus baris display:none di bawah ini */
   .app-sidebar { display: none !important; } 
   .app-main { width: 100%; }
 }
