@@ -137,7 +137,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
 
-/* FIX PERMANEN UNTUK SIDEBAR & COLLAPSED STATE */
+/* FIX PERMANEN UNTUK SIDEBAR & KONDISI COLLAPSED */
 .app-sidebar {
   display: flex !important;
   width: 200px;
@@ -164,7 +164,7 @@ body::before {
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 6px !important;
+  padding: 16px 8px !important;
 }
 
 .app-sidebar.collapsed .brand-sub,
@@ -212,7 +212,7 @@ body::before {
   .app-main { width: 100%; }
 }
 
-/* KUNCI MENU AGAR TETAP KE BAWAH */
+/* KUNCI MENU AGAR TETAP KE BAWAH SECARA RAPI */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
@@ -799,7 +799,7 @@ function openProductModal(id) {
     <div style="font-size:11px; color:var(--soft); margin-bottom:5px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:11.5px; color:var(--muted); margin-bottom:10px;">${esc(p.description||'')}</p>
     <div style="font-size:15px; font-weight:700; color:var(--soft); margin-bottom:10px;">${price}</div>
-    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:99px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
+    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
   `;
   productModal.classList.add('open');
   productModalBody.querySelector('#pmAddCart').addEventListener('click', () => { addToCart(p); productModal.classList.remove('open'); });
