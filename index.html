@@ -109,7 +109,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
 body {
   background: var(--bg);
   color: var(--text);
@@ -119,6 +119,7 @@ body {
   overflow-x: hidden;
   position: relative;
   padding-bottom: 90px;
+  width: 100%;
 }
 
 body::before {
@@ -135,7 +136,17 @@ body::before {
 
 ::selection { background: var(--soft); color: #fff; }
 
-.app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
+/* LAYOUT UTAMA (Diperbaiki agar tidak overflow ke kiri) */
+.app-layout { 
+  display: flex; 
+  min-height: 100vh; 
+  position: relative; 
+  gap: 16px; 
+  padding: 16px; 
+  max-width: 1400px; 
+  margin: 0 auto; 
+  width: 100%; 
+}
 
 /* LAYOUT SIDEBAR PRESISI */
 .app-sidebar {
@@ -149,7 +160,7 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 10px 60px 10px; /* Padding bawah disisakan untuk tombol panah */
+  padding: 16px 10px 60px 10px;
   flex-direction: column !important;
   position: sticky;
   top: 16px;
@@ -157,14 +168,14 @@ body::before {
   z-index: 100;
   transition: width 0.3s ease, padding 0.3s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  overflow: hidden;
+  overflow: hidden; 
 }
 
 /* KONDISI SAAT SIDEBAR DITUTUP / COLLAPSED */
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 6px 60px 6px !important;
+  padding: 16px 0 60px 0 !important; /* Padding kiri-kanan dihilangkan agar ikon punya ruang penuh */
 }
 
 .app-sidebar.collapsed .brand-sub,
@@ -261,8 +272,8 @@ body::before {
   bottom: 16px; 
   left: 50%; 
   transform: translateX(-50%); 
-  width: 28px; 
-  height: 28px;
+  width: 30px; 
+  height: 30px;
   background: rgba(255, 255, 255, 0.2); 
   border: 1px solid var(--glass-border); 
   border-radius: 50%;
@@ -272,7 +283,10 @@ body::before {
   justify-content: center;
   cursor: pointer; 
   z-index: 105;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
