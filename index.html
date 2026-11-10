@@ -356,12 +356,15 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
       <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
       <label style="font-size:11px; color:var(--muted);">No. HP *</label>
       <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
+      
+      <!-- BAGIAN YANG DIUBAH (BAHASA INDONESIA) -->
       <label style="font-size:11px; color:var(--muted);">Tipe Pesanan *</label>
       <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
-        <option style="background:var(--bg); color:var(--text);">Dine-in</option>
-        <option style="background:var(--bg); color:var(--text);">Take-away</option>
-        <option style="background:var(--bg); color:var(--text);">Delivery</option>
+        <option value="Dine-in" style="background:var(--bg); color:var(--text);">Makan di Tempat</option>
+        <option value="Take-away" style="background:var(--bg); color:var(--text);">Bawa Pulang</option>
+        <option value="Delivery" style="background:var(--bg); color:var(--text);">Diantar (Delivery)</option>
       </select>
+      
       <div id="addressField" style="display:none;">
         <label style="font-size:11px; color:var(--muted);">Alamat *</label>
         <textarea id="coAddress" rows="2" style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;"></textarea>
@@ -684,17 +687,29 @@ $('#checkoutBtn').addEventListener('click', () => {
   $('#checkoutModal').classList.add('open');
 });
 $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').classList.remove('open'));
-$('#coType').addEventListener('change', e => { $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none'; });
+
+// Logika untuk menampilkan alamat jika memilih Delivery
+$('#coType').addEventListener('change', e => { 
+  $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none'; 
+});
+
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
   const name = $('#coName').value;
   const phone = $('#coPhone').value;
-  const type = $('#coType').value;
+  
+  // Ambil teks yang terlihat (Bahasa Indonesia)
+  const typeText = $('#coType').options[$('#coType').selectedIndex].text;
   const address = $('#coAddress').value;
-  let msg = `*Pesanan Baru — Serabimu*\n\n👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${type}\n`;
-  if(type === 'Delivery') msg += `📍 Alamat: ${address}\n`;
+  
+  let msg = `*Pesanan Baru — Serabimu*\n\n👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${typeText}\n`;
+  if(typeText.includes('Diantar') || typeText.includes('Delivery')) {
+    msg += `📍 Alamat: ${address}\n`;
+  }
+  
   msg += '\n*Detail Pesanan:*\n' + cart.map((it,i)=>`${i+1}. ${it.title} × ${it.qty} = ${fmt(it.price*it.qty)}`).join('\n');
   msg += `\n\n*Total: ${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}*`;
+  
   window.open(`https://wa.me/${storeWa}?text=${encodeURIComponent(msg)}`, '_blank');
   $('#checkoutModal').classList.remove('open');
 });
