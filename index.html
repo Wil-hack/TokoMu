@@ -10,95 +10,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* === VARIABEL TEMA === */
 :root[data-theme="indigo"] {
   --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 70%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 70%);
-  --bg: #020617;
-  --glass-bg: rgba(30, 41, 59, 0.75);
-  --glass-border: rgba(56, 189, 248, 0.25);
-  --glass-glow: rgba(56, 189, 248, 0.2);
-  --accent: #38bdf8;
-  --btn-text: #020617;
-  --soft: #bae6fd;
-  --text: #ffffff;
-  --muted: #cbd5e1;
-  --neu-bg: #1e293b;
-  --neu-shadow-dark: #0f172a;
-  --neu-shadow-light: #334155;
+  --bg: #020617; --glass-bg: rgba(30, 41, 59, 0.75); --glass-border: rgba(56, 189, 248, 0.25); --glass-glow: rgba(56, 189, 248, 0.2); --accent: #38bdf8; --btn-text: #020617; --soft: #bae6fd; --text: #ffffff; --muted: #cbd5e1; --neu-bg: #1e293b; --neu-shadow-dark: #0f172a; --neu-shadow-light: #334155;
 }
 :root[data-theme="forest"] {
   --bg-mesh: radial-gradient(at 0% 0%, #064e3b 0px, transparent 70%), radial-gradient(at 100% 100%, #022c22 0px, transparent 70%);
-  --bg: #022c22;
-  --glass-bg: rgba(6, 78, 59, 0.75);
-  --glass-border: rgba(52, 211, 153, 0.25);
-  --glass-glow: rgba(52, 211, 153, 0.2);
-  --accent: #34d399;
-  --btn-text: #022c22;
-  --soft: #a7f3d0;
-  --text: #ffffff;
-  --muted: #a7f3d0;
-  --neu-bg: #064e3b;
-  --neu-shadow-dark: #022c22;
-  --neu-shadow-light: #065f46;
+  --bg: #022c22; --glass-bg: rgba(6, 78, 59, 0.75); --glass-border: rgba(52, 211, 153, 0.25); --glass-glow: rgba(52, 211, 153, 0.2); --accent: #34d399; --btn-text: #022c22; --soft: #a7f3d0; --text: #ffffff; --muted: #a7f3d0; --neu-bg: #064e3b; --neu-shadow-dark: #022c22; --neu-shadow-light: #065f46;
 }
 :root[data-theme="coffee"] {
   --bg-mesh: radial-gradient(at 0% 0%, #431407 0px, transparent 70%), radial-gradient(at 100% 100%, #1c100b 0px, transparent 70%);
-  --bg: #1c100b;
-  --glass-bg: rgba(67, 20, 7, 0.75);
-  --glass-border: rgba(251, 191, 36, 0.25);
-  --glass-glow: rgba(251, 191, 36, 0.2);
-  --accent: #fbbf24;
-  --btn-text: #1c100b;
-  --soft: #fde68a;
-  --text: #ffffff;
-  --muted: #fde68a;
-  --neu-bg: #431407;
-  --neu-shadow-dark: #1c100b;
-  --neu-shadow-light: #5c1d0a;
+  --bg: #1c100b; --glass-bg: rgba(67, 20, 7, 0.75); --glass-border: rgba(251, 191, 36, 0.25); --glass-glow: rgba(251, 191, 36, 0.2); --accent: #fbbf24; --btn-text: #1c100b; --soft: #fde68a; --text: #ffffff; --muted: #fde68a; --neu-bg: #431407; --neu-shadow-dark: #1c100b; --neu-shadow-light: #5c1d0a;
 }
 :root[data-theme="cosmic"] {
   --bg-mesh: radial-gradient(at 0% 0%, #311042 0px, transparent 70%), radial-gradient(at 100% 100%, #1e1b4b 0px, transparent 70%);
-  --bg: #1e1b4b;
-  --glass-bg: rgba(59, 7, 100, 0.75);
-  --glass-border: rgba(244, 114, 182, 0.25);
-  --glass-glow: rgba(244, 114, 182, 0.2);
-  --accent: #f472b6;
-  --btn-text: #1e1b4b;
-  --soft: #fbcfe8;
-  --text: #ffffff;
-  --muted: #fbcfe8;
-  --neu-bg: #3b0764;
-  --neu-shadow-dark: #1e1b4b;
-  --neu-shadow-light: #4c1d95;
+  --bg: #1e1b4b; --glass-bg: rgba(59, 7, 100, 0.75); --glass-border: rgba(244, 114, 182, 0.25); --glass-glow: rgba(244, 114, 182, 0.2); --accent: #f472b6; --btn-text: #1e1b4b; --soft: #fbcfe8; --text: #ffffff; --muted: #fbcfe8; --neu-bg: #3b0764; --neu-shadow-dark: #1e1b4b; --neu-shadow-light: #4c1d95;
 }
 :root[data-theme="carbon"] {
   --bg-mesh: radial-gradient(at 0% 0%, #27272a 0px, transparent 70%), radial-gradient(at 100% 100%, #09090b 0px, transparent 70%);
-  --bg: #09090b;
-  --glass-bg: rgba(39, 39, 42, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-glow: rgba(255, 255, 255, 0.15);
-  --accent: #f43f5e;
-  --btn-text: #ffffff;
-  --soft: #f43f5e;
-  --text: #ffffff;
-  --muted: #a1a1aa;
-  --neu-bg: #27272a;
-  --neu-shadow-dark: #121214;
-  --neu-shadow-light: #3f3f46;
+  --bg: #09090b; --glass-bg: rgba(39, 39, 42, 0.85); --glass-border: rgba(255, 255, 255, 0.25); --glass-glow: rgba(255, 255, 255, 0.15); --accent: #f43f5e; --btn-text: #ffffff; --soft: #f43f5e; --text: #ffffff; --muted: #a1a1aa; --neu-bg: #27272a; --neu-shadow-dark: #121214; --neu-shadow-light: #3f3f46;
 }
 :root[data-theme="ice"] {
   --bg-mesh: radial-gradient(at 0% 0%, #0284c7 0px, transparent 70%), radial-gradient(at 100% 100%, #38bdf8 0px, transparent 70%);
-  --bg: #e0f2fe;
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(2, 132, 199, 0.25);
-  --glass-glow: rgba(2, 132, 199, 0.15);
-  --accent: #0284c7;
-  --btn-text: #ffffff;
-  --soft: #0369a1;
-  --text: #0f172a;
-  --muted: #475569;
-  --neu-bg: #e2e8f0;
-  --neu-shadow-dark: #cbd5e1;
-  --neu-shadow-light: #ffffff;
+  --bg: #e0f2fe; --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(2, 132, 199, 0.25); --glass-glow: rgba(2, 132, 199, 0.15); --accent: #0284c7; --btn-text: #ffffff; --soft: #0369a1; --text: #0f172a; --muted: #475569; --neu-bg: #e2e8f0; --neu-shadow-dark: #cbd5e1; --neu-shadow-light: #ffffff;
 }
 
 :root {
@@ -136,17 +71,7 @@ body::before {
 
 ::selection { background: var(--soft); color: #fff; }
 
-/* LAYOUT UTAMA */
-.app-layout { 
-  display: flex; 
-  min-height: 100vh; 
-  position: relative; 
-  gap: 16px; 
-  padding: 16px; 
-  max-width: 1400px; 
-  margin: 0 auto; 
-  width: 100%; 
-}
+.app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
 /* === PERBAIKAN TOTAL SIDEBAR (GRID SYSTEM) === */
 .app-sidebar {
@@ -160,55 +85,51 @@ body::before {
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px 10px 60px 10px;
+  padding: 16px 10px 70px 10px; /* Padding bawah aman untuk tombol */
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
   z-index: 100;
-  transition: none !important; /* Hilangkan animasi geser */
+  transition: none !important; /* Matikan animasi agar instan */
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden; 
 }
 
-/* KONDISI SAAT DITUTUP */
 .app-sidebar.collapsed {
   width: 65px !important;
   min-width: 65px !important;
-  padding: 16px 0 60px 0 !important; /* Kunci padding 0 */
+  padding: 16px 0 70px 0 !important;
 }
 
-.app-sidebar.collapsed .brand-box {
-  display: none !important;
-}
-
-/* Sembunyikan teks menu */
+/* Sembunyikan teks dan brand */
+.app-sidebar.collapsed .brand-box, 
 .app-sidebar.collapsed .menu-item span {
   display: none !important;
 }
 
-/* KUNCI MUTLAK: Gunakan CSS Grid untuk menengahkan ikon */
+/* Gunakan Grid untuk menengahkan ikon secara mutlak */
 .app-sidebar.collapsed .sidebar-menu {
   padding: 0 !important;
-  align-items: center !important; /* Paksa isi menu ke tengah */
+  align-items: center !important;
 }
 
 .app-sidebar.collapsed .menu-item {
   display: grid !important;
-  place-items: center !important; /* Ikon otomatis di tengah kotak */
-  width: 45px !important; /* Ukuran kotak menu */
+  place-items: center !important;
+  width: 45px !important;
   height: 45px !important;
-  margin: 0 auto !important; /* Pastikan kotak berada di tengah sidebar */
+  margin: 0 auto !important;
   padding: 0 !important;
 }
 
 .app-sidebar.collapsed .menu-item svg {
   width: 18px !important;
   height: 18px !important;
-  position: static !important; /* Hapus position absolute jika ada */
+  position: static !important;
   margin: 0 !important;
 }
 
-/* === STYLE NORMAL (SAAT TERBUKA) === */
+/* STYLE MENU NORMAL */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; width: 100%; overflow: hidden; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
@@ -224,7 +145,7 @@ body::before {
 .menu-item {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important; 
+  gap: 10px !important;
   padding: 10px 12px !important;
   color: var(--text);
   text-decoration: none;
@@ -244,66 +165,34 @@ body::before {
 .menu-item svg {
   width: 18px !important;
   height: 18px !important;
-  flex-shrink: 0 !important; 
+  flex-shrink: 0 !important;
   display: block !important;
 }
 
-/* POSISI TOMBOL PANAH */
+/* TOMBOL PANAH SIDEBAR (Dibuat mencolok) */
 .sidebar-toggle-btn {
   position: absolute; 
   bottom: 16px; 
   left: 50%; 
   transform: translateX(-50%); 
-  width: 30px; 
-  height: 30px;
-  background: rgba(255, 255, 255, 0.2); 
-  border: 1px solid var(--glass-border); 
+  width: 36px; 
+  height: 36px;
+  background: var(--accent); 
+  border: 2px solid var(--glass-border); 
   border-radius: 50%;
-  color: var(--text); 
+  color: var(--btn-text); 
   display: flex; 
   align-items: center; 
   justify-content: center;
   cursor: pointer; 
-  z-index: 105;
-  transition: transform 0.3s ease, background 0.3s ease;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.sidebar-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
+.sidebar-toggle-btn:hover { transform: translateX(-50%) scale(1.1); }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
-/* === END SIDEBAR === */
 
-
-/* SISA CSS LAINNYA */
-.mobile-bottom-nav {
-  display: flex;
-  position: fixed;
-  bottom: 12px;
-  left: 16px;
-  right: 16px;
-  max-width: 500px;
-  margin: 0 auto;
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid var(--glass-border);
-  border-radius: 99px;
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 16px;
-  z-index: 200;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-@media (min-width: 769px) {
-  body { padding-bottom: 0; }
-  .mobile-bottom-nav { display: none !important; }
-  .app-main { flex: 1; min-width: 0; }
-}
-
-@media (max-width: 768px) {
-  .app-sidebar { display: none !important; } 
-  .app-main { width: 100%; }
-}
-
+/* === TOPBAR & DROPDOWN TEMA BARU === */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
 .search-widget { position: relative; flex: 1; min-width: 180px; }
 .search-widget input {
@@ -314,6 +203,25 @@ body::before {
 .search-widget svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--muted); }
 
 .topbar-right { display: flex; align-items: center; gap: 8px; }
+
+/* Tombol Tema Dropdown */
+.theme-dropdown-container { position: relative; }
+#themeToggleBtn { font-size: 16px; padding: 0; }
+.theme-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; background: var(--glass-bg); backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 8px;
+  display: none; flex-direction: column; gap: 4px; min-width: 160px; z-index: 500;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+.theme-menu.show { display: flex; }
+.theme-option {
+  padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--text);
+  transition: background 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500;
+}
+.theme-option:hover { background: rgba(255,255,255,0.15); }
+.theme-option.active { background: var(--accent); color: var(--btn-text); }
+
+/* Badge & Tombol Lain */
 .status-badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px;
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
@@ -335,14 +243,7 @@ body::before {
   display: none; align-items: center; justify-content: center; padding: 0 3px;
 }
 
-.theme-selector-panel {
-  display: flex; gap: 4px; background: var(--glass-bg); border: 1px solid var(--glass-border);
-  padding: 3px 5px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-.theme-dot { width: 17px; height: 17px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s; }
-.theme-dot:hover, .theme-dot.active { transform: scale(1.2); border-color: #fff; }
-
+/* HERO DASHBOARD BANNER */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 24px 20px; margin-bottom: 20px; border: 1px solid var(--glass-border);
@@ -355,6 +256,7 @@ body::before {
 .hero-dashboard h1 { font-family: var(--font-title); font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 4px; color: var(--text); }
 .hero-dashboard p { color: var(--muted); max-width: 400px; font-size: 12px; }
 
+/* KATALOG & CHIPS */
 .category-wrapper { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 14px; scrollbar-width: none; }
 .category-wrapper::-webkit-scrollbar { display: none; }
 .chip {
@@ -402,6 +304,7 @@ body::before {
 .card-price { font-weight: 700; color: var(--soft); font-size: 11.5px; }
 .btn-glass-add { background: var(--accent); color: var(--btn-text); border: none; padding: 4px 9px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; }
 
+/* FEED / KABAR TOKO */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .post-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px 6px; }
@@ -413,10 +316,30 @@ body::before {
 .btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 3px 9px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
+/* NAVIGASI BAWAH MOBILE */
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted); text-decoration: none; font-size: 10px; font-weight: 500; transition: color .2s; }
 .nav-item.active, .nav-item:hover { color: var(--accent); }
 .nav-item svg { width: 20px; height: 20px; }
 
+.mobile-bottom-nav {
+  display: flex; position: fixed; bottom: 12px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto;
+  background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border); border-radius: 99px; justify-content: space-around; align-items: center;
+  padding: 8px 16px; z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 769px) {
+  body { padding-bottom: 0; }
+  .mobile-bottom-nav { display: none !important; }
+  .app-main { flex: 1; min-width: 0; }
+}
+
+@media (max-width: 768px) {
+  .app-sidebar { display: none !important; }
+  .app-main { width: 100%; }
+}
+
+/* CART & MODALS */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
 .cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(360px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 18px; color: var(--text); box-shadow: -15px 0 30px rgba(0,0,0,0.3); }
@@ -484,8 +407,9 @@ body::before {
         <span>Panel Admin</span>
       </a>
     </nav>
+    <!-- TOMBOL PANAH -->
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
   </aside>
 
@@ -497,13 +421,18 @@ body::before {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <div class="theme-selector-panel">
-          <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
-          <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
-          <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
-          <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #1e1b4b 50%, #f472b6 50%);" title="Cosmic Violet"></div>
-          <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #09090b 50%, #ffffff 50%);" title="Carbon Silver"></div>
-          <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #f0f9ff 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
+        
+        <!-- TEMA DROPDOWN -->
+        <div class="theme-dropdown-container">
+          <button class="icon-btn" id="themeToggleBtn" aria-label="Pilih Tema">🎨</button>
+          <div class="theme-menu" id="themeMenu">
+            <div class="theme-option" data-t="indigo">🌌 Midnight Indigo</div>
+            <div class="theme-option" data-t="forest">🌲 Deep Forest</div>
+            <div class="theme-option" data-t="coffee">☕ Coffee Latte</div>
+            <div class="theme-option" data-t="cosmic">🔮 Cosmic Violet</div>
+            <div class="theme-option" data-t="carbon">🌑 Carbon Silver</div>
+            <div class="theme-option" data-t="ice">❄️ Fresh Ice</div>
+          </div>
         </div>
 
         <div class="status-badge" id="openBadge">
@@ -647,7 +576,7 @@ body::before {
 
 <div id="toast"></div>
 
-<!-- FIREBASE SCRIPT (Realtime Database SDK) -->
+<!-- FIREBASE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -681,25 +610,45 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
+// Sidebar Toggle
 const sidebar = $('#sidebar');
 const sidebarToggle = $('#sidebarToggle');
 if (sidebarToggle && sidebar) {
   sidebarToggle.addEventListener('click', () => { sidebar.classList.toggle('collapsed'); });
 }
 
+// Tema Dropdown Logic
+const themeToggleBtn = $('#themeToggleBtn');
+const themeMenu = $('#themeMenu');
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
+
 document.documentElement.setAttribute('data-theme', savedTheme);
 
 function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
   localStorage.setItem('serabimu_theme', themeName);
-  document.querySelectorAll('.theme-dot').forEach(dot => {
-    dot.classList.toggle('active', dot.dataset.t === themeName);
+  document.querySelectorAll('.theme-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.t === themeName);
   });
 }
-document.querySelectorAll('.theme-dot').forEach(dot => {
-  if(dot.dataset.t === savedTheme) dot.classList.add('active');
-  dot.addEventListener('click', () => applyTheme(dot.dataset.t));
+
+themeToggleBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  themeMenu.classList.toggle('show');
+});
+
+document.addEventListener('click', (e) => {
+  if (!themeMenu.contains(e.target) && !themeToggleBtn.contains(e.target)) {
+    themeMenu.classList.remove('show');
+  }
+});
+
+document.querySelectorAll('.theme-option').forEach(opt => {
+  if(opt.dataset.t === savedTheme) opt.classList.add('active');
+  opt.addEventListener('click', () => {
+    applyTheme(opt.dataset.t);
+    themeMenu.classList.remove('show');
+  });
 });
 
 function isOpenNow() {
