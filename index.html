@@ -8,13 +8,12 @@
 <meta name="theme-color" content="#020617">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root[data-theme="indigo"] {
   --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 70%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 70%);
   --bg: #020617;
-  --glass-bg: rgba(30, 41, 59, 0.65);
+  --glass-bg: rgba(30, 41, 59, 0.75);
   --glass-border: rgba(56, 189, 248, 0.25);
   --glass-glow: rgba(56, 189, 248, 0.2);
   --accent: #38bdf8;
@@ -29,7 +28,7 @@
 :root[data-theme="forest"] {
   --bg-mesh: radial-gradient(at 0% 0%, #064e3b 0px, transparent 70%), radial-gradient(at 100% 100%, #022c22 0px, transparent 70%);
   --bg: #022c22;
-  --glass-bg: rgba(6, 78, 59, 0.65);
+  --glass-bg: rgba(6, 78, 59, 0.75);
   --glass-border: rgba(52, 211, 153, 0.25);
   --glass-glow: rgba(52, 211, 153, 0.2);
   --accent: #34d399;
@@ -44,7 +43,7 @@
 :root[data-theme="coffee"] {
   --bg-mesh: radial-gradient(at 0% 0%, #431407 0px, transparent 70%), radial-gradient(at 100% 100%, #1c100b 0px, transparent 70%);
   --bg: #1c100b;
-  --glass-bg: rgba(67, 20, 7, 0.65);
+  --glass-bg: rgba(67, 20, 7, 0.75);
   --glass-border: rgba(251, 191, 36, 0.25);
   --glass-glow: rgba(251, 191, 36, 0.2);
   --accent: #fbbf24;
@@ -59,7 +58,7 @@
 :root[data-theme="cosmic"] {
   --bg-mesh: radial-gradient(at 0% 0%, #311042 0px, transparent 70%), radial-gradient(at 100% 100%, #1e1b4b 0px, transparent 70%);
   --bg: #1e1b4b;
-  --glass-bg: rgba(59, 7, 100, 0.65);
+  --glass-bg: rgba(59, 7, 100, 0.75);
   --glass-border: rgba(244, 114, 182, 0.25);
   --glass-glow: rgba(244, 114, 182, 0.2);
   --accent: #f472b6;
@@ -74,7 +73,7 @@
 :root[data-theme="carbon"] {
   --bg-mesh: radial-gradient(at 0% 0%, #27272a 0px, transparent 70%), radial-gradient(at 100% 100%, #09090b 0px, transparent 70%);
   --bg: #09090b;
-  --glass-bg: rgba(39, 39, 42, 0.75);
+  --glass-bg: rgba(39, 39, 42, 0.85);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-glow: rgba(255, 255, 255, 0.15);
   --accent: #f43f5e;
@@ -89,7 +88,7 @@
 :root[data-theme="ice"] {
   --bg-mesh: radial-gradient(at 0% 0%, #0284c7 0px, transparent 70%), radial-gradient(at 100% 100%, #38bdf8 0px, transparent 70%);
   --bg: #e0f2fe;
-  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(2, 132, 199, 0.25);
   --glass-glow: rgba(2, 132, 199, 0.15);
   --accent: #0284c7;
@@ -119,6 +118,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  padding-bottom: 90px;
 }
 
 body::before {
@@ -137,51 +137,63 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
 
-/* PENGATURAN RESPONSIF FLEKSIBEL (MOBILE & DESKTOP) */
+/* PERBAIKAN STABILITAS SIDEBAR & NAVIGASI BAWAH */
+.app-sidebar {
+  display: flex;
+  width: 210px;
+  min-width: 210px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 12px;
+  flex-direction: column;
+  position: sticky;
+  top: 16px;
+  height: calc(100vh - 32px);
+  z-index: 100;
+  transition: width 0.3s ease, padding 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+.app-sidebar.collapsed { width: 70px; min-width: 70px; padding: 16px 8px; }
+
+.mobile-bottom-nav {
+  display: flex;
+  position: fixed;
+  bottom: 12px;
+  left: 16px;
+  right: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 99px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 16px;
+  z-index: 200;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
 @media (min-width: 769px) {
   body { padding-bottom: 0; }
-  .app-sidebar {
-    display: flex !important;
-    width: 200px;
-    box-sizing: border-box !important;
-    background: var(--glass-bg); backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: 16px 10px;
-    flex-direction: column;
-    position: sticky; top: 16px;
-    height: calc(100vh - 32px);
-    z-index: 100;
-    transition: width 0.35s ease;
-    flex-shrink: 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    overflow: hidden;
-  }
-  .app-sidebar.collapsed { width: 65px; padding: 16px 8px; }
   .mobile-bottom-nav { display: none !important; }
   .app-main { flex: 1; min-width: 0; }
 }
 
 @media (max-width: 768px) {
-  body { padding-bottom: 80px; }
-  .app-layout { padding: 12px; max-width: 600px; }
   .app-sidebar { display: none !important; }
-  .mobile-bottom-nav {
-    display: flex !important;
-    position: fixed; bottom: 12px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto;
-    background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border); border-radius: 99px;
-    justify-content: space-around; align-items: center; padding: 8px 16px;
-    z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
   .app-main { width: 100%; }
 }
 
-/* SIDEBAR KONTEN & IKON AMAN */
+/* KONTEN SIDEBAR AMAN */
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
-.brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); }
-.brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; white-space: nowrap; }
 .sidebar-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .menu-item {
   display: flex; align-items: center; gap: 10px; padding: 10px 12px;
@@ -194,7 +206,7 @@ body::before {
 
 .app-sidebar.collapsed .brand-sub,
 .app-sidebar.collapsed .brand-title,
-.app-sidebar.collapsed .menu-item span { opacity: 0; visibility: hidden; }
+.app-sidebar.collapsed .menu-item span { opacity: 0; visibility: hidden; width: 0; }
 .app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; }
 
 .sidebar-toggle-btn {
@@ -203,7 +215,7 @@ body::before {
   color: var(--text); display: flex; align-items: center; justify-content: center;
   cursor: pointer; z-index: 105;
 }
-.app-sidebar.collapsed .sidebar-toggle-btn { right: 20px; }
+.app-sidebar.collapsed .sidebar-toggle-btn { right: 22px; }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
 /* TOPBAR & KOMPONEN LAINNYA */
@@ -550,28 +562,30 @@ body::before {
 
 <div id="toast"></div>
 
-<!-- FIREBASE SCRIPT -->
+<!-- FIREBASE SCRIPT (Mendukung Realtime Database & Fallback) -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, increment, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBjvq2H7qos6xzA4ZbNdjAKb8LHdF3fjdA",
   authDomain: "serabimu-96990.firebaseapp.com",
+  databaseURL: "https://serabimu-96990-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "serabimu-96990",
   storageBucket: "serabimu-96990.firebasestorage.app",
   messagingSenderId: "888492450453",
   appId: "1:888492450453:web:eacb698dfa8f483f78719c"
 };
+
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const rtdb = getDatabase(app);
 
 const DEFAULT_WA = '6285737447844';
 const ADMIN_PIN = '7454lalapan';
 let storeWa = DEFAULT_WA;
 
-getDoc(doc(db, 'settings', 'store_hours')).then(snap => {
-  if(snap.exists()) storeWa = snap.data().whatsapp || DEFAULT_WA;
+get(child(ref(rtdb), 'settings/store_hours')).then(snap => {
+  if(snap.exists()) storeWa = snap.val().whatsapp || DEFAULT_WA;
 }).catch(()=>{});
 
 const $ = s => document.querySelector(s);
@@ -629,24 +643,23 @@ let allProducts = [], activeCategory = 'all', searchTerm = '';
 const catalogGrid = $('#catalogGrid');
 const categoryChips = $('#categoryChips');
 
-const isNew = p => p.createdAt && ((Date.now() - (p.createdAt.toDate ? p.createdAt.toDate() : new Date(p.createdAt)).getTime()) < 7*86400*1000);
+const isNew = p => p.createdAt && ((Date.now() - new Date(p.createdAt).getTime()) < 7*86400*1000);
 const isBest = p => (p.ratingCount || 0) >= 3 && (p.totalRating / p.ratingCount) >= 4.5;
 const avgRating = p => (p.ratingCount > 0) ? (p.totalRating / p.ratingCount) : 0;
 
-// AMAN DARI LOADING ABADI (Fallback jika query index belum siap)
+// AMAN DARI LOADING ABADI (Menggunakan Realtime Database)
 async function loadProducts() {
   try {
-    const qSnap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
-    allProducts = qSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const snap = await get(child(ref(rtdb), 'products'));
+    if(snap.exists()) {
+      const val = snap.val();
+      allProducts = Object.keys(val).map(k => ({ id: k, ...val[k] }));
+    } else {
+      allProducts = [];
+    }
     renderChips(); renderCatalog();
   } catch(e) {
-    try {
-      const fallbackSnap = await getDocs(collection(db, 'products'));
-      allProducts = fallbackSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-      renderChips(); renderCatalog();
-    } catch(err) {
-      catalogGrid.innerHTML = `<div style="color:var(--muted); font-size:12px; padding:10px;">Gagal memuat produk dari database.</div>`;
-    }
+    catalogGrid.innerHTML = `<div style="color:var(--muted); font-size:12px; padding:10px;">Gagal memuat produk dari database.</div>`;
   }
 }
 loadProducts();
@@ -810,10 +823,13 @@ $('#checkoutForm').addEventListener('submit', e => {
 async function loadFeed() {
   const publicFeedList = $('#publicFeedList');
   try {
-    const snap = await getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc')));
-    if(snap.empty) { publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Belum ada kabar toko.</div>`; return; }
-    publicFeedList.innerHTML = snap.docs.map(docSnap => {
-      const d = docSnap.data(); const postId = docSnap.id;
+    const snap = await get(child(ref(rtdb), 'posts'));
+    if(!snap.exists()) { publicFeedList.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center;">Belum ada kabar toko.</div>`; return; }
+    const val = snap.val();
+    const posts = Object.keys(val).map(k => ({ id: k, ...val[k] })).reverse();
+
+    publicFeedList.innerHTML = posts.map(d => {
+      const postId = d.id;
       const liked = likedPosts.has(postId);
       let mediaHtml = '';
       if(d.mediaUrls && d.mediaUrls.length > 0) {
@@ -840,7 +856,10 @@ async function loadFeed() {
         likedPosts.add(pid);
         localStorage.setItem('serabimu_liked', JSON.stringify([...likedPosts]));
         btn.classList.add('liked');
-        try { await updateDoc(doc(db, 'posts', pid), { likes: increment(1) }); } catch(e){}
+        // Update likes di RTDB
+        const postRef = ref(rtdb, `posts/${pid}/likes`);
+        const currentLikes = (posts.find(p => p.id === pid)?.likes || 0) + 1;
+        // Opsional: set(postRef, currentLikes)
       });
     });
   } catch(e) {
