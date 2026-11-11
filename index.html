@@ -6,6 +6,11 @@
 <title>Serabimu — Kuliner Nusantara</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#020617">
+<!-- TAMBAHAN UNTUK PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -308,7 +313,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
           </div>
         </div>
 
-        <!-- INDIKATOR BUKA/TUTUP -->
         <div class="status-badge" id="openBadge">
           <span class="dot"></span>
           <span id="openText">Memuat...</span>
@@ -970,5 +974,21 @@ adminPinInput.addEventListener('keypress', e => {
 
 updateCartBadge();
 </script>
+
+<!-- TAMBAHAN UNTUK PWA (INSTALL DI CHROME) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(registration => {
+          console.log('ServiceWorker berhasil didaftarkan: ', registration.scope);
+        })
+        .catch(err => {
+          console.log('ServiceWorker gagal didaftarkan: ', err);
+        });
+    });
+  }
+</script>
+
 </body>
 </html>
