@@ -291,7 +291,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
       </div>
       <div class="topbar-right">
         
-        <!-- IKON TEMA BARU -->
         <div class="theme-dropdown-container">
           <button id="themeToggleBtn" aria-label="Pilih Tema">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -309,6 +308,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
           </div>
         </div>
 
+        <!-- INDIKATOR BUKA/TUTUP -->
         <div class="status-badge" id="openBadge">
           <span class="dot"></span>
           <span id="openText">Memuat...</span>
@@ -463,9 +463,61 @@ const DEFAULT_WA = '6285737447844';
 const ADMIN_PIN = '7454lalapan';
 let storeWa = DEFAULT_WA;
 
+// === FUNGSI CEK STATUS TOKO (BUKA/TUTUP) DARI DATABASE ===
+function checkStoreStatus(openTimeStr, closeTimeStr) {
+  const badge = document.getElementById('openBadge');
+  const text = document.getElementById('openText');
+  
+  if(!badge || !text) return;
+
+  // Jika data jam belum diatur di Admin, gunakan default ini:
+  if(!openTimeStr) openTimeStr = "08:00";
+  if(!closeTimeStr) closeTimeStr = "21:00";
+
+  const now = new Date();
+  const curMins = now.getHours() * 60 + now.getMinutes();
+
+  const [openH, openM] = openTimeStr.split(':').map(Number);
+  const [closeH, closeM] = closeTimeStr.split(':').map(Number);
+
+  const openMins = openH * 60 + openM;
+  const closeMins = closeH * 60 + closeM;
+
+  let isOpen = false;
+
+  // Logika jika jam buka dan tutup di hari yang sama (misal 08:00 - 21:00)
+  if (openMins < closeMins) {
+    isOpen = (curMins >= openMins && curMins < closeMins);
+  } 
+  // Logika jika toko buka melewati tengah malam (misal 18:00 - 02:00)
+  else {
+    isOpen = (curMins >= openMins || curMins < closeMins);
+  }
+
+  if(isOpen) { 
+    text.textContent = 'Buka Sekarang'; 
+    badge.classList.remove('closed'); 
+  } else { 
+    text.textContent = 'Tutup'; 
+    badge.classList.add('closed'); 
+  }
+}
+
+// Ambil Pengaturan Toko dari Firebase
 getDoc(doc(db, 'settings', 'store_hours')).then(snap => {
-  if(snap.exists()) storeWa = snap.data().whatsapp || DEFAULT_WA;
-}).catch(()=>{});
+  if(snap.exists()) {
+    const data = snap.data();
+    storeWa = data.whatsapp || DEFAULT_WA;
+    // Panggil fungsi cek status dengan jam dari database
+    checkStoreStatus(data.open, data.close);
+  } else {
+    // Jika belum ada settingan sama sekali
+    checkStoreStatus("08:00", "21:00");
+  }
+}).catch((e)=>{
+  console.error("Gagal ambil setting jam:", e);
+  checkStoreStatus("08:00", "21:00");
+});
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -522,15 +574,6 @@ document.querySelectorAll('.theme-option').forEach(opt => {
     themeMenu.classList.remove('show');
   });
 });
-
-function isOpenNow() {
-  const now = new Date();
-  const cur = now.getHours()*60 + now.getMinutes();
-  return (cur >= 480 && cur < 1260);
-}
-const badge = $('#openBadge'), text = $('#openText');
-if(isOpenNow()) { text.textContent = 'Buka Sekarang'; badge.classList.remove('closed'); }
-else { text.textContent = 'Tutup'; badge.classList.add('closed'); }
 
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
 let cart = JSON.parse(localStorage.getItem('serabimu_cart') || '[]');
