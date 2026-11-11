@@ -78,28 +78,79 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .app-sidebar.collapsed .sidebar-toggle-btn { left: 50%; right: auto; transform: translateX(-50%); }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
-/* === TOPBAR & TEMA === */
-.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
-.search-widget { position: relative; flex: 1; min-width: 180px; }
-.search-widget input { width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 8px 14px 8px 36px; border-radius: 99px; color: var(--text); font-size: 12px; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.search-widget svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--muted); }
-.topbar-right { display: flex; align-items: center; gap: 8px; }
+/* === TOPBAR & TEMA (DIPERBAIKI UNTUK MOBILE) === */
+.dashboard-topbar { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  gap: 12px; 
+  flex-wrap: wrap; 
+}
+.search-widget { position: relative; flex: 1; min-width: 200px; }
+.search-widget input { width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 10px 16px 10px 40px; border-radius: 99px; color: var(--text); font-size: 13px; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.search-widget svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
 
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+/* IKON TEMA BARU YANG LEBIH MENARIK */
 .theme-dropdown-container { position: relative; }
-#themeToggleBtn { font-size: 16px; padding: 0; }
-.theme-menu { position: absolute; top: calc(100% + 8px); right: 0; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 8px; display: none; flex-direction: column; gap: 4px; min-width: 160px; z-index: 500; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-.theme-menu.show { display: flex; }
-.theme-option { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--text); transition: background 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; }
-.theme-option:hover { background: rgba(255,255,255,0.15); }
-.theme-option.active { background: var(--accent); color: var(--btn-text); }
+#themeToggleBtn { 
+  background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.1)); 
+  border: 1px solid var(--glass-border); 
+  width: 42px; height: 42px; border-radius: 50%; 
+  display: flex; align-items: center; justify-content: center; 
+  cursor: pointer; position: relative; 
+  box-shadow: 0 4px 15px var(--glass-glow), inset 0 0 10px rgba(255,255,255,0.05); 
+  transition: all 0.3s;
+}
+#themeToggleBtn:hover { transform: scale(1.05); box-shadow: 0 6px 20px var(--glass-glow); }
+#themeToggleBtn svg { width: 22px; height: 22px; fill: var(--accent); transition: transform 0.3s; }
+#themeToggleBtn:hover svg { transform: rotate(15deg); }
 
-.status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 99px; font-size: 11px; font-weight: 500; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
-.status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+/* DROPDOWN TEMA */
+.theme-menu { 
+  position: absolute; top: calc(100% + 12px); right: 0; 
+  background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 10px;
+  display: none; flex-direction: column; gap: 6px; min-width: 180px; z-index: 600;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+}
+.theme-menu.show { display: flex; animation: slideDown 0.2s ease-out; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-.icon-btn { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); color: var(--text); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.icon-btn svg { width: 16px; height: 16px; }
-.cart-count { position: absolute; top: -2px; right: -2px; background: #f43f5e; color: #fff; font-size: 9.5px; font-weight: 700; min-width: 15px; height: 15px; border-radius: 8px; display: none; align-items: center; justify-content: center; padding: 0 3px; }
+.theme-option { 
+  padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 12.5px; font-weight: 500;
+  color: var(--text); transition: all 0.2s; display: flex; align-items: center; gap: 10px; 
+}
+.theme-option:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+.theme-option.active { background: var(--accent); color: var(--btn-text); font-weight: 700; box-shadow: 0 4px 10px var(--glass-glow); }
+
+/* TOMBOL STATUS & KERANJANG */
+.status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 99px; font-size: 11.5px; font-weight: 600; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+.icon-btn { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); color: var(--text); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: transform 0.2s; }
+.icon-btn:hover { transform: scale(1.05); }
+.icon-btn svg { width: 20px; height: 20px; }
+.cart-count { position: absolute; top: -2px; right: -2px; background: #f43f5e; color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: none; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid var(--bg); }
+
+/* MEDIA QUERY UNTUK MOBILE */
+@media (max-width: 768px) {
+  .dashboard-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
+  .search-widget { width: 100%; }
+  .topbar-right { justify-content: space-between; width: 100%; gap: 6px; }
+  
+  /* Perbaikan Dropdown Tema di Mobile: Muncul di Tengah */
+  .theme-menu {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 90%; max-width: 300px; right: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  }
+  @keyframes slideDown { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+  
+  .status-badge { padding: 8px 10px; font-size: 10.5px; }
+}
 
 /* HERO DASHBOARD */
 .hero-dashboard { position: relative; border-radius: var(--radius-lg); overflow: hidden; padding: 24px 20px; margin-bottom: 20px; border: 1px solid var(--glass-border); box-shadow: 0 15px 30px rgba(0,0,0,0.15); min-height: 140px; display: flex; flex-direction: column; justify-content: center; background: var(--glass-bg); backdrop-filter: blur(20px); }
@@ -109,45 +160,44 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .hero-dashboard p { color: var(--muted); max-width: 400px; font-size: 12px; }
 
 /* KATALOG */
-.category-wrapper { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 14px; scrollbar-width: none; }
+.category-wrapper { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; scrollbar-width: none; }
 .category-wrapper::-webkit-scrollbar { display: none; }
-.chip { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: var(--muted); padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.chip { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: var(--muted); padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s; }
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
-.chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
+.chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; box-shadow: 0 0 10px var(--glass-glow); }
 
-.section-header { font-family: var(--font-title); font-size: 17px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
-.scroll-hint { font-size: 10.5px; color: var(--soft); font-weight: 500; }
+.section-header { font-family: var(--font-title); font-size: 17px; font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+.scroll-hint { font-size: 10.5px; color: var(--soft); font-weight: 500; display: flex; align-items: center; gap: 4px; }
 
-.products-scroll-container { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 24px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x mandatory; }
+.products-scroll-container { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 16px 2px; margin-bottom: 24px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x mandatory; }
 .products-scroll-container::-webkit-scrollbar { height: 5px; }
 .products-scroll-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
-.glass-card { min-width: 180px; max-width: 180px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; position: relative; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.15); flex-shrink: 0; scroll-snap-align: start; }
+.glass-card { min-width: 170px; max-width: 170px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; position: relative; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.15); flex-shrink: 0; scroll-snap-align: start; transition: transform 0.2s; }
+.glass-card:hover { transform: translateY(-3px); }
 .card-img-wrap { position: relative; height: 115px; overflow: hidden; background: rgba(0,0,0,0.1); }
-.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.glass-card:hover .card-img-wrap img { transform: scale(1.05); }
 .card-badges { position: absolute; top: 6px; left: 6px; display: flex; flex-direction: column; gap: 3px; z-index: 2; }
 .badge-tag { font-size: 7.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 2px 4px; border-radius: 4px; color: #fff; }
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
 .badge-new { background: linear-gradient(100deg, #22c55e, #16a34a); }
-.wishlist-btn { position: absolute; top: 6px; right: 6px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(6px); border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; z-index: 2; }
+.wishlist-btn { position: absolute; top: 6px; right: 6px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px); border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; z-index: 2; transition: transform 0.2s; }
+.wishlist-btn:active { transform: scale(0.8); }
 .wishlist-btn.active { background: #ff4757; }
 
-.card-body { padding: 9px; display: flex; flex-direction: column; flex: 1; }
-.card-title { font-family: var(--font-title); font-size: 13.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
-.card-rating { font-size: 9.5px; color: var(--soft); margin-bottom: 3px; min-height: 14px; }
-.card-desc { color: var(--muted); font-size: 10px; margin-bottom: 6px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-family: var(--font-title); font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.card-rating { font-size: 10px; color: var(--soft); margin-bottom: 4px; min-height: 14px; }
+.card-desc { color: var(--muted); font-size: 10px; margin-bottom: 8px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* UPDATE: FOOTER CARD UNTUK 2 TOMBOL */
-.card-footer { display: flex; flex-direction: column; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--glass-border); gap: 6px; }
-.card-price { font-weight: 700; color: var(--soft); font-size: 12px; }
-.card-btn-group { display: flex; gap: 4px; width: 100%; }
+.card-footer { display: flex; flex-direction: column; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--glass-border); gap: 8px; }
+.card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
+.card-btn-group { display: flex; gap: 6px; width: 100%; }
 
-/* KUNCI 2: Efek HANYA pada tombolnya saja saat diklik */
-.btn-glass-add, .btn-direct-order { flex: 1; text-align: center; padding: 5px 0; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer; transition: all 0.1s ease; }
+.btn-glass-add, .btn-direct-order { flex: 1; text-align: center; padding: 6px 0; border-radius: 99px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.15s ease; }
 .btn-glass-add { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 .btn-direct-order { background: var(--accent); color: var(--btn-text); border: none; }
-
-/* Efek saat ditekan (Active): Hanya tombol yang menyala/mengecil */
 .btn-glass-add:active { background: rgba(56, 189, 248, 0.2); transform: scale(0.92); }
 .btn-direct-order:active { filter: brightness(1.3); box-shadow: 0 0 12px var(--accent); transform: scale(0.92); }
 
@@ -155,12 +205,12 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .post-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px 6px; }
-.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--btn-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 12px; }
-.post-caption { padding: 0 14px 8px; font-size: 12px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--btn-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 13px; }
+.post-caption { padding: 0 14px 8px; font-size: 12.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 3px; background: rgba(0,0,0,0.1); }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 200px; object-fit: cover; display: block; }
 .post-actions { padding: 8px 14px; display: flex; justify-content: flex-start; align-items: center; gap: 10px; border-top: 1px solid var(--glass-border); font-size: 11px; color: var(--muted); }
-.btn-like, .btn-comment { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 4px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 11px; transition: 0.2s; }
+.btn-like, .btn-comment { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 6px 14px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 11.5px; transition: 0.2s; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 .btn-comment:hover { background: rgba(255,255,255,0.15); }
 .btn-like:active, .btn-comment:active { transform: scale(0.92); }
@@ -172,8 +222,8 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .comment-item { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 8px; font-size: 11.5px; line-height: 1.4; }
 .comment-item strong { color: var(--soft); margin-right: 5px; }
 .comment-input-wrap { display: flex; gap: 6px; }
-.comment-input { flex: 1; background: var(--bg); border: 1px solid var(--glass-border); padding: 6px 12px; border-radius: 99px; color: var(--text); font-size: 12px; outline: none; }
-.btn-send-comment { background: var(--accent); color: var(--btn-text); border: none; padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.comment-input { flex: 1; background: var(--bg); border: 1px solid var(--glass-border); padding: 8px 14px; border-radius: 99px; color: var(--text); font-size: 12px; outline: none; }
+.btn-send-comment { background: var(--accent); color: var(--btn-text); border: none; padding: 8px 18px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; }
 .btn-send-comment:active { transform: scale(0.92); }
 
 /* NAV MOBILE */
@@ -252,8 +302,14 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
       </div>
       <div class="topbar-right">
         
+        <!-- IKON TEMA BARU -->
         <div class="theme-dropdown-container">
-          <button class="icon-btn" id="themeToggleBtn" aria-label="Pilih Tema">🎨</button>
+          <button id="themeToggleBtn" aria-label="Pilih Tema">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10c0 2.25-.75 4.313-2 6-1.25 1.687-3.25 3-5.5 3H12zm0-2h2.5c1.875 0 3.417-1.083 4.417-2.417 1-1.333 1.583-2.958 1.583-4.583 0-4.417-3.583-8-8-8S4 8.583 4 12s3.583 8 8 8zm-2.5-4c-.828 0-1.5-.672-1.5-1.5S8.672 13 9.5 13s1.5.672 1.5 1.5-.672 1.5-1.5 1.5zm5 0c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5-.672 1.5-1.5 1.5zm-7.5-4c-.828 0-1.5-.672-1.5-1.5S6.172 9 7 9s1.5.672 1.5 1.5S7.828 12 7 12zm10 0c-.828 0-1.5-.672-1.5-1.5S16.172 9 17 9s1.5.672 1.5 1.5S17.828 12 17 12z"/>
+            </svg>
+          </button>
+          
           <div class="theme-menu" id="themeMenu">
             <div class="theme-option" data-t="indigo">🌌 Midnight Indigo</div>
             <div class="theme-option" data-t="forest">🌲 Deep Forest</div>
@@ -288,7 +344,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
     <div id="katalog">
       <div class="section-header">
         <span>Katalog Pilihan</span>
-        <span class="scroll-hint">Geser ➔</span>
+        <span class="scroll-hint">Geser <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
       <div class="category-wrapper" id="categoryChips"></div>
       <div class="products-scroll-container" id="catalogGrid">
@@ -353,25 +409,22 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
     <form id="checkoutForm">
       <label style="font-size:11px; color:var(--muted);">Nama *</label>
       <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
+      
       <label style="font-size:11px; color:var(--muted);">No. HP *</label>
       <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
       
-      <!-- PERUBAHAN: HANYA 2 PILIHAN -->
       <label style="font-size:11px; color:var(--muted);">Tipe Pesanan *</label>
       <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;">
         <option value="Take-away" style="background:var(--bg); color:var(--text);">Ambil di Kedai</option>
         <option value="Delivery" style="background:var(--bg); color:var(--text);">Diantar (Delivery)</option>
       </select>
       
-      <!-- UPDATE: KOLOM ALAMAT & TOMBOL MAPS -->
       <div id="addressField" style="display:none;">
-        <label style="font-size:11px; color:var(--muted);">Alamat Lengkap / Link Google Maps *</label>
-        <textarea id="coAddress" rows="3" style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;" placeholder="Tulis alamat atau klik tombol di bawah untuk melampirkan lokasi otomatis..."></textarea>
-        
-        <!-- TOMBOL LOKASI -->
-        <button type="button" id="btnGetLocation" style="width:100%; background:rgba(255,255,255,0.1); border:1px dashed var(--accent); color:var(--accent); padding:8px; border-radius:7px; font-weight:700; cursor:pointer; font-size:11px; margin-bottom:12px; display:flex; justify-content:center; align-items:center; gap:5px;">
-          📍 Gunakan Lokasi Saat Ini (GPS)
-        </button>
+        <label style="font-size:11px; color:var(--muted);">Alamat Lengkap *</label>
+        <textarea id="coAddress" rows="3" style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:7px 9px; border-radius:7px; color:var(--text); margin-bottom:8px; outline:none; font-size:12px;" placeholder="Tulis alamat lengkap Anda (Jalan, RT/RW, Patokan)..."></textarea>
+        <div style="font-size:10px; color:var(--muted); font-style:italic; margin-bottom:12px;">
+          *Ongkos kirim akan dikonfirmasi oleh penjual via WhatsApp setelah pesanan dikirim.
+        </div>
       </div>
       
       <div id="checkoutSummary" style="background:rgba(255,255,255,0.08); padding:8px; border-radius:7px; margin-bottom:10px; font-size:12px; color:var(--text);"></div>
@@ -401,7 +454,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 
 <div id="toast"></div>
 
-<!-- FIREBASE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -494,6 +546,8 @@ else { text.textContent = 'Tutup'; badge.classList.add('closed'); }
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
 let cart = JSON.parse(localStorage.getItem('serabimu_cart') || '[]');
 let likedPosts = new Set(JSON.parse(localStorage.getItem('serabimu_liked') || '[]'));
+
+let currentSubtotal = 0;
 
 function updateCartBadge() {
   const qty = cart.reduce((s,i) => s + i.qty, 0);
@@ -688,74 +742,41 @@ cartOverlay.addEventListener('click', () => { cartDrawer.classList.remove('open'
 $('#checkoutBtn').addEventListener('click', () => {
   if(cart.length === 0) return;
   cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open');
-  $('#checkoutSummary').innerHTML = `Total: <b>${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}</b>`;
+  
+  currentSubtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  $('#checkoutSummary').innerHTML = `Subtotal: <b>${fmt(currentSubtotal)}</b>`;
   $('#checkoutModal').classList.add('open');
 });
 $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').classList.remove('open'));
 
-// Logika untuk menampilkan alamat jika memilih Delivery
 $('#coType').addEventListener('change', e => { 
-  $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none'; 
-});
-
-// LOGIKA TOMBOL LOKASI (GPS) OTOMATIS
-$('#btnGetLocation').addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    toast('Browser Anda tidak mendukung fitur lokasi.');
-    return;
-  }
-  const btn = $('#btnGetLocation');
-  btn.innerHTML = '⏳ Mencari lokasi...';
-  btn.disabled = true;
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
-      const addressInput = $('#coAddress');
-      
-      // Jika sudah ada teks alamat, tambahkan link di bawahnya
-      if (addressInput.value.trim() !== '') {
-        addressInput.value += `\n📍 ${mapLink}`;
-      } else {
-        addressInput.value = `📍 ${mapLink}`;
-      }
-      
-      btn.innerHTML = '✅ Lokasi Ditemukan!';
-      toast('Lokasi berhasil dilampirkan!');
-      
-      setTimeout(() => {
-        btn.innerHTML = '📍 Gunakan Lokasi Saat Ini (GPS)';
-        btn.disabled = false;
-      }, 2500);
-    },
-    (error) => {
-      toast('Gagal mengambil lokasi. Pastikan izin GPS menyala.');
-      btn.innerHTML = '📍 Gunakan Lokasi Saat Ini (GPS)';
-      btn.disabled = false;
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-  );
+  const isDelivery = e.target.value === 'Delivery';
+  $('#addressField').style.display = isDelivery ? 'block' : 'none'; 
 });
 
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
   const name = $('#coName').value;
   const phone = $('#coPhone').value;
-  
   const typeText = $('#coType').options[$('#coType').selectedIndex].text;
   const address = $('#coAddress').value;
   
+  if(typeText.includes('Delivery') && !address.trim()) {
+    toast('Mohon isi alamat pengiriman!');
+    return;
+  }
+
   let msg = `*Pesanan Baru — Serabimu*\n\n👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${typeText}\n`;
   
-  // Jika Delivery, masukkan alamat/maps ke pesan WhatsApp
-  if(typeText.includes('Delivery') || typeText.includes('Diantar')) {
-    msg += `📍 Alamat / Maps:\n${address}\n`;
+  if(typeText.includes('Delivery')) {
+    msg += `📍 Alamat: ${address}\n`;
+    msg += `🚚 *Ongkir: Mohon info ongkir untuk alamat ini*\n`;
   }
   
   msg += '\n*Detail Pesanan:*\n' + cart.map((it,i)=>`${i+1}. ${it.title} × ${it.qty} = ${fmt(it.price*it.qty)}`).join('\n');
-  msg += `\n\n*Total: ${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}*`;
+  
+  msg += `\n\n*Subtotal: ${fmt(currentSubtotal)}*`;
+  if(typeText.includes('Delivery')) msg += `\n*Total: ${fmt(currentSubtotal)} + (Ongkir)*`;
   
   window.open(`https://wa.me/${storeWa}?text=${encodeURIComponent(msg)}`, '_blank');
   $('#checkoutModal').classList.remove('open');
