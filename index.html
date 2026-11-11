@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Culinary Dashboard</title>
+<title>Serabimu — Kuliner Nusantara</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#020617">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,22 +78,15 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .app-sidebar.collapsed .sidebar-toggle-btn { left: 50%; right: auto; transform: translateX(-50%); }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
-/* === TOPBAR & TEMA (DIPERBAIKI UNTUK MOBILE) === */
-.dashboard-topbar { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 20px; 
-  gap: 12px; 
-  flex-wrap: wrap; 
-}
+/* === TOPBAR & TEMA === */
+.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
 .search-widget { position: relative; flex: 1; min-width: 200px; }
 .search-widget input { width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 10px 16px 10px 40px; border-radius: 99px; color: var(--text); font-size: 13px; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 .search-widget svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
 
 .topbar-right { display: flex; align-items: center; gap: 10px; }
 
-/* IKON TEMA BARU YANG LEBIH MENARIK */
+/* IKON TEMA BARU */
 .theme-dropdown-container { position: relative; }
 #themeToggleBtn { 
   background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.1)); 
@@ -108,7 +101,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 #themeToggleBtn svg { width: 22px; height: 22px; fill: var(--accent); transition: transform 0.3s; }
 #themeToggleBtn:hover svg { transform: rotate(15deg); }
 
-/* DROPDOWN TEMA */
 .theme-menu { 
   position: absolute; top: calc(100% + 12px); right: 0; 
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -126,7 +118,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .theme-option:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
 .theme-option.active { background: var(--accent); color: var(--btn-text); font-weight: 700; box-shadow: 0 4px 10px var(--glass-glow); }
 
-/* TOMBOL STATUS & KERANJANG */
 .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 99px; font-size: 11.5px; font-weight: 600; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 .status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
 .status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
@@ -136,13 +127,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
 .icon-btn svg { width: 20px; height: 20px; }
 .cart-count { position: absolute; top: -2px; right: -2px; background: #f43f5e; color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: none; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid var(--bg); }
 
-/* MEDIA QUERY UNTUK MOBILE */
 @media (max-width: 768px) {
   .dashboard-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
   .search-widget { width: 100%; }
   .topbar-right { justify-content: space-between; width: 100%; gap: 6px; }
   
-  /* Perbaikan Dropdown Tema di Mobile: Muncul di Tengah */
   .theme-menu {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 90%; max-width: 300px; right: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
@@ -271,7 +260,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
   <aside class="app-sidebar" id="sidebar">
     <div class="brand-box">
       <div class="brand-title">Serabimu</div>
-      <div class="brand-sub">Culinary Dashboard</div>
+      <div class="brand-sub">KULINER NUSANTARA</div>
     </div>
     
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
@@ -337,8 +326,8 @@ body::before { content: ''; position: fixed; inset: 0; background-image: var(--b
         <source src="hero-bg.mp4" type="video/mp4">
       </video>
       <div class="hero-overlay"></div>
-      <h1>Kelezatan Autentik</h1>
-      <p>Resep warisan penuh cinta, manisnya pas di hati.</p>
+      <h1>Cita Rasa Nusantara</h1>
+      <p>Menyajikan keaslian jajanan tradisional dengan resep turun-temurun.</p>
     </div>
 
     <div id="katalog">
